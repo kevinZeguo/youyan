@@ -1,0 +1,197 @@
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+img {
+  border: 0;
+  width: 100%;
+}
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  margin: 0;
+}
+/**
+ * Address Firefox 4+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet.
+ */
+button,
+input {
+  line-height: normal;
+}
+/**
+ * Address inconsistent `text-transform` inheritance for `button` and `select`.
+ * All other form control elements do not inherit `text-transform` values.
+ * Correct `button` style inheritance in Chrome, Safari 5+, and IE 8+.
+ * Correct `select` style inheritance in Firefox 4+ and Opera.
+ */
+button,
+select {
+  text-transform: none;
+}
+/**
+ * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+ *    and `video` controls.
+ * 2. Correct inability to style clickable `input` types in iOS.
+ * 3. Improve usability and consistency of cursor style between image-type
+ *    `input` and others.
+ */
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  /* 2 */
+  cursor: pointer;
+  /* 3 */
+}
+/**
+ * Re-set default cursor for disabled elements.
+ */
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+/**
+ * Remove most spacing between table cells.
+ */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/**
+ * Remove default list style
+ */
+ol,
+ul {
+  list-style: none;
+}
+html,
+body,
+ul,
+li,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+/* App Styles */
+body {
+  -webkit-text-size-adjust: none;
+  margin: 0;
+  padding: 0;
+  min-height: 420px;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/*ios iphone5 娑撳鐝惔锔跨瑝婢剁喎顕遍懛鎾€夐棃銏¤閺屾挷绱板鈧稉瀣竴閸戠姳閲滈崓蹇曠*/
+body.ios {
+  min-height: 510px;
+}
+
+/* 闂冨弶顒涙潏纭呯獩閹舵ê褰� */
+[data-name="container"]:before,
+[data-name="container"]:after {
+  content: '\20';
+  display: table;
+}
+[data-name="container"]:after {
+  clear: both;
+}
+a {
+  text-decoration: none;
+  color: #999;
+}
+a:hover {
+  text-decoration: none;
+}
+
+/* 濞撳懘娅庨崘鍛樆鏉堢绐� */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+p,
+blockquote,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+pre,
+fieldset,
+legend,
+button,
+input,
+textarea,
+form,
+th,
+td,
+figure {
+  margin: 0;
+  padding: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
+*,
+*:before,
+*:after {
+  /* 鐠佸墽鐤嗛崗鍐閻ㄥ嫮娲呭Ο鈥崇€锋稉绡祇rder-box */
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  /* 娴ｇ肪hrome娴ｈ法鏁ょ亸蹇庣艾12px閻ㄥ嫬鐡ф担锟� */
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* 閸樺娅庨悙鐟板毊閸忓啰绀岄崥搴ｆ畱妤傛ü瀵掗弫鍫熺亯 */
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+/*閸樺娅庨崗鍐閸涖劌娲块惃鍕珓缁撅拷*/
+
+div{display: block;}
+i,em{font-style: normal;}
+body{
+  line-height: 1.5;
+}
+@font-face {
+  font-family: 'iconfont';
+  src: url('//at.alicdn.com/t/font_1464941866_3706422.eot'); /* IE9*/
+  src: url('//at.alicdn.com/t/font_1464941866_3706422.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('//at.alicdn.com/t/font_1464941866_3706422.woff') format('woff'), /* chrome、firefox */
+  url('//at.alicdn.com/t/font_1464941866_3706422.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('//at.alicdn.com/t/font_1464941866_3706422.svg#iconfont') format('svg'); /* iOS 4.1- */
+
+}
+                                
+
+.iconfont{
+    font-family:"iconfont" !important;
+    font-size:16px;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;}
+
+                                                                                                                               

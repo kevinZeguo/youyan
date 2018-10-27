@@ -1,0 +1,108 @@
+/*样面样式*/
+html,body{max-width: 640px;overflow-x: hidden;margin: 0 auto;}
+img{max-width: 100%;height: auto;}
+[hidden]{display: none;}
+[data-bg="1"]{background: #dcdddd;}
+.fl{float: left;}
+.fr{float: right;}
+a:active{background: #ececec;}
+/*顶部条*/
+.tbar{height: 50px;background: #0281C6;position: fixed;left: 0;right: 0;top: 0;z-index:1000;}
+.tbar h1 {margin-bottom: 8px;}
+.tbar h1 img{width: 160px;margin-bottom: 8px;}
+.tbar .handle{display: block;position: fixed;right: 0;top: 0;width: 50px;text-align: center;line-height: 50px;height: 50px;color: #fff;font-size: 20px;z-index:1001;}
+.fix_barspace{height: 32px;}
+
+.toolbar{background: #0281C6;position: fixed;left: 0;bottom: 0;right: 0;height: 50px;overflow: hidden;}
+.toolbar a{display: block;float: left;width: 25%;text-align: center;color: #fff;font-size: 12px;padding-top: 8px;}
+.toolbar a i{display: block;margin: 0 auto;font-size: 20px;line-height: 100%;}
+.toolbar a #z_shouye{ font-size: 23px;margin-top: -3px;}
+.toolbar a #z_gwc{font-size:25px;margin-top:-5px;}
+.toolbar a #z_grzx{font-size:24px;margin-top:-4px;}
+
+.toolbarspace{height: 50px;}
+.toolbar a:active{background: #3f3f3f;}
+.toolbar a #zhuye{font-size:22px;}
+.menus{overflow: hidden;padding: 10px 0;}
+.menus a{display: block;float: left;width: 25%;text-align: center;font-size: 14px;color: #484848;}
+.menus a i{display: block;margin: 0 auto;font-size: 38px;}
+.menus a #gyyy{font-size:40px;margin-top: -3px;}
+.menus a #yybk{margin:1px 0 7px;font-size:32px;}
+
+.mibox{overflow: hidden;border: 1px solid #bebebe;margin: 5px 10px;}
+.mibox h2{font-size:14px;height: 45px;line-height: 45px;border-bottom: 3px solid #e0e0e0;padding: 0 10px;position: relative;color: #595757;font-weight: bold;}
+.mibox h2 a{position: absolute;right: 0;top: 0;display: block;padding: 0 15px;font-size: 14px;color: #a3a1a1;font-weight: 400;}
+.mibox h2 i{margin-right: 5px;font-weight: 400;}
+
+.mibox .weui_cells {margin-top: 0;}
+.mibox .weui_cells a{color: #333;}
+.mibox .weui_cells:before{border: none;}
+.mibox .weui_cells a:before{border: none;}
+.mibox .weui_cells a i{display: block;width: 5px;height: 5px;-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+border-radius: 10px;background: #999;margin-right: 5px;}
+.mibox .weui_cells p{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;font-size:12px;}
+.mipc{overflow: hidden;padding: 10px;}
+.mipc a{display: block;float: left;width: 25%;text-align: center;font-size: 14px;padding: 0 5px;}
+.mipc a span,
+.mipc a strong,
+.mipc a em{display: block;}
+.mipc a i{display: block;width: 50px;height: 50px;background: #3ea1fe;color: #fff;text-align: center;line-height: 50px;-webkit-border-radius: 50px;
+-moz-border-radius: 50px;
+border-radius: 50px;margin: 0 auto;font-size: 30px;}
+.mipc a em{background: #90c424;display: inherit;padding: 5px 10px;color: #fff;font-size: 12px;-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;}
+.mipc a  span{color: #999;padding: 5px 0;font-size: 10px;}
+.mipc a  strong{color: #222;font-size: 12px;font-weight: 400;padding: 5px 0;}
+.mipc a:nth-of-type(2) i{background: #fd6162;}
+.mipc a:nth-of-type(3) i{background: #35bb7e;}
+.mipc a:nth-of-type(4) i{background: #ff567f;}
+
+
+.picbox{overflow: hidden;border: 1px solid #bebebe;margin: 5px 10px;}
+.picbox a{display: block;}
+.picbox a img{display: block;}
+.picbox a:last-child{padding-top: 5px;}
+
+/*弹出层*/
+.diag_box{display: none;}
+.diag_box .diag_fix{position: absolute;left: 0;top: 0;width: 100%;height: 100%;background:transparent;}
+.diag_content{position: absolute;top: 50px;right: 0;width: 80px;background: #2c2c2c;}
+.diag_content a{color: #fff;display: block;text-align: center;padding: 5px 0;font-size: 14px;}
+.diag_content a i{display: block;font-size: 26px;}
+.diag_content a #z_guanyu{margin-bottom:-5px;}
+.diag_content a:active{background: #3f3f3f;}                   
+
+
+.fotr{
+	width:100%;
+	height:50px;
+	position: fixed;
+	bottom:0;
+	background:#0281C6;
+	left:0;
+}
+.fotr ul{
+	width:100%;
+	display:flex;
+}
+.fotr ul li{
+	flex:1;
+	text-align:center;
+}
+.fotr ul li a{
+	display:block;
+	color:#fff;
+	margin-top:5px;
+}
+.fotr ul li a span{
+	display: block;
+    height: 26px;
+    overflow:hidden;
+}
+.fotr ul li i{
+	padding-bottom:2px;
+	font-size:18px;
+	display:block;
+}

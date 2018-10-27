@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html>
+<style>
+.z_gouwu{position: relative;}
+	.z_gouwu span{
+	position: absolute;
+    left: 50px;
+    top: 1px;
+    height: 15px;
+    width: 15px;
+    border: 1px solid red;
+    line-height: 15px;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    background: red;
+    font-size: 12px;
+    text-align: center;
+	}
+	.z_list{
+	width: 6.4rem;
+	display: flex;
+	background: #0281C6;
+	left:0;
+	bottom:0;
+	position: fixed;
+}
+.z_list li{
+	flex:1;
+	text-align: center;
+}
+.z_list li a{
+	display: block;
+	font-size: 0.22rem;
+}
+.z_list li i{
+	display: inline-block;
+    width: 0.8rem;
+    height: 0.65rem;
+    padding-top: 0.15rem;
+    font-size: 0.5rem;
+}
+#z_foot .li i{
+    color: #fff;
+    height: 0.36rem;
+    padding-top: 0rem;
+    font-size: 0.4rem;
+    margin-bottom: 0.2rem;
+}
+.z_list li span{
+	color: #fff;
+	display:block;
+	font-size: 0.22rem;
+	font-weight: 600;
+}        
+.fotr{
+	width:100%;
+	height:50px;
+	position: fixed;
+	bottom:0;
+	background:#0281C6;
+	left:0;
+}
+.fotr ul{
+	width:100%;
+	display:flex;
+}
+.fotr ul li{
+	flex:1;
+	text-align:center;
+}
+.fotr ul li a{
+	display:block;
+	color:#fff;
+	margin-top:5px;
+	font-size: 12px;
+}
+.fotr ul li a span{
+	display: block;
+    height: 26px;
+    overflow:hidden;
+}
+.fotr ul li i{
+	padding-bottom:2px;
+	font-size:18px;
+	display:block;
+	
+}	
+</style>
+<head>
+<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta name="apple-touch-fullscreen" content="yes">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">	
+		<meta name="keywords" content="微信,微信公众平台" />
+		<meta name="description" content="微信公众平台自助引擎" />	
+<title>结算</title>
+<link rel="stylesheet" type="text/css" href="newcss/global.css" />
+<link rel="stylesheet" type="text/css" href="newcss/style.css" />
+<link rel="stylesheet" type="text/css" href="newcss/css1.css" />
+<link rel="stylesheet" type="text/css" href="newcss/shopping.css" />
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="js/alert2.js"></script>
+<script type="text/javascript" src="js/jquery.accordion.js"></script>
+<script type="text/javascript" src="js/unslider.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
+<script type="text/javascript" src="../js/ligerUI/ligerui.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.js"></script>
+<script type="text/javascript" src="js/jquery.jsoncookie.js"></script>
+<script type="text/javascript" src="js/json2.js"></script>
+<link rel="stylesheet" href="font/iconfont.css">
+<script type="text/javascript"><!--
+var COOKIE_NAME = "Bind_Prod_List";
+var cookie_val = $.JSONCookie(COOKIE_NAME);//读取json格式cookie
+function setTotal(){ 
+	var s=0; 
+	$("#tab td").each(function(){ 
+		s+=parseInt($(this).find('input[class*=text_box]').val())*parseFloat($(this).find('span').text()); 
+	}); 
+//	alert(s);
+	$("#zj").html(s.toFixed(2));
+	$("#orderTotal").val(s.toFixed(2));
+} 
+
+function del(code){
+	 for (var i = 0; i < cookie_val.Product.length; i++) {
+		// alert(code);
+      var p = cookie_val.Product[i];
+      //注释掉判断，为了让undefined的产品也能删除
+      if (p.code == code ) {//存在
+         cookie_val.Product.splice(i, 1); 
+         $.JSONCookie(COOKIE_NAME, cookie_val, { path: '/', expires: 1 });  
+      }
+	 }
+	 show();
+	 var k = 0
+	 if (cookie_val.Product) {
+		 //alert(num);
+	        $.each(cookie_val.Product, function (index, prod) {
+	        	k++;
+	        });
+	 }
+	 if(k == 0){
+			$("#zong").hide();
+			$("#kong").show();
+		}else{
+			$("#kong").hide();
+			$("#zong").show();
+		}
+}
+function show(){
+	var html = "";
+    var div = $("#aa");
+    html="";
+    if (cookie_val.Product) {
+        $.each(cookie_val.Product, function (index, prod) {
+        	if(prod.code==undefined||prod.code=="undefined"){
+        		return;
+        	}
+        	//alert("prod.code="+prod.code+"--prod.sellprice="+prod.sellprice+"--prod.name"+prod.name+"--prod.kou="+prod.kou+"--prod.restNumber="+prod.restNumber+"--prod.price="+prod.price) ;
+        	//alert("prod.code="+prod.code+"----prod.name="+prod.name+"----prod.sellprice="+cookie_val1.Product) ;
+        	/*html = html + "<div class='info_card'>"
+			+"<a href='content.html'>"
+			+"<i><img src='"+prod.img+"'></i>"
+			+"<h1>"+prod.name+"</h1>"
+			+"</a>"
+			+"</div>"
+			+"<div class='info_card_price' id='tab'>"
+			+"<table id='tab'>"
+			+"<tr>" 
+			+"<td>" 
+			+"<input type='hidden' name='productIds' value='"+prod.code+"'/>"
+			+"<input type='hidden' name='productPrices' value='"+prod.sellprice+"'/>" 
+			+"<span>单价:</span><span class='price'>"+Number(prod.sellprice).toFixed(2)+"</span>" 
+			+"<input class='min' name='' type='button' value='-' style='width:30px; height:32px' />" 
+			+"<input class='text_box' name='productNums' type='text' value='1' style='width:50px;text-align:center;' />" 
+			+"<input class='add' name='' type='button' value='+' style='width:30px; height:32px' />" 
+			+"</td>" 
+			+"</tr>" 
+			+"</table>"
+			+"<a onclick='del("+prod.code+")' class='right'><em class='no'>删</em></a>"
+			+"</div>";*/
+			//html += '<div class="opt fl">';
+			//html += '<input type="checkbox">';
+			//html += '</div>';
+			html += '<div class="main_c car_t">';
+			html += '<div class="img fl">';
+			html += '<a href="#"><img src="../productimg/'+prod.img+'" id="img'+prod.code+'"></a>';
+			html += '</div>';
+			html += '<div class="pro fl fr" id="tab">';
+			html += '<table id="tab" class="table" width="100%">';
+			html += '<tr>';
+			html += '<td>'; 
+			html += '<input type="hidden" id="productIds'+prod.code+'" name="productIds" value='+prod.code+'>';
+			//html += '<input type="hidden" name="productPrices" value='+prod.sellprice+'>';
+			html += '<h3>'+prod.name+'</h3><input type="hidden" name="name" id="name'+prod.code+'"  value='+prod.name+'>';
+			html += '<p>口味：'+prod.kou+'</p>';
+			html += '<em class="z_col">￥<em><span class="span">'+Number(prod.sellprice).toFixed(2)+'</span>';
+			html += '<div class="car"><a href="#" style="border-right:none" class="min" onclick="min('+prod.code+')";>-</a>';
+			html += '<input class="text_box" readonly="readonly" id="productNums'+prod.code+'" value="'+prod.num+'" name="productNums" type="text"  style="width:50px;text-align:center;" />';
+			html += '<a href="#" style="border-left:none" class="add" onclick="add('+prod.code+');">+</a><label class="fr" onclick="del('+prod.code+');">删除</label></div>';
+			html += '<input type="hidden" name="restNumber" id="restNumber'+prod.code+'"  value="'+prod.restNumber+'">';
+			html += '<input type="hidden" name="code" id="code'+prod.code+'"  value="'+prod.code+'">';
+			html += '<input type="hidden" name="kou" id="kou'+prod.code+'"  value="'+prod.kou+'">';
+			html += '<input type="hidden" name="productPrices" id="price'+prod.code+'"  value="'+prod.price+'">';
+			html += '</td>';
+			html += '</tr>'; 
+			html += '</table>';
+			html += '</div>';
+			html += '</div>';
+        });
+    }
+    div.html(html);
+   /* $(".add").click(function(){ 
+    	var t=$(this).parent().find('input[class*=text_box]'); 
+    	var rest = $(this).parent().find('#restNumber').val(); 
+    	alert(rest);
+    	if(Number(rest) < Number(t)){
+    		alert("数量不能超过库存");
+    	}else{
+    		t.val(parseInt(t.val())+1) 
+    	}
+    	
+    	setTotal(); 
+    });
+    $(".min").click(function(){ 
+    	var t=$(this).parent().find('input[class*=text_box]'); 
+    	t.val(parseInt(t.val())-1) 
+    	if(parseInt(t.val())<1){ 
+    		t.val(1); 
+    		cookie_val = { "Product": [{ "code": "" + code + "", "name": "" + name + "", "sellprice": "" + sellprice + "", "price": "" + price + "", "img": "" + img + "", "num": "" + 1 + "","restNumber":""+code1+""}] };
+            $.JSONCookie(COOKIE_NAME, cookie_val, { path: '/', expires: 1 });
+    	}else{
+    		cookie_val = { "Product": [{ "code": "" + code + "", "name": "" + name + "", "sellprice": "" + sellprice + "", "price": "" + price + "", "img": "" + img + "", "num": "" + t.val() + "","restNumber":""+code1+""}] };
+            $.JSONCookie(COOKIE_NAME, cookie_val, { path: '/', expires: 1 });
+    	} 
+    	setTotal(); 
+<<<<<<< .mine
+    });*/
+    setTotal();
+}
+
+function min(n){
+	var code1 = $("#restNumber"+n).val();
+	var code = $("#code"+n).val();	
+	var name = $("#name"+n).val();
+	var sellprice = $("#price"+n).val();
+	var price = $("#price"+n).val();
+	var t = $('#productNums'+n);
+	var img = $("#img"+n).attr("src");
+	var kou = $("#kou"+n).val();
+	//alert(name);
+	t.val(parseInt(t.val())-1) 
+	if(parseInt(t.val())<1){ 
+		t.val(1); 
+		var json = { "code": "" + code + "", "name": "" + name + "", "sellprice": "" + sellprice + "", "price": "" + price + "", "img": "" + img + "", "restNumber": "" + code1 + "", "num" : ""+ t.val()+"","kou":""+kou+"" };
+		for (var i = 0; i < cookie_val.Product.length; i++) {
+	        var p = cookie_val.Product[i];
+	        if (p.code == code ) {//存在
+	            cookie_val.Product.splice(i, 1,json); 
+	            $.JSONCookie(COOKIE_NAME, cookie_val, { path: '/', expires: 1 });
+	        }
+		 }
+	}else{
+		var json = { "code": "" + code + "", "name": "" + name + "", "sellprice": "" + sellprice + "", "price": "" + price + "", "img": "" + img + "", "restNumber": "" + code1 + "", "num" : ""+ t.val()+"","kou":""+kou+"" };
+		for (var i = 0; i < cookie_val.Product.length; i++) {
+	        var p = cookie_val.Product[i];
+	        if (p.code == code ) {//存在
+	            cookie_val.Product.splice(i, 1,json); 
+	            $.JSONCookie(COOKIE_NAME, cookie_val, { path: '/', expires: 1 });
+	        }
+		 }
+	} 
+	setTotal(); 
+
+}
+
+function add(n){
+	var code1 = $("#restNumber"+n).val();
+	var code = $("#code"+n).val();	
+	var name = $("#name"+n).val();
+	var sellprice = $("#price"+n).val();
+	var price = $("#price"+n).val();
+	var img = $("#img"+n).attr("src");
+	var kou = $("#kou"+n).val();
+	//alert(n);
+	//var t=$(this).parent().find('input[class*=text_box]');
+	var t = $('#productNums'+n);
+	//alert(t.val());
+	var rest = $('#restNumber'+n).val(); 
+	//alert(rest);
+	//alert(name);
+	if(Number(rest) <= Number(t.val())){
+		alert("数量不能超过库存");
+		var json = { "code": "" + code + "", "name": "" + name + "", "sellprice": "" + sellprice + "", "price": "" + price + "", "img": "" + img + "", "restNumber": "" + code1 + "", "num" : ""+ t.val()+"","kou":""+kou+"" };
+		for (var i = 0; i < cookie_val.Product.length; i++) {
+	        var p = cookie_val.Product[i];
+	        if (p.code == code ) {//存在
+	            cookie_val.Product.splice(i, 1,json); 
+	            $.JSONCookie(COOKIE_NAME, cookie_val, { path: '/', expires: 1 });
+	        }
+		 }
+	}else{
+		t.val(Number(t.val())+1);
+		var json = { "code": "" + code + "", "name": "" + name + "", "sellprice": "" + sellprice + "", "price": "" + price + "", "img": "" + img + "", "restNumber": "" + code1 + "", "num" : ""+ t.val()+"","kou":""+kou+"" };
+		for (var i = 0; i < cookie_val.Product.length; i++) {
+	        var p = cookie_val.Product[i];
+	        if (p.code == code ) {//存在
+	            cookie_val.Product.splice(i, 1,json); 
+	            $.JSONCookie(COOKIE_NAME, cookie_val, { path: '/', expires: 1 });
+	        }
+		 }
+	}
+	
+	setTotal(); 
+}
+
+function GetQueryString(sProp)  
+{  
+    var re = new RegExp("[&,?]"+sProp + "=([^//&]*)", "i");  
+    var a = re.exec(document.location.search);  
+    if (a == null)  
+        return "";  
+    return a[1];  
+} 
+var customerId = "";
+$(document).ready(function(){ 
+	
+	//判断用户是否已注册
+	/* $.ajax({
+			url : 'getUser.do',
+			data : '',
+			datatype : 'json',
+			async :false,
+			success : function(data) {
+				var obj = data.object;
+	            
+	            $.ajax({
+					url : 'customerList.do',
+					type: 'post',
+					data : 'wechatId='+obj.wechatId,
+					datatype : 'json',
+					success : function(result) {
+						var obj = result.object;
+						if(obj != null){
+							customerId = obj.customerId
+						}
+						
+					},
+					error : function(XMLHttpRequest, textStatus, errorThrown) {
+					}
+				});
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+			}
+		});
+	 */
+	
+	
+	
+	
+	 var k = 0
+	 if (cookie_val.Product) {
+		 //alert(num);
+	        $.each(cookie_val.Product, function (index, prod) {
+	        	k++
+	        });
+	 }
+	 if(k == 0){
+			$("#zong").hide();
+		
+		}else{
+			$("#kong").hide();
+		}
+	show();
+	$("#jsbut").click(function(){ 
+		var num = 0;
+		 if (cookie_val.Product) {
+			 //alert(num);
+		        $.each(cookie_val.Product, function (index, prod) {
+		        	num++
+		        });
+		 }
+		 if(num == 0){
+				alert("购物车没有产品，不能提交");	
+				return;
+			
+			
+		
+		}else{ 
+			showdiv();
+			var obj = $("#save_form").serializeArray();
+			$.ajax({
+	    		url : '../orderHead/save.do?rd=' + Math.random(),
+	    		data : obj,
+	    		datatype : 'json',
+	    		cache : false,
+	    		async :false,
+	    		type : "post",
+	    		success : function(data) {
+					if(data.result){
+							location.href = "cart_buy.html?orderNo="+data.message;
+							$.cookie("Bind_Prod_List", null, { path: '/' });
+					}else{
+						//window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd19ab3175ab12fac&redirect_uri=http%3A%2F%2Fwww.hangmeishengxian.com%2Fyy%2Fwechart%2Flogin.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+						alert(data.message);
+						hidediv();
+					}
+	    		},	
+	    		error : function(XMLHttpRequest, textStatus, errorThrown) {
+	    			window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd19ab3175ab12fac&redirect_uri=http%3A%2F%2Fwww.uyan365.com.cn%2Fetp%2Fwechart%2Flogin.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+	    		}
+	    	});
+		}
+		});
+	
+});
+--></script>
+
+</head>
+<body>
+	<!--顶部组件-->
+	<div class="tbar">
+			<h1><img src="images/zlogo_03.png" style="margin-top: 0.17rem;margin-left: 0.5rem;width: 0.7rem;height:0.6rem;float:left;"/></h1>
+			<a href="javascript:;" class="handle">
+				<i class="iconfont" style="font-size:30px;">&#xe604;</i>
+			</a>
+			<div class="diag_box">
+    		<div class="diag_fix"></div>
+    		<!--<div class="diag_content">
+    			<a href="javascript:;">
+    				<i class="iconfont">&#xe61c;</i>首&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;页
+    			</a>
+    			<a href="javascript:;">
+    				<i class="iconfont" >&#xe625;</i>酵素知识
+    			</a>
+    			<a href="javascript:;">
+    				<i class="iconfont" style="font-size:30px;" id="z_guanyu">&#xe61a;</i>关于优研
+    			</a>
+    			<a href="javascript:;">
+    				<i class="iconfont" style="font-size:24px;    margin-bottom: 5px;">&#xe61f;</i>优研百科
+    			</a>
+    		</div>
+    	--></div>
+		</div>	
+	<div style="" class="body">
+	<div class="boy">
+	</div>
+	<form id="save_form">
+	<div  id="aa">
+	 <!--<div class="main_c car_t">
+		 <div class="opt fl">
+			<input type="checkbox">
+		</div>
+		<div class="img fl">
+			<a href="#"><img src="images/pro_01.jpg"></a>
+		</div>
+		<div class="pro fl fr">
+			<h3>优研&nbsp;每天一小口&nbsp;边吃边瘦&nbsp;护肝源一盒装</h3>
+			<p>口味：香蕉味</p>
+			<h2>￥800</h2>
+			<div class="car"><a href="#" style="border-right:none">-</a><i>1</i><a href="#" style="border-left:none">+</a><label class="fr">删除</label></div>
+		</div> 
+		
+	-->
+	</div>
+	</div>
+	<div class="main_f" id="zong">
+		<h2>总价：<span id="zj">￥0.00</span></h2><input type="hidden" name="orderTotal" id="orderTotal"/>
+		<!-- <h2>运费：<span id="yf">￥0.00</span></h2><input type="hidden" name="orderTotal" id="orderTotal"/> -->
+		<a href="#" id="jsbut">提交订单</a>
+	</div>
+	</form>
+	<div class="cart" id="kong">
+		<span><i class="iconfont" style="font-size:32px;color:#fff;">&#xe620;</i></span>
+		<p>购物车空空的( >﹏< ) ，赶快去挑选心仪的商品吧！</p>
+		<a href="login.html">去逛逛</a>
+	</div>
+	</div>
+	<!--底部导航-->
+	<!--<div class="toolbar">
+			<a href="login.html;"><i class="iconfont" id="z_shouye">&#xe61c;</i>首页</a>
+            <a href="classify.html"><i class="iconfont">&#xe60c;</i>分类</a>
+            <a href="carts.html;"class="z_gouwu"><i class="iconfont" id="z_gwc">&#xe620;</i>购物车  <span>1</span> </a>
+            <a href="snsapi_userinfo.html"><i class="iconfont" id="z_grzx">&#xe621;</i>个人中心</a>
+    	</div>
+	-->
+	<!--<ul class="z_list z_indlist" id="z_foot">
+		<li class="li"><a href="login.html"><i class="iconfont iconfont1">&#xe600;</i><span>首页</span></a></li>
+		<li class="li"><a href="myinfo.html"><i class="iconfont iconfont1" style="font-size:0.42rem;">&#xe615;</i><span>我的信息</span></a></li>
+		<li class="li" id="sa"> <a href="orderList.html"><i class="iconfont iconfont1" style="font-size:0.38rem;margin:0.05rem 0 0.15rem 0;">&#xe614;</i><span>我的订单</span></a></li>
+		<li class="li"><a href="carts.html"><i class="iconfont iconfont1">&#xe607;</i><span>购物车</span></a></li>
+	    <li class="li"><a href="javascript:share();"><i class="iconfont iconfont1" style="font-size:0.42rem;margin:-0.03rem 0 0.19rem 0;">&#xe603;</i><span>分享</span></a></li>
+	</ul>
+	-->
+	<div class="fotr">
+				<ul>
+					<li>
+						<a href="login.html">
+							<span>
+								<i class="iconfont iconfont1">&#xe600;</i>
+							</span>	
+							首页
+						</a>
+					</li>
+					<li>
+						<a href="myinfo.html">
+							<span>
+								<i class="iconfont iconfont1" style="font-size:20px;">&#xe615;</i>
+							</span>	
+							我的信息
+						</a>
+					</li>
+					<li id="sa">
+					 	<a href="orderList.html">
+						 	<span>
+						 		<i class="iconfont iconfont1" style="">&#xe614;</i>
+						 	</span>
+					 		我的订单
+					 	</a>
+					</li>
+					<li>
+						<a href="carts.html">
+							<span>
+								<i class="iconfont iconfont1" style="font-size:21 mpx;">&#xe607;</i>
+							</span>
+							购物车
+						</a>
+					</li>
+				    <li>
+				    	<a href="javascript:share();">
+					    	<span>
+					    		<i class="iconfont iconfont1" style="font-size:21px;" >&#xe603;</i>
+					    	</span>	
+				    		分享
+				    	</a>
+				    </li>
+				</ul>
+			</div>
+	<!--弹出层-->
+    	
+    	<script type="text/javascript">
+    	//展开弹出层
+    		$(".handle").on('touchstart',function(){
+    			$(".diag_box").show();
+    		});
+    	//关闭弹出层
+    		$(".diag_fix").on('touchstart',function(){
+    			$(this).parent('.diag_box').hide();
+    		});
+    		$(".menus").on('touchstart',function(){
+    			//alert(1);
+    			$(".diag_box").hide();
+    		}) 
+    		$(".pro_box").on('touchstart',function(){
+    			//alert(1);
+    			$(".diag_box").hide();
+    		}) 
+    		$("#divCategory").on('touchstart',function(){
+    			//alert(1);
+    			$(".diag_box").hide();
+    		}) 
+    	</script>
+<script type="text/javascript" src="js/swiper-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/my.js"></script>
+</body>
+</html>

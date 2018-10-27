@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title></title>
+<link rel="stylesheet" href="newcss/css.css" type="text/css" />
+<link rel="stylesheet" href="newcss/starter.css" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<script  type="text/javascript" src='../js/common/util.js'></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+	$.ajax({
+		url : '../couponTable/getCoupons.do',
+		data : '',
+		datatype : 'json',
+		async :false,
+		success : function(data) {
+			var obj = data.list;
+		
+			$.each(obj, function (i, item) {
+				i=i+1;
+				var html = "";
+				if(item.status=="0"){
+					 html +="<ul>";
+				}else
+				{
+					html +=	"<ul  class='u_l'> ";
+				}
+			
+				 html +="<li class='img_l'>";
+				if(item.status=="0"){
+					 html +=	"<img src='images/ig_l.png'>";
+				}else
+				{
+					html +=	"<img src='images/ig_l_01.png'>";
+				}
+				
+				 html +=	"<span>"+i+"</span>"+
+				"<b>优惠券</b>"+
+				"</li>"+
+				"<li style='width:50%;margin-top:10px'>"+
+				"<span>"+item.couponTable.couponName+"</span>"+
+				"<div class='bot'>截至日期<span>"+dateFormat(item.couponTable.closingDate)+"</span></div>"+
+				"</li>"+
+				"<li class='img_r'>";
+				if(item.status=="0"){
+					 html +=	"<img src='images/ig_r.jpg'>";
+				}else
+				{
+					html +=	"<img src='images/images/ig_r_01.png'>";
+				}
+				 html +="<img src='images/ig_r.jpg'>"+
+				"<span>￥<b>"+item.couponTable.couponValue+"</b></span>"+
+				"</li>"+
+				"</ul>";
+				$("#coupon").append(html);
+			})
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+
+});
+function dateFormat(cellvalue, options, rowObject) {
+	var date = new Date(cellvalue.time);
+	return date.pattern("yyyy-MM-dd");
+}
+</script>
+</head>
+<body>
+	<div class="center">
+		<p>记得在结算时使用优惠卷哦！</p>
+		<div class="center_c">
+			<!-- <div class="c_l fl">
+				总金额：<span>¥0</span>
+			</div> -->
+			<div class="c_r fl fr" style="width:28%;">
+				<a href="couponPassword.html">绑定优惠券</a>
+			</div>
+		</div>
+		<div class="center_m" id="coupon">
+			
+			<!-- <ul>
+				<li class="img_l">
+					<img src="images/ig_l.png">
+					<span>1</span>
+					<b>优惠券</b>
+				</li>
+				<li style="width:50%;margin-top:10px">
+					<span>注册有礼</span>
+					<div class="bot">有效期<span>2016.06.05</span>至<span>2016.09.06</span></div>
+				</li>
+				<li class="img_r">
+					<img src="images/ig_r.jpg">
+					<span>￥<b>200</b></span>
+					
+				</li>
+			</ul>
+			<ul class="u_l">
+				<li class="img_l">
+					<img src="images/ig_l_01.png">
+					<span>1</span>
+					<b>优惠券</b>
+				</li>
+				<li style="width:50%;margin-top:10px">
+					<span>注册有礼</span>
+					<div class="bot">有效期<span>2016.06.05</span>至<span>2016.09.06</span></div>
+				</li>
+				<li class="img_r">
+					<img src="images/ig_r_01.png">
+					<span>￥<b>200</b></span>
+					
+				</li>
+			</ul> -->
+		</div>
+		<div class="img_b">
+			<img src="images/log_01.png">
+		</div>
+	</div>
+	<div class="footer">
+		
+	</div>
+</body>
+</html>

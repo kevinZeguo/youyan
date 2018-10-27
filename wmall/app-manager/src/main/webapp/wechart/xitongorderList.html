@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title></title>
+<link rel="stylesheet" href="newcss/css.css" type="text/css" />
+<link rel="stylesheet" href="newcss/starter.css" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+
+<script type="text/javascript">
+
+
+$(document).ready(function() {
+	
+	$.ajax({
+		url : '../person/todayinorders.do',
+		data : '',
+		datatype : 'json',
+		//async :false,
+		success : function(data) {
+			var obj = data.status;
+				$("#todayinorders").html(obj);
+		}
+	});
+			
+	
+
+	$.ajax({
+		url : '../person/todayoutorders.do',
+		data : '',
+		datatype : 'json',
+		//async :false,
+		success : function(data) {
+			var obj = data.status;
+				$("#todayoutorders").html(obj);
+		}
+	});
+			
+	
+	
+	$.ajax({
+		url : '../person/todayMoninorders.do',
+		data : '',
+		datatype : 'json',
+		//async :false,
+		success : function(data) {
+			var obj = data.status;
+				$("#todayMoninorders").html(obj);
+		}
+	});
+			
+	
+	
+	
+	$.ajax({
+		url : '../person/todayMonoutorders.do',
+		data : '',
+		datatype : 'json',
+		//async :false,
+		success : function(data) {
+			var obj = data.status;
+				$("#todayMonoutorders").html(obj);
+		}
+	});
+	
+	
+	$.ajax({
+		url : '../person/todayinordersfahuo.do',
+		data : '',
+		datatype : 'json',
+		//async :false,
+		success : function(data) {
+			var obj = data.status;
+				$("#todayinordersfahuo").html(obj);
+		}
+	});
+	
+	$.ajax({
+		url : '../person/todayinordersxiafahuo.do',
+		data : '',
+		datatype : 'json',
+		//async :false,
+		success : function(data) {
+			var obj = data.status;
+				$("#todayinordersxiafahuo").html(obj);
+		}
+	});
+	
+	
+	
+
+	
+	$.ajax({
+		url : '../person/todayMoninordersfahuo.do',
+		data : '',
+		datatype : 'json',
+		//async :false,
+		success : function(data) {
+			var obj = data.status;
+				$("#todayMoninordersfahuo").html(obj);
+		}
+	});
+	
+	$.ajax({
+		url : '../person/todayMoninordersxiafahuo.do',
+		data : '',
+		datatype : 'json',
+		//async :false,
+		success : function(data) {
+			var obj = data.status;
+				$("#todayMoninordersxiafahuo").html(obj);
+		}
+	});
+	
+	
+
+	
+	
+	 
+	$.ajax({
+		url : '../person/todayinmoney.do',
+		data : '',
+		datatype : 'json',
+		//async :false,
+		success : function(data) {
+			var obj = data.status;
+				$("#todayinmoney").html(obj);
+		}
+	});
+	
+	$.ajax({
+		url : '../person/todayoutmoney.do',
+		data : '',
+		datatype : 'json',
+		//async :false,
+		success : function(data) {
+			var obj = data.status;
+				$("#todayoutmoney").html(obj);
+		}
+	});
+	
+	
+	
+
+	
+	$.ajax({
+		url : '../person/todayMoninmoney.do',
+		data : '',
+		datatype : 'json',
+		//async :false,
+		success : function(data) {
+			var obj = data.status;
+				$("#todayMoninmoney").html(obj);
+		}
+	});
+	
+	$.ajax({
+		url : '../person/todayMonoutmoney.do',
+		data : '',
+		datatype : 'json',
+		//async :false,
+		success : function(data) {
+			var obj = data.status;
+				$("#todayMonoutmoney").html(obj);
+		}
+	});
+	
+	
+});
+</script>
+</head>
+<body>
+	<div class="center">
+	
+	     	<p id="pp" >商城订单</p>
+			
+			<!--今日线上订单产品数量 -->
+		     <div class="center_c dd"   >
+			     <div class="c_l">
+				<span id="todayinorders"></span>
+			     </div>
+			</div>
+			
+			<!--今日线下订单产品数量-->
+              <div class="center_c dd"   >
+			     <div class="c_l">
+				<span id="todayoutorders"></span>
+			     </div>
+			</div>
+      
+             	
+             	<!--本月线上订单产品数量-->
+              <div class="center_c dd"   >
+			     <div class="c_l">
+				<span id="todayMoninorders"></span>
+			     </div>
+			</div>
+			
+			     	<!--本月线下订单产品数量-->
+              <div class="center_c dd"   >
+			     <div class="c_l">
+				<span id="todayMonoutorders"></span>
+			     </div>
+			</div>
+			
+			    	
+			     	<!--今日线上发货数量-->
+              <div class="center_c dd"   >
+			     <div class="c_l">
+				<span id="todayinordersfahuo"></span>
+			     </div>
+			</div>    
+			  
+			
+				 	<!--今日线下发货数量-->
+              <div class="center_c dd"   >
+			     <div class="c_l">
+				<span id="todayinordersxiafahuo"></span>
+			     </div>
+			</div>    
+			
+					 	<!--本月线上发货数量-->
+              <div class="center_c dd"   >
+			     <div class="c_l">
+				<span id="todayMoninordersfahuo"></span>
+			     </div>
+			</div>    
+			
+					 	<!--本月线下发货数量-->
+              <div class="center_c dd"   >
+			     <div class="c_l">
+				<span id="todayMoninordersxiafahuo"></span>
+			     </div>
+			</div>    
+			
+					<!--今日线上回款-->
+              <div class="center_c dd"   >
+			     <div class="c_l">
+				<span id="todayinmoney"></span>
+			     </div>
+			</div>    
+			
+			<!-- 今日线下回款 -->
+			  <div class="center_c dd"   >
+			     <div class="c_l">
+				<span id="todayoutmoney"></span>
+			     </div>
+			</div>    
+			
+						<!--本月线上回款-->
+              <div class="center_c dd"   >
+			     <div class="c_l">
+				<span id="todayMoninmoney"></span>
+			     </div>
+			</div>    
+			
+			<!-- 本月线下回款 -->
+			  <div class="center_c dd"   >
+			     <div class="c_l">
+				<span id="todayMonoutmoney"></span>
+			     </div>
+			</div>    
+	
+		<div class="img_b">
+			<img src="images/log_01.png">
+		</div>
+		</div>
+	<div class="footer">
+		
+	</div>
+</body>
+</html>

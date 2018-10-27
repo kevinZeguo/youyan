@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.claude.wmall.jxc.dao.store.StoreChuRuKlsDao">
+    <resultMap id="BaseResultMap" type="com.claude.wmall.jxc.domain.store.StoreChuRuKls">
+        <id column="LIUSHUIH" property="liushuih" jdbcType="BIGINT"/>
+        <result column="DANJUBH" property="danjubh" jdbcType="VARCHAR"/>
+        <result column="CHANPINBM" property="chanpinbm" jdbcType="VARCHAR"/>
+        <result column="CHANPINMC" property="chanpinmc" jdbcType="VARCHAR"/>
+        <result column="GUIGE" property="guige" jdbcType="VARCHAR"/>
+        <result column="CHANDI" property="chandi" jdbcType="VARCHAR"/>
+        <result column="JILIANGDW" property="jiliangdw" jdbcType="VARCHAR"/>
+        <result column="SHULIANG" property="shuliang" jdbcType="INTEGER"/>
+        <result column="PICI" property="pici" jdbcType="VARCHAR"/>
+        <result column="SHENGCHANRQ" property="shengchanrq" jdbcType="VARCHAR"/>
+        <result column="DANJIA" property="danjia" jdbcType="NUMERIC"/>
+        <result column="JINE" property="jine" jdbcType="NUMERIC"/>
+        <result column="SHUILV" property="shuilv" jdbcType="NUMERIC"/>
+        <result column="SHUIJIAHJ" property="shuijiahj" jdbcType="NUMERIC"/>
+        <result column="DIAOCHUSL" property="diaochusl" jdbcType="INTEGER"/>
+        <result column="BAOZHIQ" property="baozhiq" jdbcType="INTEGER"/>
+        <result column="SHIXIAORQ" property="shixiaorq" jdbcType="VARCHAR"/>
+        <result column="ZHIJIANZT" property="zhijianzt" jdbcType="VARCHAR"/>
+        <result column="DIAORUSL" property="diaorusl" jdbcType="INTEGER"/>
+        <result column="NEIBUJSJ" property="neibujsj" jdbcType="NUMERIC"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    LIUSHUIH, DANJUBH, CHANPINBM, CHANPINMC, GUIGE, CHANDI, JILIANGDW, SHULIANG, PICI,
+    SHENGCHANRQ, DANJIA, JINE, SHUILV, SHUIJIAHJ, DIAOCHUSL, BAOZHIQ, SHIXIAORQ, ZHIJIANZT,DIAORUSL,NEIBUJSJ
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from STORE_CHURUKLS
+        where LIUSHUIH = #{liushuih,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from STORE_CHURUKLS
+    where LIUSHUIH = #{liushuih,jdbcType=BIGINT}
+  </delete>
+
+    <delete id="deleteByKey" parameterType="java.lang.String">
+    delete from STORE_CHURUKLS
+    where DANJUBH = #{danjubh,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.claude.wmall.jxc.domain.store.StoreChuRuKls">
+    insert into STORE_CHURUKLS (LIUSHUIH, DANJUBH, CHANPINBM,CHANPINMC, GUIGE, CHANDI,
+      JILIANGDW, SHULIANG, PICI,SHENGCHANRQ, DANJIA, JINE,
+      SHUILV, SHUIJIAHJ, DIAOCHUSL,BAOZHIQ, SHIXIAORQ, ZHIJIANZT,BEIZHU,DIAORUSL,NEIBUJSJ
+      )
+    values ( #{liushuih}, #{danjubh,jdbcType=VARCHAR}, #{chanpinbm,jdbcType=VARCHAR},
+      #{chanpinmc,jdbcType=VARCHAR}, #{guige,jdbcType=VARCHAR}, #{chandi,jdbcType=VARCHAR}, 
+      #{jiliangdw,jdbcType=VARCHAR}, #{shuliang,jdbcType=INTEGER}, #{pici,jdbcType=VARCHAR}, 
+      #{shengchanrq,jdbcType=VARCHAR}, #{danjia,jdbcType=NUMERIC}, #{jine,jdbcType=NUMERIC}, 
+      #{shuilv,jdbcType=NUMERIC}, #{shuijiahj,jdbcType=NUMERIC}, #{diaochusl,jdbcType=INTEGER}, 
+      #{baozhiq,jdbcType=INTEGER}, #{shixiaorq,jdbcType=VARCHAR}, #{zhijianzt,jdbcType=VARCHAR},
+      #{beizhu},#{diaorusl},#{neibujsj}
+      )
+  </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.claude.wmall.jxc.domain.store.StoreChuRuKls">
+    update STORE_CHURUKLS
+    set DANJUBH = #{danjubh,jdbcType=VARCHAR},
+      CHANPINBM = #{chanpinbm,jdbcType=VARCHAR},
+      CHANPINMC = #{chanpinmc,jdbcType=VARCHAR},
+      GUIGE = #{guige,jdbcType=VARCHAR},
+      CHANDI = #{chandi,jdbcType=VARCHAR},
+      JILIANGDW = #{jiliangdw,jdbcType=VARCHAR},
+      SHULIANG = #{shuliang,jdbcType=INTEGER},
+      PICI = #{pici,jdbcType=VARCHAR},
+      SHENGCHANRQ = #{shengchanrq,jdbcType=VARCHAR},
+      DANJIA = #{danjia,jdbcType=NUMERIC},
+      JINE = #{jine,jdbcType=NUMERIC},
+      SHUILV = #{shuilv,jdbcType=NUMERIC},
+      SHUIJIAHJ = #{shuijiahj,jdbcType=NUMERIC},
+      DIAOCHUSL = #{diaochusl,jdbcType=INTEGER},
+      BAOZHIQ = #{baozhiq,jdbcType=INTEGER},
+      SHIXIAORQ = #{shixiaorq,jdbcType=VARCHAR},
+      ZHIJIANZT = #{zhijianzt,jdbcType=VARCHAR},
+      BEIZHU = #{beizhu,jdbcType=VARCHAR}
+    where LIUSHUIH = #{liushuih,jdbcType=BIGINT}
+  </update>
+
+    <sql id="churukls_List">
+        t.LIUSHUIH liushuih, t.DANJUBH danjubh, t.CHANPINBM chanpinbm, t.CHANPINMC chanpinmc, t.GUIGE guige,
+        t.CHANDI chandi, t.JILIANGDW jiliangdw, t.SHULIANG shuliang, t.PICI pici,t.SHENGCHANRQ shengchanrq,
+        t.DANJIA danjia, t.JINE jine, t.SHUILV shuilv, t.SHUIJIAHJ shuijiahj, t.DIAOCHUSL diaochusl, t.BAOZHIQ baozhiq,
+        t.SHIXIAORQ shixiaorq, t.ZHIJIANZT zhijianzt,t.BEIZHU beizhu,t.DIAORUSL diaorusl,t.NEIBUJSJ neibujsj
+    </sql>
+
+    <select id="selectByDanjuBh" parameterType="java.lang.String"
+            resultType="com.claude.wmall.jxc.domain.store.StoreChuRuKls">
+        select
+        <include refid="churukls_List"/>
+        from STORE_CHURUKLS t
+        where t.DANJUBH = #{danjubh,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByDanjubh" parameterType="java.lang.String">
+        delete from STORE_CHURUKLS where DANJUBH = #{danjubh,jdbcType=VARCHAR}
+    </delete>
+</mapper>

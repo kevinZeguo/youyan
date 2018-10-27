@@ -1,0 +1,30 @@
+@charset "utf-8";
+fl{float:left;}
+fr{float:right;}
+/*购物结算公用*/
+.main{width: 900px;height: auto;margin:20px 0 0 50px; }
+.main table{width:100%;}
+.main table thead{width:100%;border:1px solid #e9e9e9;}
+.main table thead tr th{padding:10px 0;color:#666;}
+.main table thead tr th label{display:inline-block;}
+.main table tbody tr{border-bottom:1px solid #e9e9e9;}
+.main table tr td{text-align:center;margin-top:10px;}
+.main table tr td img{width:85px;height:85px;margin-top:10px;margin-bottom:10px;}
+.main table tr td span{display:inline-block;padding-left:10px;width:120px;line-height:20px;vertical-align: middle;color:#999;}
+.main table tr .td_1{width:120px;}
+.main table tr td .shu a{float:left;display:inline-block;width:40px;padding:10px 0;background:#cecece;border:1px solid #ccc;color:#666;}
+.main table tr td input[type="text"]{float:left;width:50px;padding:9px 0;text-align:center;}
+.main table tr td .shu{margin:0 auto;overflow: hidden;width:138px;}
+.main table tr td a{color:#666;}
+.main table tr .yuan{color:#a5061a;}
+.main table tr th input[type="checkbox"]{margin-left:5px;}
+.main table tr th input[type="checkbox"],.main table tr td input[type="checkbox"]{float:none;vertical-align: middle;width:13px;height:13px;margin-right:5px;}
+.main .close{width:100%;text-align:right;margin-top:20px;}
+.main .close input{width:100px;padding:10px 0;background:#90c424;border:none;color:#fff;font-size:14px;border-radius:5px;}
+.main .close span{padding-right:10px;}
+.main .close span label{color:#a5061a;font-size:20px;}
+/**优惠券优粉卡***/
+
+.quan p,.ka{margin-top:20px;}
+.quan p,.ka p{padding:7px 0;color:#666;font-size:12px;}
+.quan table td,.ka table td{padding:20px 0;}

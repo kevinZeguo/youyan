@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0, maximum-scale=1.0">
+<title>业务员邀请函</title>
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<link rel="stylesheet" href="../css/wechart/index.css" type="text/css" />
+<link rel="stylesheet" href="../css//wechart/korea.css" />
+<link href="../css//wechart/cate.css" rel="stylesheet" type="text/css" />
+<link href="../css//wechart/style.css" rel="stylesheet" type="text/css" />
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"> </script>
+<script type="text/javascript" src="../js/jsConfig.js"></script>
+<style type="text/css">
+#cover{display:none;position:absolute;left:0;top:0;z-index:18888;background-color:#000000;opacity:0.7;}
+#guide{display:none;position:absolute;right:18px;top:5px;z-index:19999;}
+#guide img{width:260px;height:180px;}
+</style>
+
+<script type="text/javascript">
+//var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9c937e7224bf6f26&redirect_uri=http%3A%2F%2Falfie.wicp.net%3A47279%2FShop%2Fagent.html%3Fparentid%3D&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+function GetQueryString(sProp)  
+{  
+    var re = new RegExp("[&,?]"+sProp + "=([^//&]*)", "i");  
+    var a = re.exec(document.location.search);  
+    if (a == null)  
+        return "";  
+    return a[1];  
+} 
+$(document).ready(function(){
+	var code = GetQueryString("code");
+	var parentid = GetQueryString("username").toString();
+	//alert("parentid===="+parentid)
+	$("#parentId").val(parentid);
+	$.ajax({
+		type:"post",
+		url : 'oauth2.do',
+		data : 'code='+code,
+		datatype : 'json',
+		success : function(result) {
+			var obj = result.object;
+			//alert(obj.wechatId);headImgUrl
+			$("#wechatId").val(obj.wechatId);
+			$("#wechatName").val(obj.wechatName);
+			$("#headImgUrl").val(obj.headImgUrl);
+			$.ajax({
+				url : 'booleancustomerListsale.do',
+				type: 'post',
+				data : 'wechatId='+obj.wechatId,
+				datatype : 'json',
+				success : function(result) {
+					var obj = result.result;
+					if(obj){
+						location.href = "login.html";
+					}
+					
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					//alert(XMLHttpRequest.status);
+					//alert(XMLHttpRequest.readyState);
+					//alert(textStatus);
+				}
+			});
+			
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("error");
+		}
+	});
+	
+	
+	
+	
+});
+
+//校验手机号码：必须以数字开头
+function isMobile(s) 
+{
+    var patrn=/^\s*(15\d{9}|13[0-9]\d{8}|18[0-9]\d{8})\s*$/;
+    if(!patrn.exec(s))
+    {
+        return false;
+    }
+    return true;
+} 
+
+
+//电子邮箱
+function isEmail(s){
+	
+	var patrn=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+    if(!patrn.exec(s))
+    {
+        return false;
+    }
+    return true;
+}
+
+
+
+
+function save(){
+	var customerName = $("#customerName").val();
+	var wechatId = $("#wechatId").val();
+	var wechatName = $("#wechatName").val();
+	var headImgUrl = $("#headImgUrl").val();
+	var parentId = $("#parentId").val();
+	var customerId = $("#customerId").val();
+	var mobilephone = $("#mobilephone").val();
+	var customerArea = $("#customerArea").val();
+	var customerLegal = $("#customerLegal").val();
+	var businessLicenceNo = $("#businessLicenceNo").val();
+	var email = $("#email").val();
+	var bankName = $("#bankName").val();
+	var bankNo = $("#bankNo").val();
+	$.ajax({
+		url:"checkPhone.do",//要请求的servlet
+		data:{mobilephone:mobilephone
+		},//给服务器的参数
+		type:"POST",
+		dataType:"json",
+		async:false,
+		cache:false,
+		success:function(data) {
+			var obj = data.result;
+			if(!obj){
+				alert("手机号码已有人用！请重新填手机号码");
+				//$("#mobilephone").val("");
+				return;
+			}
+		}
+	});
+	 if (customerName=="")
+	    {
+	        alert("姓名不能为空！");
+	        return false;
+	    }
+	 if (mobilephone=="")
+	    {
+	        alert("手机号不能为空！");
+	        return false;
+	    }
+	 if (customerArea=="")
+	    {
+	        alert("所属区域不能为空！");
+	        return false;
+	    }
+	 if (email=="")
+	    {
+	        alert("邮箱不能为空！");
+	        return false;
+	    }
+	 if (bankName=="")
+	    {
+	        alert("银行名称呢不能为空！");
+	        return false;
+	    }
+	 if (bankNo=="")
+	    {
+	        alert("卡号不能为空！");
+	        return false;
+	    }
+	 if (!isMobile(mobilephone))
+	    {
+	        alert("手机号码错误!");
+	        return false;
+	    }
+	 if (!isEmail(email))
+	    {
+	        alert("邮箱不正确!");
+	        return false;
+	    }
+	var obj2 = $("#save_form").serializeArray();
+	$.ajax({
+		url : 'saveCustomerSale.do',
+		type: 'post',
+		data : {customerName:customerName,
+			wechatId:wechatId,
+			parentId:parentId,
+			customerId:customerId,
+			mobilephone:mobilephone,
+			customerArea:customerArea,
+			customerLegal:customerLegal,
+			businessLicenceNo:businessLicenceNo,
+			email:email,
+			bankName:bankName,
+			bankNo:bankNo,
+			wechatName:wechatName,
+			headImgUrl:headImgUrl},
+		datatype : 'json',
+		success : function(result) {
+			if(result.result)
+			{
+				alert(result.message);
+				window.location.href = v_redirect_uri_follow;
+			}else
+			{
+				alert(result.message);
+			}
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+		}
+	}); 
+}
+
+
+var _system={
+		$:function(id){return document.getElementById(id);},
+		_client:function(){
+		return {w:document.documentElement.scrollWidth,h:document.documentElement.scrollHeight,bw:document.documentElement.clientWidth,bh:document.documentElement.clientHeight};
+		},
+		_scroll:function(){
+		return {x:document.documentElement.scrollLeft?document.documentElement.scrollLeft:document.body.scrollLeft,y:document.documentElement.scrollTop?document.documentElement.scrollTop:document.body.scrollTop};
+		},
+		_cover:function(show){
+		if(show){
+		this.$("cover").style.display="block";
+		this.$("cover").style.width=(this._client().bw>this._client().w?this._client().bw:this._client().w)+"px";
+		this.$("cover").style.height=(this._client().bh>this._client().h?this._client().bh:this._client().h)+"px";
+		}else{
+		this.$("cover").style.display="none";
+		}
+		},
+		_guide:function(click){
+		this._cover(true);
+		this.$("guide").style.display="block";
+		this.$("guide").style.top=(_system._scroll().y+5)+"px";
+		window.onresize=function(){_system._cover(true);_system.$("guide").style.top=(_system._scroll().y+5)+"px";};
+		if(click){_system.$("cover").onclick=function(){
+		_system._cover();
+		_system.$("guide").style.display="none";
+		_system.$("cover").onclick=null;
+		window.onresize=null;
+		};}
+		},
+		_zero:function(n){
+		return n<0?0:n;
+		}
+		}
+		
+function share(){	
+
+		
+}
+
+function send(){
+	var mobilephone = $("#mobilephone").val();
+	if (!isMobile(mobilephone))
+    {
+        alert("手机号码错误!");
+        return false;
+    }
+	var curCount=120;
+	$("#btnSendCode").attr("disabled", "true");  
+    $("#btnSendCode").val("请在" + curCount + "秒内输入验证码");  
+    var InterValObj = window.setInterval(SetRemainTime, 1000); // 启动计时器，1秒执行一次  
+    $.ajax({
+		type:"post",
+		url : '../sendmessage/send.do',
+		async :false,
+		data : 'mobilephone='+mobilephone,
+		datatype : 'json',
+		success : function(data) {
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+}
+//timer处理函数  
+function SetRemainTime() {  
+    if (curCount == 0) {                  
+        window.clearInterval(InterValObj);// 停止计时器  
+        $("#btnSendCode").removeAttr("disabled");// 启用按钮  
+        $("#btnSendCode").val("重新发送验证码");  
+        code = ""; // 清除验证码。如果不清除，过时间后，输入收到的验证码依然有效  
+    }else {  
+        curCount--;  
+        $("#btnSendCode").val("请在" + curCount + "秒内输入验证码");  
+    }  
+} 
+
+function coder(){
+	var code = $("#code").val();
+	 $.ajax({
+			type:"post",
+			url : '../sendmessage/code.do',
+			async :false,
+			data : 'code='+code,
+			datatype : 'json',
+			success : function(data) {
+				var obj = data.result;
+				if(obj){
+					alert("验证成功");
+				}else{
+					alert("验证失败");
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+			}
+		});
+}
+
+</script>
+</head>
+<body>
+<div style="display: none;"><img src="dl/1.jpg"></div>
+<form id="save_form">
+    <div class="news">
+        	<ul class="news-list" id="reg">
+        			<li>
+        			<h2><a>业务员邀请函</a></h2>
+        				<div>
+<input type="text" id="customerName" name="customerName" placeholder="请输入姓名"  />
+<input type="hidden" id="wechatId" name="wechatId" >
+<input type="hidden" id="wechatName" name="wechatName" >
+<input type="hidden" id="headImgUrl" name="headImgUrl" >
+<input type="hidden" id="parentId" name="parentId" >
+<input type="hidden" id="customerId" name="customerId" >
+<input type="hidden" id="customerTypeId" name="customerTypeId" value="2">
+</div>
+        			
+        			</li>
+        			<li>
+        			<input type="text" name="mobilephone" id="mobilephone" placeholder="请输入电话"  style="width:50%;"/><input type="button" value="获取验证码" id="btnSendCode" onclick="send();" style="margin-left:10px;width:40%;">
+        			</li>
+        			 <li>
+        			<input type="text" name="code" id="code" placeholder="验证码"  onBlur="coder();"/>
+        			</li>
+        			<li>
+        			<input type="text" name="customerArea" id="customerArea" placeholder="请输入所属区域"  />
+        			</li>
+        			<li>
+        			<input type="text" name="email" id="email" placeholder="请输入邮箱"  />
+        			</li>
+        			<li>
+        			<input type="text" name="bankName" id="bankName" placeholder="请输入开户行"  />
+        			</li>
+        			<li>
+        			<input type="text" name="bankNo" id="bankNo" placeholder="请输入银行卡号，提示：此卡号最终用于返现使用"  />
+        			</li>
+        			<li>
+        			<div>
+<input name="btnSearch" class="ui-btn-submit"  type="button" value="确认"  onclick="save();"/>
+</div>
+        			</li>
+        	</ul>
+        	<ul class="news-list" id="load" >
+        			
+        	</ul>
+        	<ul id="info" class="news-list" >
+        			<li>
+        		
+        				<div>
+<span id="name"></span>
+</div>
+<div id="cover"></div>
+<div id="guide"><img src="images/guide1.png"></div>
+<img id="martix" src="" style="margin:-300px 0 0 0;" onclick="_system._guide(true);">
+
+        			
+        			</li>
+        			
+        	</ul>
+    </div>
+</form>
+</body>
+</html>

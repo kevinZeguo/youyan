@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<register>
+	<agent comment="用户注册时，系统发送邮件的内容配置">
+		<smtpServerHost comment="发送邮件服务器地址">smtp.163.com</smtpServerHost>
+		<smtpServerPort comment="发送邮件服务器端口">25</smtpServerPort>
+		<sender comment="（寄件人）邮箱地址">xfxf04@163.com</sender>
+		<password comment="（寄件人）邮箱密码">xfxf1984</password>
+		<subject comment="邮件主题">XXX注册验证码</subject>
+		<message comment="正文内容"
+			  remark="
+				一、正文内容可以由用户在当前文件中配置；
+				二、正文内容中可以含系统关键字；
+				三、关键字有以下几种（关键字需要用%号括起）：
+					//		1.%UserName%用户名；		1.%UserCode%用户登录名；				
+					//		2.%PassWord%用户密码；	
+					//		7.%Phone%联系方式；					
+					//		8.%EMail%邮箱地址；
+					//		9.%RegisterCode%注册码；			
+					//		10.%ChnDateTime%中文格式的日期时间
+					//		11.%ChnDate%中文格式的日期			
+					//		12.%CR%回车
+					//		13.%LF%换行							
+					//		14.%CRLF%回车换行
+				四、正文内容示例：
+					尊敬的 %UserName% 您好：%CR%
+					    您已于%ChnDateTime%成功注册成为%UserCode%XXX成员。%CR%
+					您的注册码为 %RegisterCode% 。请及时注册，并进一步填写您的详细资料。%CR%
+					                                YYYYY%CR%
+					                %ChnDate%%CR%
+		">
+尊敬的 %UserName% 您好：%CR%%CR%
+
+    您已于%ChnDateTime%成功注册成为%UserCode%XXX成员。%CR%
+您的注册码为 %RegisterCode% 。请及时注册，并进一步填写您的详细资料。%CR%
+
+YYYYY%CR%
+%ChnDate%%CR%
+		</message>
+	</agent>
+
+</register>

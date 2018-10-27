@@ -1,0 +1,11 @@
+@charset "utf-8";
+.center_g {background: -webkit-linear-gradient(top, #fff, #e7e7e5); background: -moz-linear-gradient(top, #fff, #e7e7e5);background: -o-linear-gradient(top, #fff, #e7e7e5);background: -ms-linear-gradient(top, #fff, #e7e7e5);width:1000px;height:600px;position:relative;}
+.center_g .center_top{width:600px;height:430px;background-color:#fff;margin:0 auto; position:absolute;top:50px;left:100px;}
+.center_g .center_top table{width:500px;margin:0 auto;}
+.center_g .center_top .td{width:200px;height:45px;text-align:right;font-size:16px;}
+.center_g .center_top .sp{display:inline-block;width:194px;height:25px;border:1px solid #a9a9a9;line-height:25px;}
+.center_g .center_top .td span{color:red;}
+.center_g .center_top td label{color:red;}
+.center_g .center_top table input{height:25px;width:194px;}
+.center_g .center_top table input[type="submit"]{display:block;width:80px;height:33px;background-color:#3795d5;font-size:16px;font-family:"微软雅黑";color:#fff;margin-left:108px;border:1px solid #3795d5;}
+.center_g .center_top table input[type="submit"]:hover{background-color:#1d85bf;border:1px solid #1d85bf;}

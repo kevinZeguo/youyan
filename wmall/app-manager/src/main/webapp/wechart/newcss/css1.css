@@ -1,0 +1,38 @@
+.load_c {
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: 0.6;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+	overflow: hidden;
+}
+
+.load_t {
+	width: 100%;
+	height: 100px;
+	position: absolute;
+	top: 40%;
+	left: 45%;
+	vertical-align: middle;
+}
+
+.load_t .dimg {
+	margin-right: 15px;
+	width: 30px;
+	float: left;
+	vertical-align: middle;
+}
+
+.load_t .dimg img {
+	margin-top: 9px;
+	width: 40px;
+	height: 40px;
+}
+
+.load_t p {
+	float: left;
+	margin-right: 10px;
+}

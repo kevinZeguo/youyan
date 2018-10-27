@@ -1,0 +1,35 @@
+@charset "utf-8";
+body{color:#333;font-family:"方正细圆"}
+/*标题样式*/
+.header{width:100%;height:40px;background:#a1bbd7;line-height:40px;}
+.header .nav{width:990px;margin:0 auto;}
+.header .nav span{font-size:14px;padding-left:20px;font-family:"方正细圆"}
+/*主体限宽*/
+.main,.center{width:990px;height:auto;margin:0 auto;background:#fff;}
+.main>p{height:500px;}
+/**输入框样式*/
+.main .main_top{width:100%;}
+.main .main_top p{margin-top:10px;padding-left:10px;}
+.main .main_top p label{font-size:12px;}
+.main .main_top p input[type="text"],
+.main .main_top p input[type="password"],
+.main .main_top p input[type="password"]{width:155px;padding:5px 3px;}
+.main .main_top p select{width:120px;padding:5px 3px;}
+.main .main_top p input[type="button"],.main .main_top p input[type="submit"]{padding:10px 20px;background:#a1bbd7;border:none;}
+.main .main_top p input[type="button"]:hover,.main .main_top p input[type="submit"]:hover{background:#cedeef;}
+/****按钮样式****/
+.btn{width:88%;margin-top:30px;text-align:right;}
+.btn a{padding:9px 30px;color:#666;background:#a1bbd7;margin-right:10px;}
+.btn a:hover{background:#cedeef;}
+/**列表***/
+.main .center_b{width:960px;margin-top:20px;margin-left:10px;}
+/****按钮样式****/
+.center .center_m ul li{margin-top:10px;}
+.center .center_m ul li label{display:inline-block;width:200px;text-align:right;font-size:12px;}
+.center .center_m ul li input[type="text"],
+.center .center_m ul li input[type="password"]{width:300px;padding:4px 5px;}
+.center .center_m ul li select{width:200px;padding:4px 5px;}
+.center .bttn{margin-top:20px;min-height:50px;}
+.center .bttn input[type="button"],.center .bttn input[type="submit"]{margin:20px 0 20px 220px;padding:12px 143px;background:#a1bbd7;border:none;font-size:14px;}
+
+

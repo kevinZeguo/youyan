@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title></title>
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<script type="text/javascript">
+function GetQueryString(sProp)  
+{  
+    var re = new RegExp("[&,?]"+sProp + "=([^//&]*)", "i");  
+    var a = re.exec(document.location.search);  
+    if (a == null)  
+        return "";  
+    return a[1];  
+} 
+$(document).ready(function(){
+	var code = GetQueryString("code");
+	//alert("username====="+username);
+	$.ajax({
+		type:"post",
+		url : 'oauth2.do',
+		async :false,
+		data : {code:code},
+		datatype : 'json',
+		success : function(data) {
+			var obj = data.object;
+			if(obj==null){
+				alert("授权失败");
+			}else{
+				$("#openid").val(obj.wechatId);
+			}
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+}); 
+
+
+function conpany(){
+	var oprnid = $("#openid").val();
+	$.ajax({
+		type:"post",
+		url : 'user.do',
+		async :false,
+		data : {openid:openid},
+		datatype : 'json',
+		success : function(data) {
+			var obj = data.result;
+			if(obj==null){
+				alert("授权失败");
+			}else{
+				alert("恭喜您已经成为公司");
+			}
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+}
+
+</script>
+</head>
+<body>
+<input type="hidden" id="openid" name="openid"><input type="text" id="customerName" name="customerName">
+<input type="button" value="注册" onclick="conpany();">
+</body>
+</html>

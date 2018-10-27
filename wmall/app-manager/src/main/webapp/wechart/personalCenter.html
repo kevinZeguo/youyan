@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title>个人中心</title>
+<link href="css/css.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="newcss/style.css" />
+<link rel="stylesheet" type="text/css" href="css/mobile.css" />
+<link rel="stylesheet" href="font/iconfont.css">
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"> </script>
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+<script type="text/javascript" src="../js/jquery.jsoncookie.js"></script>
+<script type="text/javascript" src="../js/json2.js"></script>
+<script type="text/javascript" src="../js/jsConfig.js"></script>
+<script type="text/javascript" src="../js/common/util.js"></script>
+<style type="text/css">
+#cover{display:none;position:absolute;left:0;top:0;z-index:18888;background-color:#000000;opacity:0.7;}
+#guide{display:none;position:absolute;right:18px;top:5px;z-index:19999;}
+#guide img{width:100%;height:80%;}
+.z_gouwu{    position: relative;}
+	.z_gouwu span{
+	position: absolute;
+    left: 50px;
+    top: 1px;
+    height: 15px;
+    width: 15px;
+    border: 1px solid red;
+    line-height: 15px;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    background: red;
+    font-size: 12px;
+    text-align: center;
+	}
+</style>
+<script type="text/javascript">
+function GetQueryString(sProp)  
+{  
+    var re = new RegExp("[&,?]"+sProp + "=([^//&]*)", "i");  
+    var a = re.exec(document.location.search);  
+    if (a == null)  
+        return "";  
+    return a[1];  
+} 
+
+var sname="";
+var text = "";
+var imgsrc="";
+var dest = "";
+var host = window.location.host;
+var url = window.location.href;
+var customerId = "";
+$(document).ready(function(){
+	
+	
+	var code = GetQueryString("code");
+
+		$.ajax({
+		type:"post",
+		url : 'oauth2.do',
+		async :false,
+		data : 'code='+code,
+		datatype : 'json',
+			success : function(result) {
+			var obj = result.object;
+	//	$.ajax({
+		//	url : 'getUser.do',
+		//	data : '',
+		//	datatype : 'json',
+		//	async :false,
+		//	success : function(data) {
+		  // var obj = data.object;
+		  if(obj==null){
+		      document.getElementById("womy").style.display='none'; 
+			  return ; 
+		    }
+		  $.ajax({
+					url : 'customerList.do',
+					type: 'post',
+					data : 'wechatId='+obj.wechatId,
+					datatype : 'json',
+					success : function(result) {
+						var obj1 = result.object;
+						//alert(obj1);
+						  if(obj1==null){
+								document.getElementById("womy").style.display='none'; 
+								return;
+						  }
+					
+						  
+						  
+						if(obj.wechatId != null){
+							$("#headler").attr("src", obj.headimgurl);
+							$("#customerId").val(obj1.customerId);
+							$("#wechatName").html(obj1.customerName);
+							$("#level").html(obj1.customerType.customerTypeName);
+							if(obj1.datetime!=null && obj1.datetime!='')
+							{
+								$("#time").html(dateFormat(obj1.datetime));
+							}
+							customerId = obj1.customerId;
+						}
+						document.getElementById("myopenid").style.display='none'; 
+						$("#openid1").append('<a href="#" class="s_15" onclick="openid1();"><span><i class="iconfont">&#xe605;</i></span>验证微信号</a>');
+						if(obj1.customerType.customerTypeId == 1){
+							$.ajax({
+								url : '../person/guiagent.do',
+								data : '',
+								datatype : 'json',
+								//async :false,
+								success : function(data) {
+								var obj = data.status;
+								//	alert(obj);
+								$("#viplevel").html(obj);
+
+							}
+							});
+						    document.getElementById("xitongdingdan").style.display='none';
+							document.getElementById("sale").style.display='';
+							document.getElementById("manager").style.display='none';
+							document.getElementById("agent").style.display='none';
+							document.getElementById("dingdanfahuo").style.display='';
+							
+							
+							$("#mysss").append('<a href="#" class="s_1" onclick="myshop();"><span><i class="iconfont">&#xe629;</i></span>发展我的优粉</a>');
+							$("#ma").append('<a href="#" class="s_1" onclick="ma();"><span><i class="iconfont">&#xe60c;</i></span>分享我的二维码</a>');
+					    	$("#didan").append('<a href="test.html?title=0" class="s_6"><span><i class="iconfont">&#xe626;</i></span>我的销售额</a>');
+					    	$("#xiaoshou").append('<a href="test.html?title=0" class="s_6"><span><i class="iconfont">&#xe626;</i></span>我的销售额</a>');
+					    	$("#yeji").append('<a href="cearnings.html?title=0&type=1" class="s_7"><span><i class="iconfont">&#xe62a;</i></span>我的业绩</a>');
+
+						}
+					    else if(obj1.customerType.customerTypeId == 2){
+		
+
+							$.ajax({
+								url : '../person/guiagent.do',
+								data : '',
+								datatype : 'json',
+								//async :false,
+								success : function(data) {
+								var obj = data.status;
+								
+								//	alert(obj);
+								$("#viplevel").html(obj);
+
+							}
+							});
+						    document.getElementById("xitongdingdan").style.display='none';
+							document.getElementById("agent").style.display='none';
+							document.getElementById("sale").style.display='none';
+							document.getElementById("manager").style.display='none';
+							document.getElementById("dingdanfahuo").style.display='none';
+
+
+							$("#ma").append('<a href="#" class="s_1" onclick="ma();"><span><i class="iconfont">&#xe60c;</i></span>分享我的二维码</a>');
+							$("#mysss").append('<a href="#" class="s_1" onclick="myshop();"><span><i class="iconfont">&#xe629;</i></span>发展我的优粉</a>');
+							$("#xiaoshou").append('<a href="test.html?title=0" class="s_6"><span><i class="iconfont">&#xe626;</i></span>我的销售额</a>');
+						    $("#yeji").append('<a href="cearnings.html?title=0&type=2" class="s_7"><span><i class="iconfont">&#xe62a;</i></span>我的业绩</a>');
+
+						}else	if(obj1.customerType.customerTypeId == 3){
+							
+							document.getElementById("xitongdingdan").style.display='none';
+							document.getElementById("sale").style.display='none';
+							document.getElementById("manager").style.display='none';
+							document.getElementById("agent").style.display='none';
+							document.getElementById("dingdanfahuo").style.display='none';
+	
+							$("#mysss").append('<a href="#" class="s_1" onclick="myshop();"><span><i class="iconfont">&#xe629;</i></span>分享好友赚积分</a>');
+							$("#ma").append('<a href="#" class="s_1" onclick="ma();"><span><i class="iconfont">&#xe60c;</i></span>分享我的二维码</a>');
+						    $("#xiaoshou").append('<a href="test.html?title=0" class="s_6"><span><i class="iconfont">&#xe626;</i></span>我的销售额</a>');
+			   			    $("#yeji").append('<a href="cearnings.html?title=0&type=3" class="s_7"><span><i class="iconfont">&#xe62a;</i></span>我的业绩</a>');
+
+						}else if(obj1.customerType.customerTypeId == 4){
+						    document.getElementById("xitongdingdan").style.display='none';
+						
+							$("#viplevel").html("会员等级："+obj1.customerLevel.customerLevelName);
+							document.getElementById("yeji").style.display='none';
+							document.getElementById("sale").style.display='none';
+							document.getElementById("manager").style.display='none';
+							document.getElementById("agent").style.display='none';
+							document.getElementById("tuiguang").style.display='none';
+							document.getElementById("dingdanfahuo").style.display='none';
+						document.getElementById("youhuijuan").style.display='none';
+						document.getElementById("youfenka").style.display='none';
+						document.getElementById("myopenid").style.display='none';
+
+							$("#mysss").append('<a href="#" class="s_1" onclick="myshop();"><span><i class="iconfont">&#xe629;</i></span>分享好友赚积分</a>');
+							$("#ma").append('<a href="#" class="s_1" onclick="ma();"><span><i class="iconfont">&#xe60c;</i></span>分享我的二维码</a>');
+
+							document.getElementById("xiaoshou").style.display='none';
+						//    $("#xiaoshou").append('<a href="test.html" class="s_6"><span><i class="iconfont">&#xe64a;</i></span>我的销售额</a>');
+					      // $("#yeji").append('<a href="cearnings.html" class="s_7"><span><i class="iconfont">&#xe640;</i></span>我的业绩</a>');
+						}else if(obj1.customerType.customerTypeId == 5)  {
+						    document.getElementById("xitongdingdan").style.display='none';
+							document.getElementById("jifen").style.display='none';
+							document.getElementById("youhuijuan").style.display='none';
+						    document.getElementById("sale").style.display='none';
+							document.getElementById("dingdanfahuo").style.display='none';
+
+					        $("#mysss").append('<a href="#" class="s_1" onclick="myshop();"><span><i class="iconfont">&#xe629;</i></span>分享商城</a>');
+					 	  	$("#ma").append('<a href="#" class="s_1" onclick="ma();"><span><i class="iconfont">&#xe60c;</i></span>分享商城二维码</a>');
+
+					 	  	document.getElementById("dingdan").style.display='none';
+					 	    document.getElementById("youfenka").style.display='none';
+						    document.getElementById("info").style.display='none';
+					        $("#xiaoshou").append('<a href="test.html?title=1" class="s_6"><span><i class="iconfont">&#xe626;</i></span>销售统计</a>');
+					        $("#yeji").append('<a href="cearnings.html?title=1&type=5" class="s_7"><span><i class="iconfont">&#xe62a;</i></span>费用支出</a>');
+				
+						}else if(obj1.customerType.customerTypeId == 6){//管理员
+							document.getElementById("jifen").style.display='none';
+							document.getElementById("youhuijuan").style.display='none';
+						    document.getElementById("sale").style.display='none';
+							document.getElementById("manager").style.display='none';
+							document.getElementById("agent").style.display='none';
+							document.getElementById("dingdanfahuo").style.display='none';
+
+  					        $("#mysss").append('<a href="#" class="s_1" onclick="myshop();"><span><i class="iconfont">&#xe629;</i></span>发展会员</a>');
+						 	$("#ma").append('<a href="#" class="s_1" onclick="ma();"><span><i class="iconfont">&#xe60c;</i></span>生成二维码</a>');
+					 	    document.getElementById("dingdan").style.display='none';
+					 	    document.getElementById("youfenka").style.display='none';
+						  	document.getElementById("info").style.display='none';
+					        $("#xiaoshou").append('<a href="test.html?title=1" class="s_6"><span><i class="iconfont">&#xe626;</i></span>销售统计</a>');
+					        $("#yeji").append('<a href="cearnings.html?title=1&type=5" class="s_7"><span><i class="iconfont">&#xe62a;</i></span>费用支出</a>');
+					     	$("#xitongdingdan").append('<a href="xitongorderList.html" class="s_9"><span><i class="iconfont">&#xe619;</i></span>商城订单</a>');
+					     	document.getElementById("xitongdingdan").style.display='';
+						}
+						
+					}
+				});
+			
+			}
+		});
+		 zhijiemyshop();
+
+	
+});
+
+
+
+
+function dateFormat(cellvalue) {
+	var date = new Date(cellvalue.time);
+	return date.pattern("yyyy-MM-dd");
+}
+function shar(){
+	$.ajax({
+		type:"post",
+		url : 'getSignature.do',
+		data : 'url='+url,
+		datatype : 'json',
+		success : function(result) {
+			var obj = result.status;
+			//alert(obj.signature);
+			wx.config({
+			    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			    appId: v_appid, // 必填，公众号的唯一标识
+			    timestamp: '1414587457', // 必填，生成签名的时间戳
+			    nonceStr: 'Wm3WZYTPz0wzccnW', // 必填，生成签名的随机串
+			    signature: obj.signature,// 必填，签名，见附录1
+			    jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+			});
+			wx.ready(function(){
+			    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+				//wx.hideOptionMenu();
+			    //alert(host+'/'+img);
+			    //alert(_system);
+			    _system._guide(true);
+			    
+			    //var a = $("#a");
+			    //a.trigger("click");
+			    //alert();
+			    //alert("点击右上角分享!");
+				wx.onMenuShareTimeline({
+				    title: sname, // 分享标题
+				    link: text, // 分享链接
+				    imgUrl: imgsrc, // 分享图标
+				    success: function () { 
+				        // 用户确认分享后执行的回调函数
+				    	//shareLog();
+				    },
+				    cancel: function () { 
+				        // 用户取消分享后执行的回调函数
+				    }
+				});
+				wx.onMenuShareAppMessage({
+				    title: sname, // 分享标题
+				    desc: dest, // 分享描述
+				    link: text, // 分享链接
+				    imgUrl: imgsrc, // 分享图标
+				    type: '', // 分享类型,music、video或link，不填默认为link
+				    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+				    success: function () { 
+				    	//shareLog();
+				    },
+				    cancel: function () { 
+				        // 用户取消分享后执行的回调函数
+				    }
+				});
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest);
+			//alert(textStatus);
+			//alert(errorThrown);
+			//alert("error");
+		}
+});
+}
+
+function shareLog(){
+	$.ajax({
+		url : '../shareLog/save.do',
+		data : 'customerId='+ $("#customerId").val(),
+		datatype : 'json',
+		async :false,
+		success : function(data) {
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+		}
+	});
+}
+
+
+
+
+var _system={
+		$:function(id){return document.getElementById(id);},
+		_client:function(){
+		return {w:document.documentElement.scrollWidth,h:document.documentElement.scrollHeight,bw:document.documentElement.clientWidth,bh:document.documentElement.clientHeight};
+		},
+		_scroll:function(){
+		return {x:document.documentElement.scrollLeft?document.documentElement.scrollLeft:document.body.scrollLeft,y:document.documentElement.scrollTop?document.documentElement.scrollTop:document.body.scrollTop};
+		},
+		_cover:function(show){
+		if(show){
+		this.$("cover").style.display="block";
+		this.$("cover").style.width=(this._client().bw>this._client().w?this._client().bw:this._client().w)+"px";
+		this.$("cover").style.height=(this._client().bh>this._client().h?this._client().bh:this._client().h)+"px";
+		}else{
+		this.$("cover").style.display="none";
+		}
+		},
+		_guide:function(click){
+		this._cover(true);
+		this.$("guide").style.display="block";
+		this.$("guide").style.top=(_system._scroll().y+5)+"px";
+		window.onresize=function(){_system._cover(true);_system.$("guide").style.top=(_system._scroll().y+5)+"px";};
+		if(click){_system.$("cover").onclick=function(){
+		_system._cover();
+		_system.$("guide").style.display="none";
+		_system.$("cover").onclick=null;
+		window.onresize=null;
+		};}
+		},
+		_zero:function(n){
+		return n<0?0:n;
+		}
+		}
+		
+		
+		
+function  zhijiemyshop()	{
+	
+	text = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+v_appid+"&redirect_uri="+v_redirect_uri+"?username="+$("#customerId").val()+"&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+	sname="欢迎光临壹清商城~这里健康多多，趣福利多多，趣味多多，快来注册成为会员~";   //标题   "欢迎光临"+$("#wechatName").html()+"的微经销商城"
+	dest="成为会员，注册有壕礼，XX红包立领！壹清商城，你的健康生活伴侣";   //描述
+	imgsrc = $("#headler").attr("src");
+	$.ajax({
+		type:"post",
+		url : 'getSignature.do',
+		data : 'url='+url,
+		datatype : 'json',
+		success : function(result) {
+			var obj = result.status;
+			//alert(obj.signature);
+			wx.config({
+			    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			    appId: v_appid, // 必填，公众号的唯一标识
+			    timestamp: '1414587457', // 必填，生成签名的时间戳
+			    nonceStr: 'Wm3WZYTPz0wzccnW', // 必填，生成签名的随机串
+			    signature: obj.signature,// 必填，签名，见附录1
+			    jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+			});
+			wx.ready(function(){
+			    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+				//wx.hideOptionMenu();
+			    //alert(host+'/'+img);
+			    //alert(_system);
+			   // _system._guide(true);
+			    
+			    //var a = $("#a");
+			    //a.trigger("click");
+			    //alert();
+			    //alert("点击右上角分享!");
+				wx.onMenuShareTimeline({
+				    title: sname, // 分享标题
+				    link: text, // 分享链接
+				    imgUrl: imgsrc, // 分享图标
+				    success: function () { 
+				        // 用户确认分享后执行的回调函数
+				    	//shareLog();
+				    },
+				    cancel: function () { 
+				        // 用户取消分享后执行的回调函数
+				    }
+				});
+				wx.onMenuShareAppMessage({
+				    title: sname, // 分享标题
+				    desc: sname, // 分享描述
+				    link: text, // 分享链接
+				    imgUrl: imgsrc, // 分享图标
+				    type: '', // 分享类型,music、video或link，不填默认为link
+				    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+				    success: function () { 
+				    	shareLog();
+				    },
+				    cancel: function () { 
+				        // 用户取消分享后执行的回调函数
+				    }
+				});
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest);
+			//alert(textStatus);
+			//alert(errorThrown);
+			//alert("error");
+		}
+});
+	
+	}	
+
+		
+		
+		
+function myshop(){
+	text = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+v_appid+"&redirect_uri="+v_redirect_uri+"?username="+$("#customerId").val()+"&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+	sname="欢迎光临壹清商城~这里健康多多，趣福利多多，趣味多多，快来注册成为会员~";   //标题   "欢迎光临"+$("#wechatName").html()+"的微经销商城"
+	dest="成为会员，注册有壕礼，XX红包立领！壹清商城，你的健康生活伴侣";   //描述
+	imgsrc = $("#headler").attr("src");
+	$.ajax({
+		type:"post",
+		url : 'getSignature.do',
+		data : 'url='+url,
+		datatype : 'json',
+		success : function(result) {
+			var obj = result.status;
+			//alert(obj.signature);
+			wx.config({
+			    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			    appId: v_appid, // 必填，公众号的唯一标识
+			    timestamp: '1414587457', // 必填，生成签名的时间戳
+			    nonceStr: 'Wm3WZYTPz0wzccnW', // 必填，生成签名的随机串
+			    signature: obj.signature,// 必填，签名，见附录1
+			    jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+			});
+			wx.ready(function(){
+			    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+				//wx.hideOptionMenu();
+			    //alert(host+'/'+img);
+			    //alert(_system);
+			    _system._guide(true);
+			    
+			    //var a = $("#a");
+			    //a.trigger("click");
+			    //alert();
+			    //alert("点击右上角分享!");
+				wx.onMenuShareTimeline({
+				    title: sname, // 分享标题
+				    link: text, // 分享链接
+				    imgUrl: imgsrc, // 分享图标
+				    success: function () { 
+				        // 用户确认分享后执行的回调函数
+				    	//shareLog();
+				    },
+				    cancel: function () { 
+				        // 用户取消分享后执行的回调函数
+				    }
+				});
+				wx.onMenuShareAppMessage({
+				    title: sname, // 分享标题
+				    desc: sname, // 分享描述
+				    link: text, // 分享链接
+				    imgUrl: imgsrc, // 分享图标
+				    type: '', // 分享类型,music、video或link，不填默认为link
+				    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+				    success: function () { 
+				    	shareLog();
+				    },
+				    cancel: function () { 
+				        // 用户取消分享后执行的回调函数
+				    }
+				});
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest);
+			//alert(textStatus);
+			//alert(errorThrown);
+			//alert("error");
+		}
+});
+}
+
+
+function shareLog(){
+	$.ajax({
+		url : '../shareLog/save.do',
+		data : 'customerId='+ $("#customerId").val(),
+		datatype : 'json',
+		async :false,
+		success : function(data) {
+			
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+		}
+	});
+}
+
+function manager(){
+	var id = $("#customerId").val();
+	 text ="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+v_appid+"&redirect_uri="+v_redirect_uri_manager+"?username="+id+"&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+	 sname="欢迎注册"+$("#wechatName").html()+"的微经销商城销售经理";//欢迎注册"+$("#wechatName").html()+"的微经销商城销售经理"
+	 dest = "";
+	 imgsrc = $("#headler").attr("src");
+	shar();
+}
+function agent(){
+	var id = $("#customerId").val();
+	 text ="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+v_appid+"&redirect_uri="+v_redirect_uri_agent+"?username="+id+"&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+	 sname="欢迎注册"+$("#wechatName").html()+"的微经销商城经销商";//
+	 imgsrc = $("#headler").attr("src");
+	shar();
+}
+function sale(){
+	var id = $("#customerId").val();
+	 text ="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+v_appid+"&redirect_uri="+v_redirect_uri_sale+"?username="+id+"&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+	 sname="欢迎注册"+$("#wechatName").html()+"的微经销商城业务员";
+	 imgsrc = $("#headler").attr("src");
+	shar();
+}
+function ma(){
+	window.location.href="erweima.html";
+}
+
+function info(){
+	window.location.href="myinfo.html";
+}
+
+function openid1(){
+			window.location="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8105c8bb08632f6d&redirect_uri=http%3A%2F%2Fwww.uyan365.com.cn%2Fetp%2Fwechart%2Fsnsapi_userinfo1.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+}
+
+function index(){
+	window.location="index.html?customerId="+customerId;
+}
+
+function car(){
+	window.location="carts.html?customerId="+customerId;
+}
+
+</script>
+</head>
+<body>
+
+
+
+
+<div id="cover"></div>
+<div id="guide"><img src="images/guide1.png"></div>
+<div class="header">
+	<div class="nav">
+	<div class="nav_l fl">
+		<span class="fl"><img src="image/log_02.jpg" id="headler"></span>
+		<ul class="fl">
+		<li><span class="jp" id="wechatName"></span><span class="jp" id="level"></span></li>
+			<li>注册时间：<span id="time"></span></li>
+		    <li><span id="viplevel"></span></li>
+		</ul>
+	</div>
+	<div class="nav_r fl fr">
+		<a href="#"><img src="" class="log"></a>
+		<br/>
+		<span class="pl" id="name"></span>
+		<span class="pl" id="case"></span>
+	</div>
+	</div>
+</div>
+<div class="center">
+
+
+	 <span class="bg"></span> 
+	<div class="center_b"  id="womy">
+
+		<ul>
+			
+			<li id="dingdanfahuo">
+				<a href="fahuo.html" class="s_9" >
+					<span><i class="iconfont" id="my">&#xe621;</i></span>
+					我的发货
+				</a>
+			</li>		
+			<li id="xiaoshou">
+				<!--
+					<a href="test.html" class="s_6" >
+						<span><i class="iconfont">&#xe626;</i></span>
+						我的销售额
+					</a>
+					
+				-->
+			</li>
+			
+		
+		   	<li id="tuiguang">
+			
+				<a href="tuiguangnew.html" class="s_9" >
+					<span><i class="iconfont" id="my">&#xe617;</i></span>
+					
+					我的U关系
+				</a>
+				
+			</li>
+			
+			
+						
+			<li id="yeji">
+				<!--  <a href="cearnings.html" class="s_7" >
+					<span><i class="iconfont">&#xe640;</i></span>
+				
+					我的业绩
+				</a>
+				-->
+			</li>
+			
+			<li id="mysss">
+			<!-- 	   分销好友赚积分  -->
+			</li>
+			<li id="sale">
+				<a href="#" class="s_2" onclick="sale();">
+					<span><i class="iconfont" id="ywy">&#xe60f;</i></span>
+					
+					业务员邀请
+				</a>
+			</li>
+			<li id="manager">
+				<a href="#" class="s_3" onclick="manager();">
+					<span><i class="iconfont" id="xsjl">&#xe60d;</i></span>
+				
+					销售经理邀请
+				</a>
+			</li>
+			
+			<li id="agent">
+				<a href="#" class="s_4" onclick="agent();">
+					<span><i class="iconfont" id="jxs">&#xe602;</i></span>
+				
+					经销商邀请
+				</a>
+			</li>
+			<li id="ma">
+			<!-- 分享我的二维码-->
+			</li>
+			
+			<li id="dingdan">
+				<a href="orderList.html" class="s_9" >
+					<span><i class="iconfont" id="mydd">&#xe619;</i></span>
+					我的订单
+				</a>
+			</li>
+				<li id="xitongdingdan">
+				<!--  <a href="xitongorderList.html" class="s_9" >
+					<span><i class="iconfont">&#xe64f;</i></span>
+					
+					系统订单
+				</a> -->
+			</li>
+			
+			
+			<li  id="youfenka">
+				<a href="starter.html" class="s_5" >
+					<span><i class="iconfont" id="wyouhui">&#xe60e;</i></span>
+					我的优粉卡
+				</a>
+			</li>
+				
+			<li id="jifen">
+				<a href="myjifennew.html" class="s_13" >
+					<span style='    padding-top: 5px;'><i class="iconfont" id="leiji">&#xe618;</i></span>
+					
+					累计U币
+				</a>
+			</li>
+				<li id="youhuijuan">
+				<a href="coupon.html" class="s_10" >
+					<span><i class="iconfont" id="youhui">&#xe611;</i></span>
+				
+					我的优惠券
+				</a>
+			</li>
+			
+			
+			<li id="info">
+				<a href="#" class="s_15" onclick="info();">
+					<span><i class="iconfont">&#xe616;</i></span>
+					我的信息
+				</a>
+			</li>  
+			
+	
+					<li id="openid1">   
+
+			    </li>
+			</ul>
+	</div>
+
+		<div class="center_b"  id="myopenid">
+			<ul>
+			<li id="openid">
+				<a href="#" class="s_15" onclick="openid1();">
+					<span><i class="iconfont">&#xe605;</i></span>
+					验证微信号
+				</a>
+			</li>   
+			</ul>
+		</div>
+			
+	</div>
+
+		
+
+		<!--<div class="toolbar">
+			<a href="login.html;"><i class="iconfont" id="z_shouye">&#xe61c;</i>首页</a>
+            <a href="classify.html"><i class="iconfont">&#xe60c;</i>分类</a>
+            <a href="carts.html;"class="z_gouwu"><i class="iconfont" id="z_gwc">&#xe620;</i>购物车  <span>1</span> </a>
+            <a href="snsapi_userinfo.html"><i class="iconfont" id="z_grzx">&#xe621;</i>个人中心</a>
+    	</div>
+			--><!--  <a href="JavaScript:index();"><i class="iconfont" id="z_shouye">&#xe61c;</i>首页</a>
+
+            <a href="classify.html"><i class="iconfont">&#xe60c;</i>分类</a>
+            <a href="JavaScript:car();"><i class="iconfont" id="z_gwc">&#xe620;</i>购物车</a>
+            <a href="personalCenter.html"><i class="iconfont" id="z_grzx">&#xe621;</i>个人中心</a>-->
+    	<div class="fotr">
+				<ul>
+					<li>
+						<a href="login.html">
+							<span>
+								<i class="iconfont iconfont1">&#xe600;</i>
+							</span>	
+							首页
+						</a>
+					</li>
+					<li>
+						<a href="myinfo.html">
+							<span>
+								<i class="iconfont iconfont1" style="font-size:20px;">&#xe615;</i>
+							</span>	
+							我的信息
+						</a>
+					</li>
+					<li id="sa">
+					 	<a href="snsapi_userinfo.html">
+						 	<span>
+						 		<i class="iconfont iconfont1" style="">&#xe614;</i>
+						 	</span>
+					 		个人中心
+					 	</a>
+					</li>
+					<li>
+						<a href="carts.html">
+							<span>
+								<i class="iconfont iconfont1" style="font-size:21 mpx;">&#xe607;</i>
+							</span>
+							购物车
+						</a>
+					</li>
+				    <li>
+				    	<a href="javascript:share();">
+					    	<span>
+					    		<i class="iconfont iconfont1" style="font-size:21px;" >&#xe603;</i>
+					    	</span>	
+				    		分享
+				    	</a>
+				    </li>
+				</ul>
+			</div>
+
+<input type="hidden" id="customerId" name="customerId">
+</body>
+</html>

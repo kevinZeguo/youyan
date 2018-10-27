@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--与DAO一致-->
+<mapper namespace="com.claude.wmall.jxc.dao.DemoDao">
+
+    <sql id="user_column">
+      id as userId, name as userName , age as age
+    </sql>
+
+    <!--插入用户信息-->
+    <insert id="insert" parameterType="DemoUser">
+        <selectKey keyProperty="userId" resultType="Integer">
+            SELECT @@IDENTITY AS userId
+        </selectKey>
+        insert into Tb_USER (name ,age)
+        values (#{userName},#{age})
+    </insert>
+
+    <!--根据Id查询用户信息-->
+    <select id="selectById" resultType="DemoUser" parameterType="java.lang.Integer">
+        select
+        <include refid="user_column"/>
+        from Tb_USER
+        where id = #{userId}
+    </select>
+
+    <!--删除-->
+    <delete id="deleteById" parameterType="int">
+      delete from Tb_USER where id = #{userId}
+    </delete>
+    <!--更新-->
+    <update id="updateById" parameterType="DemoUser">
+        update Tb_USER
+        set name = #{userName,jdbcType=VARCHAR}
+        <if test="age != null">
+            , age = #{age}
+        </if>
+        where id = #{userId}
+    </update>
+
+    <!--查询列表-->
+    <select id="selectList"  resultType="DemoUser">
+        SELECT DISTINCT
+        <include refid="user_column"/>
+        FROM Tb_USER
+        where name like #{userName}
+        <![CDATA[  AND age >=  #{age} ]]>
+        order by id desc
+        limit #{start},#{limit}
+    </select>
+</mapper>

@@ -1,0 +1,183 @@
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+img {
+  border: 0;
+  width: 100%;
+}
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  margin: 0;
+}
+/**
+ * Address Firefox 4+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet.
+ */
+button,
+input {
+  line-height: normal;
+}
+/**
+ * Address inconsistent `text-transform` inheritance for `button` and `select`.
+ * All other form control elements do not inherit `text-transform` values.
+ * Correct `button` style inheritance in Chrome, Safari 5+, and IE 8+.
+ * Correct `select` style inheritance in Firefox 4+ and Opera.
+ */
+button,
+select {
+  text-transform: none;
+}
+/**
+ * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+ *    and `video` controls.
+ * 2. Correct inability to style clickable `input` types in iOS.
+ * 3. Improve usability and consistency of cursor style between image-type
+ *    `input` and others.
+ */
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  /* 2 */
+  cursor: pointer;
+  /* 3 */
+}
+/**
+ * Re-set default cursor for disabled elements.
+ */
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+/**
+ * Remove most spacing between table cells.
+ */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/**
+ * Remove default list style
+ */
+ol,
+ul {
+  list-style: none;
+}
+html,
+body,
+ul,
+li,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+/* App Styles */
+body {
+  -webkit-text-size-adjust: none;
+  margin: 0;
+  padding: 0;
+  min-height: 420px;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/*ios iphone5 濞戞挸顑夐悵顔芥償閿旇法鐟濆鍓佸枎椤曢亶鎳涢幘顔衡偓澶愭閵徛ゎ洬闁哄本鎸风槐鏉款嚗閳ь剚绋夌�顐㈢闁告垹濮抽柌婊堝磽韫囨洜顦�/
+body.ios {
+  min-height: 510px;
+}
+
+/* 闂傚啫寮堕娑欐綇绾懐鐛╅柟鑸得ぐ锟�*/
+[data-name="container"]:before,
+[data-name="container"]:after {
+  content: '\20';
+  display: table;
+}
+[data-name="container"]:after {
+  clear: both;
+}
+a {
+  text-decoration: none;
+  color: #999;
+}
+a:hover {
+  text-decoration: none;
+}
+
+/* 婵炴挸鎳樺▍搴ㄥ礃閸涱収妯嗛弶鍫㈩攰缁愶拷 */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+p,
+blockquote,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+pre,
+fieldset,
+legend,
+button,
+input,
+textarea,
+form,
+th,
+td,
+figure {
+  margin: 0;
+  padding: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
+*,
+*:before,
+*:after {
+  /* 閻犱礁澧介悿鍡涘礂閸愵亞顦遍柣銊ュ濞插懎螣閳ュ磭鈧攱绋夌弧绁噐der-box */
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  /* 濞达絿鑲猦rome濞达綀娉曢弫銈囦焊韫囧海鑹�2px闁汇劌瀚悺褎鎷呴敓锟�*/
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* 闁告ê顭峰▍搴ㄦ倷閻熸澘姣婇柛蹇撳暟缁�矂宕ユ惔锝嗙暠濡ゅ倹眉鐎垫帡寮崼鐔轰函 */
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+/*闁告ê顭峰▍搴ㄥ礂閸愵亞顦遍柛娑栧妼濞插潡鎯冮崟顔界彄缂佹拝鎷�/
+
+div{display: block;}
+i,em{font-style: normal;}
+body{
+  line-height: 1.5;
+}
+
+
+
+  
+                                                                                                                               

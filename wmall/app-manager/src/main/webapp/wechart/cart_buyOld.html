@@ -1,0 +1,379 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="keywords" content="微信,微信公众平台" />
+<meta name="description" content="微信公众平台自助引擎" />
+<title>购物车</title>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/buttons.css">
+<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"> </script>
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.accordion.js"></script>
+<script type="text/javascript" src="js/unslider.min.js"></script>
+<script type="text/javascript" src="../js/jsConfig.js"></script>
+</head>
+<script type="text/javascript">
+
+function GetQueryString(sProp)  
+{  
+    var re = new RegExp("[&,?]"+sProp + "=([^//&]*)", "i");  
+    var a = re.exec(document.location.search);  
+    if (a == null)  
+        return "";  
+    return a[1];  
+} 
+
+Date.prototype.Format = function(fmt)   
+{ //author: meizz    
+  var o = {   
+    "M+" : this.getMonth()+1,                 //月份    
+    "d+" : this.getDate(),                    //日    
+    "h+" : this.getHours(),                   //小时    
+    "m+" : this.getMinutes(),                 //分    
+    "s+" : this.getSeconds(),                 //秒    
+    "q+" : Math.floor((this.getMonth()+3)/3), //季度    
+    "S"  : this.getMilliseconds()             //毫秒    
+  };   
+  if(/(y+)/.test(fmt))   
+    fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));   
+  for(var k in o)   
+    if(new RegExp("("+ k +")").test(fmt))   
+  fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
+  return fmt;   
+}
+var wxh = "1";
+var prepay_idstr = "";
+var paysignstr = "";
+
+var ip = "10.15.2.20";
+var mydate = new Date();
+//var ordernum = mydate.getDay()+""+mydate.getDate()+mydate.getFullYear()+mydate.getMonth()+mydate.getHours()+mydate.getMinutes()+mydate.getSeconds();
+var ordernum = "15"+mydate.Format("hhmmss")+mydate.Format("yyyyMMdd"); 
+var orderNo = GetQueryString("orderNo").toString();
+var couponTotal = "";
+$(document).ready(function(){ 
+	
+	ShowAddr();
+	getOrderHead(orderNo);
+	$("#tjbut").click(function(){ 
+		//alert("oo");
+		js();
+	});
+	
+	jQuery(function($){     
+		var url = 'http://chaxun.1616.net/s.php?type=ip&output=json&callback=?&_='+Math.random();       
+		$.getJSON(url, function(data){         
+			//alert(data.Ip);
+			ip = data.Ip;
+		}); 
+	});
+	
+	$.ajax({
+		url : 'myCardList.do',
+		data : '',
+		datatype : 'json',
+		async :false,
+		success : function(data) {
+			var obj = data.list;
+			var html="<tr>";
+			$.each(obj, function (i, item) {
+				html += "<td><input type='checkbox' id='cardId' value='"+item.cardId+"'></td>";
+				html += "<td>"+item.cardId+"</td>";
+				html += "<td>"+item.cardNum+"</td>";
+				html += "<td>"+item.cardSer+"</td>";
+				html += "<td>"+item.cardValue+"</td>";
+				html += "<td>"+item.cardAmount+"</td>";
+				html += "<td>"+item.cardEnddate+"</td>";
+				html += "<td>"+item.cardStatus+"</td>";
+			})
+			html += "</tr>";
+			$("#cardTr").append(html);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+		}
+	});
+	
+	
+});
+function getOrderHead(orderNo){
+	var selObj = $("#zj");
+	var coupon = $("#coupon");
+	$.ajax({
+		type:"post",
+		url : '../orderHead/getOrderHead.do',
+		data : 'orderNo='+orderNo,
+		datatype : 'json',
+		success : function(data) {
+			console.log(data);
+			var item = data.object;
+			couponTotal = data.status;
+			var html = item.orderTotal;
+			selObj.append(html);  
+			coupon.append("<a>商品金额：<p>"+item.orderTotal+"</p>可用优惠券金额：<p id='couponTotal'>"+couponTotal+"</p></a>");
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+}
+function ShowAddr(){
+	var selObj = $("#areacode");
+	$.ajax({
+		type:"post",
+		url : '../receAddress/loadAdd.do',
+		data : '',
+		datatype : 'json',
+		success : function(data) {
+			var item = data.object;
+			var html = "<a href='listAddress.html?orderNo="+orderNo+"'>"
+					  +"<p>收货人："+item.receAddressName+"</p>"
+					  +"<p>手&nbsp;&nbsp;&nbsp;机："+item.receAddressPhone+"</p>"
+					  +"<p>地&nbsp;&nbsp;&nbsp;址："+item.receAddressDesc+"</p>"
+					  +"</a>";
+			selObj.append(html);  
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+}
+function addReceAddress(){
+	location.href = "receiveadd.html?orderNo="+orderNo;
+}
+function js(){
+	var couponSwitch = $('input[name="couponSwitch"]:checked').val();
+	var totalnum = $("#zj").html();
+	if(couponSwitch=="1"){
+		//var couponTotal = $("#couponTotal");
+		//alert("使用优惠券");
+		//alert("可用优惠券金额："+couponTotal);
+		totalnum = parseFloat(totalnum) - parseFloat(couponTotal);
+	}
+	var url = window.location.href;
+	var args = url.split("?");
+	//alert(totalnum);
+	$.ajax({
+		type:"post",
+		url : 'getSignature.do',
+		async :false,
+		data : 'url='+args[0],
+		datatype : 'json',
+		success : function(result) {
+			var obj = result.status;
+			//alert($("#total").val());
+			$.ajax({
+				type:"post",
+				url : 'pay.do',
+				async :false,
+				data : 'ip='+ip+'&ordernum='+ordernum+'&totalnum='+totalnum,
+				datatype : 'json',
+				success : function(result) {
+					var obj = result.status;
+					prepay_idstr = obj.prepay_id;
+					//paysign = obj.sign;
+					//alert("prepay_idstr======="+prepay_idstr);
+					$.ajax({
+						type:"post",
+						url : 'paysign.do',
+						async :false,
+						data : 'prepay_id='+prepay_idstr,
+						datatype : 'json',
+						success : function(result) {
+							var obj = result.status;
+							//prepay_id = obj.prepay_id;
+							paysignstr = obj.signature;
+							//alert("paysignstr======"+paysignstr);
+						},
+						error : function(XMLHttpRequest, textStatus, errorThrown) {
+							//alert(XMLHttpRequest);
+							//alert(textStatus);
+							//alert(errorThrown);
+							//alert("error");
+						}
+					});
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					//alert(XMLHttpRequest);
+					//alert(textStatus);
+					//alert(errorThrown);
+					//alert("error");
+				}
+			});
+			wx.config({
+			    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			    appId: v_appid, // 必填，公众号的唯一标识
+			    timestamp: '1414587457', // 必填，生成签名的时间戳
+			    nonceStr: 'Wm3WZYTPz0wzccnW', // 必填，生成签名的随机串
+			    signature: obj.signature,// 必填，签名，见附录1
+			    jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','chooseWXPay','scanQRCode'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest);
+			//alert(textStatus);
+			//alert(errorThrown);
+			//alert("error");
+		}
+	});
+	 wx.chooseWXPay({
+		    timestamp: '1414587457', // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+		    nonceStr: 'Wm3WZYTPz0wzccnW', // 支付签名随机串，不长于 32 位
+		    package: 'prepay_id='+prepay_idstr, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+		    signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+		    paySign: paysignstr, // 支付签名
+		    success: function (res) {
+		        // 支付成功后的回调函数
+		    	paySuccess();
+		    }
+		});
+}
+
+
+function paySuccess(){
+	$.ajax({
+		type:"post",
+		url : '../orderHead/paySuccess.do',
+		data : 'orderNo='+orderNo,
+		datatype : 'json',
+		success : function(data) {
+			if(data.result){
+				alert("成功");
+			}else{
+				alert("失败，请截图联系客服");
+			}
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+}
+</script>
+<body ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false" onselectstart="return false" 
+ondragstart="return false" onbeforecopy="return false" oncopy=document.selection.empty() onselect=document.selection.empty()> 
+<div id="page">
+	<div class="banners">
+		<a href="javascript:history.go(-1);"><img src="images/bg_info3.jpg"></a>
+	</div>
+	<div id="content">
+		
+		<div class="box_exp info_light">
+			<div class="info_integral">
+				<span class="title"><i class="icon-bookmark-empty"></i>收货人信息</span>
+			</div>
+			<div style="display: block; overflow: hidden; opacity: 1;">
+				<div id="areacode" class="info_child">
+					<!-- <a href="#">
+					<p>收货人：王某某</p>
+					<p>手&nbsp;&nbsp;&nbsp;机：13888888888</p>
+					<p>地&nbsp;&nbsp;&nbsp;址：天津市</p>
+					</a> -->
+					<span><a onclick="addReceAddress();">添加新的收货地址</a></span>
+				</div>
+			</div>
+		</div>
+		<div class="box_exp info_light">
+			<div class="info_integral">
+				<span class="title"><i class="icon-bookmark-empty"></i>支付及配送方式</span>
+			</div>
+			<div style="display: block; overflow: hidden; opacity: 1;">
+				<div class="info_child">
+					<a href="#">
+					<p>支付方式：<span><input type="radio" name="zf" value="0" checked="checked"/>立即支付</span>
+					<span><input type="radio" name="zf" value="1"/>卡结算</span>
+					</p>
+					<p>配送方式：申通快递</p>
+					<p>送货时间：天津市</p>
+					<p>电话确认：否</p>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="box_exp info_light">
+			<div class="info_integral">
+				<span class="title"><i class="icon-bookmark-empty"></i>购物卡</span>
+			</div>
+			<div style="display: block; overflow: hidden; opacity: 1;">
+				<div class="info_child" id="cardTr">
+					<table border="1">
+						<tr><td>id</td><td>id</td><td>卡号</td><td>序列号</td><td>金额</td><td>余额</td><td>有效期</td><td>状态</td></tr>
+		<tr><td><input type="button" value="短信激活" onclick="message();""></td></tr>
+	
+	</table>
+				</div>
+				<div class="info_child_txt">
+					<a href="coupon.html" class="left">我的购物卡</a>
+				</div>
+			</div>
+		</div>
+		<div class="box_exp info_light">
+			<div class="info_integral">
+				<span class="title"><i class="icon-bookmark-empty"></i>优惠券</span>
+			</div>
+			<div style="display: block; overflow: hidden; opacity: 1;">
+				<div id="coupon" class="info_child">
+					<!-- <a href="#">
+					商品金额：<p id="je">198.00</p>
+					<p>可用优惠券金额：0.00</p>
+					应付总额：<p id="ze">198.00</p>
+					</a> -->
+				</div>
+				<div class="info_child_txt">
+					<a>是否使用优惠券
+						<input type="radio" name="couponSwitch" value="1" checked>是
+						<input type="radio" name="couponSwitch" value="0">否
+					</a>
+					<a href="coupon.html" class="left">我的优惠券</a>
+				</div>
+			</div>
+		</div>
+		<div class="box_exp info_light">
+			<div class="info_integral">
+				<span class="titles"><i class="icon-bookmark-empty"></i>总计 -￥<span id="zj"> </span>元</span>
+			</div>
+		</div>
+		
+		<div style="margin:8px 0;"><a id="tjbut" class="button button-block button-rounded button-caution button-large"><i class="icon-shopping-cart"></i>&nbsp;&nbsp;立即结算</a></div>
+		
+		
+		<div style="padding:15px;"></div>
+	</div>
+	<div id="nav-footer">
+		<ul>
+			<li style="width:25%" class="on"><a href="index.html"><i class="icon-home"></i></a></li>
+			<li style="width:25%"><a href="class.html"><i class="icon-reorder"></i></a></li>
+			<li style="width:25%"><a href="cart.html"><i class="icon-shopping-cart"></i></a></li>
+			<li style="width:25%"><a href="index.html"><i class="icon-info-sign"></i></a></li>
+		</ul>
+	</div>
+</div>
+
+
+
+
+
+
+<script>
+$(document).ready(function() {
+	$('.banner').unslider({
+		arrows: true,
+		fluid: true,
+		dots: true
+	});
+
+	$("#content").accordion({
+		alwaysOpen: false,
+		autoheight: false,
+		header: '.info_integral',
+		clearStyle: true
+	});
+});
+</script>
+
+</body>
+</html>

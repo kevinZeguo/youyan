@@ -1,0 +1,32 @@
+@charset "utf-8";
+/*政策快报公告类*/
+.center {width:930px;margin:27px auto 0;background-color:#eee;height:auto;padding-top:3px;border:1px solid #fff;overflow:hidden;}
+.center .center_top{width:910px;margin:8px auto 10px;background-color:#fff;min-height:625px;padding-bottom:10px;border:1px solid #fff;}
+.center .center_top .td_t a{display:block;float:right;padding-right:15px;color:#951E22;font-size:13px; font-family:"方正细圆";}
+.center .center_top .td_t{height:40px;line-height:40px;text-align:center;font-size:14px; font-family:"方正细圆";border-bottom:1px solid #f4f4f3;width:984px;}
+.center .center_top .td_c{font-size:12px; font-family:"方正细圆";padding:0 20px;padding-top:15px;}
+.center .center_top .td_c span{display:blick;line-height:20px;}
+.center .center_b{width:900px;margin:0 auto;background-color:#fff;height:65px;line-height:65px;padding-bottom:20px;overflow: hidden;}
+.center .center_b span{display:inline-block;font-family:"方正细圆";padding-right:5px;}
+.center .center_b .sp_c{width:450px;float:right;}
+.center .center_b input{width:30px;margin-right:5px;}
+.center .center_b .sp{cursor:pointer;}
+/*政策快报类*/
+.center .k_l,.center .k_r{float:left;background-color:#fff;margin-top:7px;padding-top:20px;}
+.center .k_l{width:205px;height:390px;margin-left:12px;}
+.center .k_r{width:760px;height:460px;margin-left:10px;}
+.center .k_l h2,.center .k_r h2{font-family:"方正细圆";font-size:14px;border-bottom:1px solid #f4f4f3;color:#951e23;padding-bottom:10px;}
+.center .k_l h2{padding-left:34px;}
+.center .k_l ul{padding-left:34px;}
+.center .k_l ul li{height:40px;line-height:40px;}
+.center .k_l ul li a,.center .k_r ul li a{color:#000;font-family:"方正细圆";}
+.center .k_l ul li a:hover,.center .k_r ul li a:hover{color:#951e23;}
+.center .k_l ul li i{font-size:12px;}
+.center .k_r h2{padding-left:15px;}
+.center .k_r ul{padding-left:37px;padding-top:6px;}
+.center .k_r ul li{height:25px;line-height:25px;}
+.center .k_r ul li span{display:inline-block;float:right;padding-left:10px;margin-right:33px;}
+.center .k_r ul li .sp_r{margin-right:55px;}
+.center #center_b {margin-left:227px;width:760px;}
+.center>p{height:30px;}
+.center .k_r ul li a{padding-left:10px;display:inline-block;width:200px;height:20px;background:url(../../images/2000130.gif) no-repeat -9px 0;}

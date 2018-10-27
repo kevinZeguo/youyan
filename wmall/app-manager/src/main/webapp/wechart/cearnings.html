@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title></title>
+<link rel="stylesheet" href="newcss/css.css" type="text/css" />
+<link rel="stylesheet" href="newcss/starter.css" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+	
+	/* $.ajax({
+		url : 'getUser.do',
+		data : '',
+		datatype : 'json',
+		async :false,
+		success : function(data) {
+			var obj = data.object;
+			$("#id").val(obj.wechatId);
+			$("#strong").html(obj.wechatName);
+            $("#city").html(obj.city);
+            $("#img").attr("src", obj.headimgurl);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+		}
+	});
+	
+	$.ajax({
+		url : '../person/myBate.do',
+		data : '',
+		datatype : 'json',
+		async :false,
+		success : function(data) {
+			var obj = data.status;
+			$("#myBate").html(obj);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+		}
+	});
+	
+	$.ajax({
+		url : '../person/myMouthBate.do',
+		data : '',
+		datatype : 'json',
+		async :false,
+		success : function(data) {
+			var obj = data.status;
+			$("#myMouthBate").html(obj);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+		}
+	});
+	
+	
+	$.ajax({
+		url : '../person/myBonus.do',
+		data : '',
+		datatype : 'json',
+		async :false,
+		success : function(data) {
+			var obj = data.status;
+			$("#myBonus").html(obj);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+		}
+	});
+	
+	$.ajax({
+		url : '../person/myQuarterBonus.do',
+		data : '',
+		datatype : 'json',
+		async :false,
+		success : function(data) {
+			var obj = data.status;
+			$("#myQuarterBonus").html(obj);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+		}
+	});
+	
+	
+	
+	
+});   */
+
+var id = $(location).attr('href').split('?')[1].split('&')[0].split('=')[1];
+//alert(id);	
+var type = $(location).attr('href').split('?')[1].split('&')[1].split('=')[1];
+
+if(type!=1){
+	
+	document.getElementById("bb").style.display='none';
+}
+
+
+
+
+
+
+if(id==1){
+	$("#pp").text("费用支出");
+	$("#cc").append('<div class="c_l">上季度奖金支出：<span id="myQuarterBonus"></span></div>');
+	$("#dd").append('<div class="c_l">全年累计支出：<span id="yearCountBonus"></span></div>');
+}else{
+	$("#pp").text("我的业绩");
+	$("#cc").append('<div class="c_l">上季度奖金<span id="myQuarterBonus"></span></div>');
+	$("#dd").append('<div class="c_l">全年累计费用<span id="yearCountBonus"></span></div>');
+}
+
+
+
+
+$.ajax({
+	url : '../person/task.do',
+	data : '',
+	datatype : 'json',
+	//async :false,
+	success : function(data) {
+		var obj = data.status;
+	
+		$("#task").html(obj+"%");
+	}
+});
+
+
+
+
+$.ajax({
+	url : '../person/monthtask.do',
+	data : '',
+	datatype : 'json',
+	//async :false,
+	success : function(data) {
+		var obj = data.status;
+		$("#monthtask").html(obj+"%");
+	}
+});
+
+
+
+
+
+
+$.ajax({
+	url : '../person/myMouthBate.do',
+	data : '',
+	datatype : 'json',
+	//async :false,
+	success : function(data) {
+		var obj = data.status;
+	//	if(obj!=null && obj!=""){
+			$("#myMouthBate").html(obj);
+	//	}else{
+		//	$("#bb").hide();
+	//	}
+			
+	}
+});
+
+
+
+$.ajax({
+	url : '../person/myQuarterBonus.do',
+	data : '',
+	datatype : 'json',
+	//async :false,
+	success : function(data) {
+		var obj = data.status;
+		$("#myQuarterBonus").html(obj);
+	}
+});
+
+
+$.ajax({
+	url : '../person/yearCountBonus.do',
+	data : '',
+	datatype : 'json',
+	//async :false,
+	success : function(data) {
+		var obj = data.status;
+		$("#yearCountBonus").html(obj);
+	}
+});
+
+});
+
+
+</script>
+</head>
+<body>
+	<div class="center">
+		<p id="pp"></p>
+	     	
+             	
+		 	<div class="center_c dd" id="bb">
+		
+			  <div class="c_l">
+				上月返利费用：<span id="myMouthBate"></span>
+			</div>
+			
+			</div>
+			
+			<div class="center_c dd" id="cc">
+		
+				<!-- <div class="c_l">
+				上季度奖金：<span id="myQuarterBonus"></span>
+			</div>-->
+				</div>	
+			<div class="center_c dd"  id="dd">
+		
+			<!--  <div class="c_l">
+				全年累计费用：<span id="yearCountBonus"></span>
+			</div> -->
+		
+			</div>	
+			
+	
+			
+				<div class="center_c dd">
+		
+				<div class="c_l">
+				月任务完成率：<span id="monthtask"></span>
+			</div>
+			</div>
+				<div class="center_c dd">
+		
+				<div class="c_l">
+				年任务完成率：<span id="task"></span>
+			</div>
+			
+			
+				</div>
+			
+	</div>
+	<div class="footer">
+		
+	</div>
+</body>
+</html>

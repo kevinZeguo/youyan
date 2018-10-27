@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta name="apple-touch-fullscreen" content="yes">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">	
+		<meta name="keywords" content="微信,微信公众平台" />
+		<meta name="description" content="微信公众平台自助引擎" />	
+		<link href="js/93_dowebok/css/owl.carousel.css" rel="stylesheet">
+		<link href="js/93_dowebok/css/owl.theme.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="newcss/global.css" />
+		<link rel="stylesheet" type="text/css" href="newcss/style.css" />
+		<link href="newcss/index/css/style.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="newcss/weui.css" />
+		
+		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+		<script src="js/93_dowebok/js/owl.carousel.js"></script>
+		<script type="text/javascript" src="js/jquery.accordion.js"></script>
+		<script type="text/javascript" src="js/unslider.min.js"></script>
+		<script type="text/javascript" src="js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="js/jquery.jsoncookie.js"></script>
+		<script type="text/javascript" src="js/json2.js"></script>
+		
+		<title>首页</title>
+		<style>
+			#owl-demo{
+				position:relative;
+			}
+			.owl-pagination{
+				position:absolute;
+				top:80%;
+				left:41%;
+			}
+			#owl-demo a img{height:180px;}
+		</style>
+		<script type="text/javascript">
+		
+			$(function(){
+				$('#owl-demo').owlCarousel({
+					items: 1,
+					autoPlay: true
+				});
+				
+			})
+var COOKIE_NAME = "Bind_Prod_List";
+var cookie_val = $.JSONCookie(COOKIE_NAME);//读取json格式cookie
+function GetQueryString(sProp)  
+{  
+    var re = new RegExp("[&,?]"+sProp + "=([^//&]*)", "i");  
+    var a = re.exec(document.location.search);  
+    if (a == null)  
+        return "";  
+    return a[1];  
+} 
+var username="";
+var customerId = "";
+$(document).ready(function(){	
+	 username = GetQueryString("username").toString();
+	 customerId = GetQueryString("customerId").toString();
+	//判断用户是否已注册
+	/*
+	$.ajax({
+		url : "../orderHead/save.do",
+		data : {
+			orderSource : "3",
+			productIds : $("#hidProductid").val(),
+			productNums : $("#txtProductQuantity").val(),
+			productPrices : price
+		},
+		type : "POST",
+		dataType : "json",
+		async : false,
+		cache : false,
+		success : function(data) {
+			if (data.status !="") {// 如果校验失败
+				//
+				alert("订购成功");
+				var path = "../pay/aliPay.do?OrderNo="+data.status;  
+				$('#payForm').attr("action", path).submit();;  
+
+			} else {
+				alert("订购失败");
+			}
+		}
+	});
+	*/
+	
+	
+	$('.kuang_c label').click(function(){
+		$('.kuang').hide();
+		$('.kuang_c').hide();
+		
+	});
+
+	$('#ip').click(function(){
+		$('.kuang').hide();
+		$('.kuang_c').hide();
+	});
+	if(customerId != ""){
+		$("#asd").hide();
+		$("#dsa").hide();
+	}
+	$.ajax({
+		type:"post",
+		url : 'getProducttypeList.do',
+		//async :false,
+		data : '',
+		datatype : 'json',
+		success : function(data) {
+			var obj = data.list;
+			$("#divCategory").html("");
+			$.each(obj, function (i, item) {
+				var html = "";
+				$.ajax({
+					type:"post",
+					url : 'get1ProductByType.do',
+					//async :false,
+					data : {productType:item.productTypeId},
+					datatype : 'json',
+					success : function(data2) {
+						var obj2 = data2.object;
+						html +='<div class="w pro_title">'+item.productTypeName+'</div>';
+						html +='     <div class="pro_box1">';
+						html +='        <div class="pic"><img src="../'+item.productTypeImg+'" alt=""></div>';
+						html +='         <div class="pbox1">';
+						html +='         <div class="pbox2">';
+						html +=' <div class="product_cart2">';
+						html +='         <div class="img"><a href="#"><img src="../productimg/'+obj2.productSimg+'" alt=""></a></div>';
+						html +='      </div>';
+						html +='      </div>';
+						// 产品
+						html +=' <div class="pbox2" style="height:100%;">                ';
+						html +='     <div class="product_cart2" style="height:100%;">    ';
+						html +='         <h4>'+obj2.productName+'</h4>                               ';
+						html +='         <h2>'+obj2.productDesc+'</h2>          ';
+						html +='         <p class="price">￥'+(obj2.standardPrice).toFixed(2)+'</p>                   ';
+						html +='         <p class="oldprice">原价:￥'+(obj2.productPrice).toFixed(2)+' 会员价:￥'+(obj2.standardPrice).toFixed(2)+'</p> ';
+						html +='         <div class="btnbox">                            ';
+						html +='             <ul>                                        ';
+						//因为所有产品都会展示出来，所以这里可以直接使用下面的加入购物车方法      
+						html +='                 <li><a onclick="add('+obj2.productId+')" href="javascript:void(0);">加入购物车</a></li>     ';
+						html +='             </ul>                                       ';
+						html +='         </div>                                          ';
+						html +='     </div>                                              ';
+						html +=' </div>                                                 ';
+						
+						html +='</div> ';
+						$("#divCategory").append(html);
+					},
+					error : function(XMLHttpRequest, textStatus, errorThrown) {
+					}
+				});
+				
+			})
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+	$.ajax({
+		type:"post",
+		url : 'listProduct.do',
+		//async :false,
+		data : '',
+		datatype : 'json',
+		success : function(data) {
+			var obj = data.list;
+			var html = "";
+			$.each(obj, function (i, item) {
+			    //html = "<li style='width:25%'><div class='line3'><a href='"+content.html?product_id=item.product_id+"'><i><img src='"+item.product_img+"'></i><span>"+item.product_name+"</span><em>"+item.product_price+"</em></a></div></li>";
+				//html += "<li style='width:25%'><div class='line3'><i><img src='../product/"+item.product_limg+"' onclick='go("+item.product_id+")'></i><span>"+item.product_name+"</span><em>"+item.product_price+"</em></div></li>";
+				//html +="<li style='width:46% ;padding-right:3%;'><a onclick='add("+item.product_id+")'><i><input type='hidden' id='code"+item.product_id+"' value='"+item.product_id+"'/><img id='img"+item.product_id+"' src='../productimg/"+item.product_limg+"' width='220'></i><span id='name"+item.product_id+"'>"+item.product_name+"</span><span>￥"+item.product_price+"&nbsp;销量：318件</span><span><img src='index/images/jiaru.jpg' width='140' height='24'></span></a></li>";
+				html +='<div class="pbox">';
+					html +='     <div class="product_cart">';
+					html +='         <div class="img"><a href="#"><img id="img'+item.product_id+'" src="../productimg/'+item.product_limg+'" alt=""></a></div>';
+					html +='         <h2 id="name'+item.product_id+'">'+item.product_name+'</h2>';
+					html +='         <p class="price">￥'+(item.standard_price).toFixed(2)+'</p>';
+					html +='         <p class="oldprice">原价:￥'+(item.product_price).toFixed(2)+'    会员价:￥'+(item.standard_price).toFixed(2)+'</p>';
+					html +='         <div class="btnbox">';
+					html +='             <ul>';
+					html +='                 <li><a onclick="add('+item.product_id+')" href="javascript:void(0);">加入购物车</a></li>';
+					html +='             </ul>';
+					html +='         </div>';
+					html +='     </div>';
+					html +=' </div>';
+					html +='<input type="hidden" id="code'+item.product_id+'" value="'+item.product_id+'"/>';
+					html +='<input type="hidden" id="price'+item.product_id+'" value="'+item.standard_price+'"/>';
+					html +='<input type="hidden" id="restNumber'+item.product_id+'" value="'+item.restNumber+'"/>';
+			})
+			$("#divProduct").append(html);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+	$('#owl-demo').owlCarousel({
+		items: 1,
+		autoPlay: true
+	});
+	
+	
+	
+	
+})
+
+function car(){
+	window.location="cart.html?username="+username+"&customerId="+customerId;
+}
+
+function re(){
+	window.location="registered.html?username="+username+"&customerId="+customerId;
+}
+function index(){
+	window.location="index.html?username="+username+"&customerId="+customerId;
+}
+
+
+function go(i){
+	location.href = "content.html?product_id="+i.toString();
+}
+
+function add(n){
+	var code1 = $("#restNumber"+n).val();
+
+	if(code1 == '0'){
+		alert("没有库存，不允许购买。");
+		return;
+	}
+	var code = $("#code"+n).val();	
+	var name = $("#name"+n).html();
+	var sellprice = $("#price"+n).val();
+	var price = $("#price"+n).val();
+	//价格异常
+	if(price==undefined)
+	{
+		alert("产品已下架，不允许购买。");
+		return;
+	}
+	var img = $("#img"+n).attr("src");
+
+	if (typeof (cookie_val.Product) == "undefined") {
+		cookie_val = { "Product": [{ "code": "" + code + "", "name": "" + name + "", "sellprice": "" + sellprice + "", "price": "" + price + "", "img": "" + img + "", "num": "" + 1 + ""}] };
+        $.JSONCookie(COOKIE_NAME, cookie_val, { path: '/', expires: 1 });
+        if (ex == "1")
+            GetUserStockList(code, name, sellprice, price, img, num);
+    } else {
+        if (!IsExistsInCookie(code)) {
+            var json = { "code": "" + code + "", "name": "" + name + "", "sellprice": "" + sellprice + "", "price": "" + price + "", "img": "" + img + "", "num": "" + 1 + "" };
+            cookie_val.Product.push(json); //添加
+            $.JSONCookie(COOKIE_NAME, cookie_val, { path: '/', expires: 1 });
+            alert("加入购物车成功");
+        }else{
+        	//修改
+        	alert("商品已加入购物车");
+        } 
+    }
+}
+function IsExistsInCookie(code) {
+    var flag = false;
+    for (var i = 0; i < cookie_val.Product.length; i++) {
+        var p = cookie_val.Product[i];
+        if (p.code == code ) {//存在
+            flag = true;
+            break;
+        }
+    }
+    return flag;
+}
+</script>
+--></script>
+	</head>
+
+<body>
+		<!--顶部组件-->
+		<div class="tbar">
+			<h1><img src="images/logo.png" /></h1>
+			<a href="javascript:;" class="handle">
+				<i class="iconfont" style="font-size:30px;">&#xe619;</i>
+			</a>
+			<div class="diag_box">
+    		<div class="diag_fix"></div>
+    		<div class="diag_content">
+    			<a href="javascript:;">
+    				<i class="iconfont">&#xe601;</i>首页
+    			</a>
+    			<a href="javascript:;">
+    				<i class="iconfont">&#xe603;</i>酵素知识
+    			</a>
+    			<a href="javascript:;">
+    				<i class="iconfont">&#xe612;</i>关于优研
+    			</a>
+    			<a href="javascript:;">
+    				<i class="iconfont">&#xe60a;</i>优研百科
+    			</a>
+    		</div>
+    	</div>
+		</div>	
+		<div class="fix_barspace"></div>
+		
+		<!-- 轮播图 -->
+		<div class="mianc w product_pic">
+    		<div id="owl-demo" class="owl-carousel pic">
+				<a class="item"><img src="images/s_02.jpg" alt=""></a>
+				<a class="item"><img src="images/s_01.jpg" alt=""></a>
+				<a class="item"><img src="images/s_03.jpg" alt=""></a>
+			</div>
+		</div>
+		<!--顶部组件 end-->
+		<div class="menus">
+			<a href="#"><i class="iconfont">&#xe603;</i>酵素知识</a>
+			<a href="#"><i class="iconfont">&#xe609;</i>优研百科</a>
+			<a href="#"><i class="iconfont">&#xe60a;</i>健康评测</a>
+			<a href="#"><i class="iconfont">&#xe612;</i>关于优研</a>
+		</div>
+		  <div id="divCategory"></div>
+		   <div class="pro_box" id="divProduct"></div>
+		<!--图片盒子-->
+		<!-- <div class="picbox">
+			<a href="#"><img src="images/test1.jpg"/></a>
+			<a href="#"><img src="images/test2.jpg"/></a>
+		</div> -->
+		
+		<!--盒子-->
+		<!--<div class="mibox">
+			<h2>
+				<i class="iconfont">&#xe607;</i>优研百科
+				<a href="#">更多</a>
+			</h2>
+			<div class="weui_cells weui_cells_access">
+                <a class="weui_cell" href="javascript:;">
+                    <div class="weui_cell_hd"><i></i></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>文字标题</p>
+                    </div>
+                    <span class="weui_cell_ft"></span>
+                </a> 
+                <a class="weui_cell" href="javascript:;">
+                    <div class="weui_cell_hd"><i></i></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>文字标题</p>
+                    </div>
+                    <span class="weui_cell_ft"></span>
+                </a> 
+                <a class="weui_cell" href="javascript:;">
+                    <div class="weui_cell_hd"><i></i></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>文字标题</p>
+                    </div>
+                    <span class="weui_cell_ft"></span>
+                </a> 
+            </div>
+		</div>
+		
+		<div class="mibox">
+			<h2>
+				<i class="iconfont">&#xe607;</i>健康评测
+				<a href="#">更多</a>
+			</h2>
+			<div class="mipc">
+				<a href="#">
+					<i class="iconfont">&#xe60a;</i>
+					<strong>标准体重计算</strong>
+					<span>轻松算出您的标准体重</span>
+					<em>开始测试</em>
+				</a>
+				<a href="#">
+					<i class="iconfont">&#xe60c;</i>
+					<strong>身材比例测算</strong>
+					<span>轻松算出您的标准体重</span>
+					<em>开始测试</em>
+				</a>
+				<a href="#">
+					<i class="iconfont">&#xe609;</i>
+					<strong>健康体重范围</strong>
+					<span>轻松算出您的标准体重</span>
+					<em>开始测试</em>
+				</a>
+				<a href="#">
+					<i class="iconfont">&#xe60b;</i>
+					<strong>基础代谢计算</strong>
+					<span>轻松算出您的标准体重</span>
+					<em>开始测试</em>
+				</a>
+			</div>
+		</div>-->
+				
+		<!--底部工具条-->
+		<div class="toolbarspace"></div>
+		<div class="toolbar">
+			<a href="#"><i class="iconfont">&#xe601;</i>首页</a>
+            <a href="#"><i class="iconfont">&#xe60f;</i>分类</a>
+            <a href="#"><i class="iconfont">&#xe60e;</i>购物车</a>
+            <a href="#"><i class="iconfont">&#xe60d;</i>个人中心</a>
+    	</div>
+	<!--弹出层-->
+    	
+    	<!--弹出层 END-->
+    	
+    	<script type="text/javascript">
+    	//展开弹出层
+    		$(".handle").on('touchstart',function(){
+    			$(".diag_box").show();
+    		})    		
+    	//关闭弹出层
+    		$(".diag_fix").on('touchstart',function(){
+    			$(this).parent('.diag_box').hide();
+    		}) 
+    	</script>
+</body>
+</html>

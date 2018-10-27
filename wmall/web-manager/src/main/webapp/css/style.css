@@ -1,0 +1,14 @@
+@charset "utf-8";
+.center_top_t{
+	margin-top:10px;
+	height:30px;
+	line-height:25px;  
+}
+.center_top_t span{
+	margin-top:3px;
+	margin-left:3px;
+}
+.span_display {
+	display:inline-block;
+	width:80px;
+}

@@ -1,0 +1,7 @@
+@charset "utf-8";
+.con_cen{width:1000px;margin:0 auto;clear:both;height:auto;padding-top:20px;}
+.con_cen ul{width:845px;margin-left:30px;}
+.con_cen ul li{height:42px;border-bottom: #dbe2e6 dotted 1px;padding:10px 0 10px 3px;}
+.con_cen ul li span{float:right;font-family: "Arial";color: #b1b1b1;}
+.con_cen ul li a{color:#097cd9;font-size:14px;font-family:"SimSun";background:url(../../images/xin_54.jpg) no-repeat left;padding-left:10px;}
+.con_cen ul li a:hover{color:#b01e1e;}

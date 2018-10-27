@@ -1,0 +1,47 @@
+@charset "utf-8";
+/*开始样式*/
+.center{ width:1000px; height:auto;margin:27px auto 0;}
+.center .addressSelect>span{font-size:13px;font-family:"方正细黑一";font-weight:bold;}
+.center .addressSelect>input{ width:150px; font-size:14px; height:20px; border:#CFCFCF solid 2px; padding:0px 2px;}
+.center .cneter_top{width:100%;height:25px;border-bottom:1px solid #efefef;line-height:25px;}
+.center .cneter_top .a_l{color:#000; font-size:12px;font-weight:bold;font-family:"方正细黑一";}
+.center .cneter_top .a_r{display:inline-block;float:right;color:#3f5ea4;}
+.center .center_c{width:100%;height:80px;background-color:#fff1e8;}
+.center .center_c span>img{width:25px;height:36px;padding-left:5px;}
+.center .center_c>span,.center .center_c>input[type="checkbox"],.center .center_c>p,.center .center_c>a{display:block;float:left;height:40px;line-height:40px;}
+.center .center_c>input[type="checkbox"]{margin:0 5px;}
+.center .center_c>i{float:left;display:inline-block;width:100px;height:40px;overflow: hidden;}
+.center .center_c>a{float:right;color:#3f5ea4;font-size:13px;margin-right:12px;}
+.center .center_c>p{float:left;width:65%;height:40px;line-height:40px;font-size:13px;font-family:"方正细黑一";}
+.center .center_c>p>label{margin-left:100px;width:85%;height:40px;line-height:40px;font-size:13px;font-family:"方正细黑一";}
+.center .center_c>p>span{padding-left:8px;color:#877d76;}
+.center .center_c>p>a{margin-left:20px;color:#9d9c9b;}
+.center .center_c>span{padding-right:6px;color:#f04c02;font-weight:bold;}
+.center .center_c>p>input{vertical-align: middle;width:15px; font-size:14px; height:20px; border:#CFCFCF solid 2px; padding:0px 2px;}
+/*
+.center .center_b{padding-top:20px;}
+.center .center_b>input[type="checkbox"]{float:left;display:inline-block;height:30px;margin-left:85px;font-size:13px;font-family:"方正细黑一";margin-right:5px;}
+.center .center_b p{width:85%;height:40px;line-height:27px;}
+.center .center_b p>span{padding-left:8px;color:#877d76;}
+.center .center_b a{color:#3f5ea4;margin-left:95px;font-size:13px;font-family:"方正细黑一";}
+*/
+.center .center_d>span{display:block;font-size:13px;font-family:"方正细黑一";margin-top:40px;font-weight:bold;margin-bottom:5px;}
+.center .center_t tr th{width:125px;height:30px;line-height:30px;color:#444444;font-size:13px;font-family:"方正细黑一";text-align:left;font-weight:normal;border-bottom:1px solid #951e23;padding-bottom:5px;padding-left:12px;}
+.center .center_t tr td{padding-top:9px;background-color:#fef9f6;font-size:13px;font-family:"方正细黑一";padding-bottom:20px;padding-left:12px;}
+.center .center_t tr td img{display:block;width:80px;height:72px;border:1px solid red;float:right;}
+.center .center_t tr td input[type="checkbox"]{display:block;float:left;}
+.center .center_t tr .total span{color:#951e23;font-size:16px;font-family:"方正细黑一";}
+.center .center_zf{width:100%;height:50px;margin-top:20px;}
+.center .center_zf>p{float:right;font-size:13px;font-family:"方正细黑一";color:#898482;}
+.center .center_zf>p>span input[type="checkbox"]{margin:0 10px;}
+.center .center_zf>p>span{margin-left:20px;}
+.center .center_tj{width:1000px;height:150px;float:right;}
+.center .center_tj p{text-align:right;height:30px;font-size:13px;font-family:"方正细黑一";line-height:30px;padding-right:15px;}
+.center .center_tj p a{display:block;width:114px;height:35px;background-color:#951e23;color:#fff;text-align:center;line-height:35px;float:right;margin-left: 10px;}
+.center .center_tj p .sp_1{display:inline-block;height:28px;text-align:left;color:#951e23;font-size:16px;font-family:"方正细黑一";}
+.center .center_tj p .sp_2{display:inline-block;height:28px;text-align:left;font-size:13px;font-family:"方正细黑一";}
+.center .center_e{display:block;font-size:13px;font-family:"方正细黑一";margin-top:40px;}
+.center .center_e>span{display:block;font-size:13px;font-family:"方正细黑一";margin-top:40px;font-weight:bold;}
+.center .receiptbtn p a{display:block;width:114px;height:35px;background-color:#1aa29f;color:#fff;text-align:center;line-height:35px;float:right;margin-left: 10px;}
+.center .center_btnreturn{padding-top:40px;}
+.center .addressSelect a{display:inline-block;width:100px;height:28px;background-color:#951e23;color:#fff;text-align:center;line-height:28px;margin-left: 20px;}

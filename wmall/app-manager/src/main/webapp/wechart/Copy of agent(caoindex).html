@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0, maximum-scale=1.0">
+<title>经销商邀请函</title>
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<link rel="stylesheet" href="../css/wechart/index.css" type="text/css" />
+<link rel="stylesheet" href="../css//wechart/korea.css" />
+<link href="../css//wechart/cate.css" rel="stylesheet" type="text/css" />
+<link href="../css//wechart/style.css" rel="stylesheet" type="text/css" />
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"> </script>
+<script type="text/javascript" src="../js/jsConfig.js"></script>
+<style type="text/css">
+#cover{display:none;position:absolute;left:0;top:0;z-index:18888;background-color:#000000;opacity:0.7;}
+#guide{display:none;position:absolute;right:18px;top:5px;z-index:19999;}
+#guide img{width:260px;height:180px;}
+</style>
+
+<script type="text/javascript">
+//var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9c937e7224bf6f26&redirect_uri=http%3A%2F%2Falfie.wicp.net%3A47279%2FShop%2Fagent.html%3Fparentid%3D&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+
+var InterValObj; //timer变量，控制时间
+var count = 120; //间隔函数，1秒执行
+var curCount;//当前剩余秒数
+
+function send(){
+	var mobilephone = $("#mobilephone").val();
+	if (!isMobile(mobilephone))
+    {
+        alert("手机号码错误!");
+        return false;
+    }
+	 curCount=count;
+	$("#btnSendCode").attr("disabled", "true");  
+    $("#btnSendCode").val("请在" + curCount + "秒内输入验证码");  
+     InterValObj = window.setInterval(SetRemainTime, 1000); // 启动计时器，1秒执行一次  
+    $.ajax({
+		type:"post",
+		url : '../sendmessage/send.do',
+		async :false,
+		data : 'mobilephone='+mobilephone,
+		datatype : 'json',
+		success : function(data) {
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+}
+
+//timer处理函数  
+function SetRemainTime() {  
+    if (curCount == 0) {                  
+        window.clearInterval(InterValObj);// 停止计时器  
+        $("#btnSendCode").removeAttr("disabled");// 启用按钮  
+        $("#btnSendCode").val("重新发送验证码");  
+        $("#code").val(""); // 清除验证码。如果不清除，过时间后，输入收到的验证码依然有效  
+    }else {  
+        curCount--;  
+        $("#btnSendCode").val("请在" + curCount + "秒内输入验证码");  
+    }  
+}
+
+function GetQueryString(sProp)  
+{  
+    var re = new RegExp("[&,?]"+sProp + "=([^//&]*)", "i");  
+    var a = re.exec(document.location.search);  
+    if (a == null)  
+        return "";  
+    return a[1];  
+} 
+$(document).ready(function(){
+	var code = GetQueryString("code");
+	var parentid = GetQueryString("username").toString();
+	$("#parentId").val(parentid);
+	$.ajax({
+		type:"post",
+		url : 'oauth2.do',
+		data : 'code='+code,
+		datatype : 'json',
+		success : function(result) {
+			var obj = result.object;
+			//alert(obj.wechatId);
+			$("#wechatId").val(obj.wechatId);
+			
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("error");
+		}
+	});
+	
+	
+	
+	
+});
+//检验姓名：姓名是2-15字的汉字
+function isCardName(s) 
+{
+    var patrn = /^\s*[\u4e00-\u9fa5]{1,}[\u4e00-\u9fa5.·]{0,15}[\u4e00-\u9fa5]{1,}\s*$/; 
+    if(!patrn.exec(s))
+    {
+        return false;
+    }
+    return true;
+} 
+//校验手机号码：必须以数字开头
+function isMobile(s) 
+{
+    var patrn=/^\s*(15\d{9}|13[0-9]\d{8}|18[0-9]\d{8})\s*$/;
+    if(!patrn.exec(s))
+    {
+        return false;
+    }
+    return true;
+} 
+
+
+//电子邮箱
+function isEmail(s){
+	
+	var patrn=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+    if(!patrn.exec(s))
+    {
+        return false;
+    }
+    return true;
+}
+
+function coder(){
+	var code = $("#code").val();
+	var mobilephone = $("#mobilephone").val();
+	var parentId = $("#parentId").val();
+	 $.ajax({
+			type:"post",
+			url : '../sendmessage/code.do',
+			async :false,
+			data : {code:code,mobilephone:mobilephone,ss:1,parentId:parentId},
+			datatype : 'json',
+			success : function(data) {
+				var obj = data.result;
+				if(obj){
+					check();
+				}else{
+					alert("验证失败");
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+			}
+		});
+}
+
+function check(){
+	if(!isMobile($("#mobilephone").val()))
+	{
+		alert("手机号格式不正确。");
+		return;
+	}
+	var objData = $("#save_form").serializeArray();
+	$.ajax({
+		url : 'saveCustomer.do',
+		type: 'post',
+		data : objData,
+		datatype : 'json',
+		success : function(result) {
+			var obj=result.result;
+			if(obj){
+				alert(result.message);
+				window.location.href = v_redirect_uri_follow;
+			}else{
+				alert(result.message);
+				//bind();
+			}
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			alert(textStatus);
+		}
+	}); 
+}
+
+
+
+var _system={
+		$:function(id){return document.getElementById(id);},
+		_client:function(){
+		return {w:document.documentElement.scrollWidth,h:document.documentElement.scrollHeight,bw:document.documentElement.clientWidth,bh:document.documentElement.clientHeight};
+		},
+		_scroll:function(){
+		return {x:document.documentElement.scrollLeft?document.documentElement.scrollLeft:document.body.scrollLeft,y:document.documentElement.scrollTop?document.documentElement.scrollTop:document.body.scrollTop};
+		},
+		_cover:function(show){
+		if(show){
+		this.$("cover").style.display="block";
+		this.$("cover").style.width=(this._client().bw>this._client().w?this._client().bw:this._client().w)+"px";
+		this.$("cover").style.height=(this._client().bh>this._client().h?this._client().bh:this._client().h)+"px";
+		}else{
+		this.$("cover").style.display="none";
+		}
+		},
+		_guide:function(click){
+		this._cover(true);
+		this.$("guide").style.display="block";
+		this.$("guide").style.top=(_system._scroll().y+5)+"px";
+		window.onresize=function(){_system._cover(true);_system.$("guide").style.top=(_system._scroll().y+5)+"px";};
+		if(click){_system.$("cover").onclick=function(){
+		_system._cover();
+		_system.$("guide").style.display="none";
+		_system.$("cover").onclick=null;
+		window.onresize=null;
+		};}
+		},
+		_zero:function(n){
+		return n<0?0:n;
+		}
+		}
+		
+function share(){	
+
+		
+}
+
+</script>
+</head>
+<body>
+<div style="display: none;"><img src="dl/1.jpg"></div>
+<form id="save_form">
+    <div class="news">
+        	<ul class="news-list" id="reg">
+        			<li>
+        			<h2><a>经销商邀请函</a></h2>
+        				<div>
+<input type="hidden" id="wechatId" name="wechatId" >
+<input type="hidden" id="parentId" name="parentId" >
+<input type="hidden" id="customerId" name="customerId" >
+<input type="hidden" id="customerTypeId" name="customerTypeId" >
+</div>
+        			
+        			</li>
+        				<li>
+        			<input type="text" name="postcode" id="postcode" placeholder="请输入身份证号"  />
+        			
+        			</li>
+        			
+        			<li>
+        			<input type="text" name="mobilephone" id="mobilephone" placeholder="请输入电话号码"  />
+        			<input type="button" value="获取验证码" id="btnSendCode" onclick="send();"style="width:36%" >
+        			<input type="text" id="code" name="code" style="width:98%" placeholder="请输入验证码" >
+        			</li>
+        			
+        			
+
+        			
+        			<li>
+        			<div>
+<input name="btnSearch" class="ui-btn-submit"  type="button" value="注册" id="search" onclick="coder();"/>
+</div>
+        			</li>
+        	</ul>
+        	<ul class="news-list" id="load" >
+        			
+        	</ul>
+        	<ul id="info" class="news-list" >
+        			<li>
+        		
+        				<div>
+<span id="name"></span>
+</div>
+<div id="cover"></div>
+<div id="guide"><img src="images/guide1.png"></div>
+<img id="martix" src="" style="margin:-300px 0 0 0;" onclick="_system._guide(true);">
+
+        			
+        			</li>
+        			
+        	</ul>
+    </div>
+</form>
+</body>
+</html>

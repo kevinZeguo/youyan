@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="keywords" content="微信,微信公众平台" />
+<meta name="description" content="微信公众平台自助引擎" />
+<title>购物车</title>
+<link href="index/css/style.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/buttons.css">
+<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.accordion.js"></script>
+<script type="text/javascript" src="js/unslider.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.js"></script>
+<script type="text/javascript" src="js/jquery.jsoncookie.js"></script>
+<script type="text/javascript" src="js/json2.js"></script>  
+<script> 
+var COOKIE_NAME = "Bind_Prod_List";
+var cookie_val = $.JSONCookie(COOKIE_NAME);//读取json格式cookie
+function setTotal(){ 
+	var s=0; 
+	$("#tab td").each(function(){ 
+	s+=parseInt($(this).find('input[class*=text_box]').val())*parseFloat($(this).find('span[class*=price]').text()); 
+	}); 
+	$("#total").html(s.toFixed(2));
+	$("#orderTotal").val(s.toFixed(2));
+} 
+function del(code){
+	 for (var i = 0; i < cookie_val.Product.length; i++) {
+      var p = cookie_val.Product[i];
+      //注释掉判断，为了让undefined的产品也能删除
+      //if (p.code == code ) {//存在
+          cookie_val.Product.splice(i, 1); 
+          $.JSONCookie(COOKIE_NAME, cookie_val, { path: '/', expires: 1 });  
+      //}
+	 }
+	 show();
+}
+function show(){
+	var html = "";
+    var div = $("#aa");
+    html="";
+    if (cookie_val.Product) {
+        $.each(cookie_val.Product, function (index, prod) {
+        	if(prod.code==undefined||prod.code=="undefined"){
+        		return;
+        	}
+        	html = html + "<div class='info_card'>"
+			+"<a href='content.html'>"
+			+"<i><img src='"+prod.img+"'></i>"
+			+"<h1>"+prod.name+"</h1>"
+			+"</a>"
+			+"</div>"
+			+"<div class='info_card_price' id='tab'>"
+			+"<table id='tab'>"
+			+"<tr>" 
+			+"<td>" 
+			+"<input type='hidden' name='productIds' value='"+prod.code+"'/>"
+			+"<input type='hidden' name='productPrices' value='"+prod.sellprice+"'/>" 
+			+"<span>单价:</span><span class='price'>"+Number(prod.sellprice).toFixed(2)+"</span>" 
+			+"<input class='min' name='' type='button' value='-' style='width:30px; height:32px' />" 
+			+"<input class='text_box' name='productNums' type='text' value='1' style='width:50px;text-align:center;' />" 
+			+"<input class='add' name='' type='button' value='+' style='width:30px; height:32px' />" 
+			+"</td>" 
+			+"</tr>" 
+			+"</table>"
+			+"<a onclick='del("+prod.code+")' class='right'><em class='no'>删</em></a>"
+			+"</div>";
+        });
+    }
+    div.html(html);
+    $(".add").click(function(){ 
+    	var t=$(this).parent().find('input[class*=text_box]'); 
+    	t.val(parseInt(t.val())+1) 
+    	setTotal(); 
+    });
+    $(".min").click(function(){ 
+    	var t=$(this).parent().find('input[class*=text_box]'); 
+    	t.val(parseInt(t.val())-1) 
+    	if(parseInt(t.val())<0){ 
+    	t.val(0); 
+    	} 
+    	setTotal(); 
+    });
+    setTotal();
+}
+
+function GetQueryString(sProp)  
+{  
+    var re = new RegExp("[&,?]"+sProp + "=([^//&]*)", "i");  
+    var a = re.exec(document.location.search);  
+    if (a == null)  
+        return "";  
+    return a[1];  
+} 
+var username="";
+var customerId="";
+$(document).ready(function(){ 
+	 username = GetQueryString("username").toString();
+	 customerId = GetQueryString("customerId").toString();
+	show();
+	$("#jsbut").click(function(){ 
+		 if(customerId == ""){
+			alert("没有注册，请先注册");
+			location.href = "registered.html?username="+username;
+		}else{ 
+			var obj = $("#save_form").serializeArray();
+			$.ajax({
+	    		url : '../orderHead/save.do?rd=' + Math.random(),
+	    		data : obj,
+	    		datatype : 'json',
+	    		cache : false,
+	    		async :false,
+	    		type : "post",
+	    		success : function(data) {
+					if(data.status!=""&&data.status!=null){
+							location.href = "cart_buy.html?orderNo="+data.status;
+							$.cookie("Bind_Prod_List", null, { path: '/' });
+					}else{
+						window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd19ab3175ab12fac&redirect_uri=http%3A%2F%2Fwww.hangmeishengxian.com%2Fyy%2Fwechart%2Flogin.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+					}
+	    		},	
+	    		error : function(XMLHttpRequest, textStatus, errorThrown) {
+	    			window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd19ab3175ab12fac&redirect_uri=http%3A%2F%2Fwww.hangmeishengxian.com%2Fyy%2Fwechart%2Flogin.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+	    		}
+	    	});
+		}
+		});
+	
+});
+
+function car(){
+	window.location="cart.html?username="+username+"&customerId="+customerId;
+}
+
+function index(){
+	window.location="index.html?username="+username+"&customerId="+customerId;
+}
+</script> 
+</head>
+
+<body ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false" onselectstart="return false" 
+ondragstart="return false" onbeforecopy="return false" oncopy=document.selection.empty() onselect=document.selection.empty()> 
+<div id="page">
+	<div class="banners">
+		<a href="javascript:history.go(-1);"><img src="images/bg_info3.jpg"></a>
+	</div>
+	<form id="save_form">
+	<div id="content">
+		
+		<!-- <div class="info_head info_light">
+			<div class="info_card">
+				<a href="content.html">
+				<i><img src="images/9.jpg"></i>
+				<h1>诺基亚 Lumia 520 超低价格，不要错过哦！wp8超值入门</h1>
+				</a>
+			</div>
+			<div class="info_card_price" id="tab">
+<table id="tab"> 
+<tr> 
+<td>
+<input type="hidden" name="productIds" value="2"/>
+<input type="hidden" name="productPrices" value="2.5"/>
+<span>单价:</span><span class="price">2.50</span> 
+<input class="min" name="" type="button" value="-"  style="width:30px; height:30px"/> 
+<input class="text_box" name="productNums" type="text" value="1"  style="width:50px; "/> 
+<input class="add" name="" type="button" value="+"  style="width:30px; height:30px"/> 
+</td> 
+</tr> 
+</table> 
+				<a href="#" class="right"><em class="no">删</em></a>
+			</div>
+		</div> -->
+		<div id="aa" class="info_head info_light">
+			
+		</div>
+		
+		
+		<div class="box_exp info_light">
+			<div class="info_integral">
+				 
+				<span class="titles">
+				<i class="icon-bookmark-empty"></i>总价：<label id="total"></label><input type="hidden" name="orderTotal" id="orderTotal"/><input type="hidden" name="orderStatus" id="orderStatus" value="4"/></span>
+			</div>
+		</div>
+		
+		<div style="margin:8px 0;"><a id="jsbut" class="button button-block button-rounded button-caution button-large"><i class="icon-shopping-cart"></i>&nbsp;&nbsp;提交订单</a></div>
+		
+		
+		<div style="padding:15px;"></div>
+	</div>
+	</form>
+	<div class="nav-bar">
+        <ul>
+            <li class="active"><a href="JavaScript:index();" class="nav01"><span></span>首页</a></li>
+            <li><a href="#" class="nav02"><span></span>分类</a></li>
+            <li><a href="JavaScript:car();" class="nav03"><span></span>购物车</a></li>
+            <li><a href="#" class="nav04"><span></span>我的</a></li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

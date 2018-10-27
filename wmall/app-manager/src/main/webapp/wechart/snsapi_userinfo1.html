@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title></title>
+<script type="text/javascript" src="../js/jquery-1.4.2.js"></script>
+<script type="text/javascript">
+function GetQueryString(sProp)  
+{  
+    var re = new RegExp("[&,?]"+sProp + "=([^//&]*)", "i");  
+    var a = re.exec(document.location.search);  
+    if (a == null)  
+        return "";  
+    return a[1];  
+} 
+$(document).ready(function(){
+	var code = GetQueryString("code");
+	$.ajax({
+		type:"post",
+		url : 'oauth2.do',
+		data : {code:code,type:1},
+		datatype : 'json',
+		success : function(result) {
+			var obj = result.object;
+			
+				//window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxbf14e195191db872&redirect_uri=http%3A%2F%2Falfie.wicp.net%3A58237%2Fagent%2Fapp%2Flogin.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+				//window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxbf14e195191db872&redirect_uri=http%3A%2F%2Fhoneybeauty.aliapp.com%2Fapp%2Flogin.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+				
+			
+				location.href = "personalCenter.html";
+				
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert("error");
+			}
+		
+	});
+	
+}); 
+</script>
+</head>
+<body>
+</body>
+</html>

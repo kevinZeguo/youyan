@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0, maximum-scale=1.0">
+<title></title>
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<link rel="stylesheet" href="../css/wechart/index.css" type="text/css" />
+<link rel="stylesheet" href="../css/wechart/korea.css" />
+<link href="../css/wechart/cate.css" rel="stylesheet" type="text/css" />
+<link href="../css/wechart/style.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="css/_x_ctr_location.css" type="text/css" />
+<link rel="stylesheet" href="css/LArea.css">
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"> </script>
+<script src="js/LAreaData1.js"></script>
+<script src="js/LAreaData2.js"></script>
+<script src="js/LArea.js"></script>
+<script type="text/javascript" src="js/_x_ctr_location-1.0.min.js"></script>
+<script type="text/javascript">
+function GetQueryString(sProp)  
+{  
+    var re = new RegExp("[&,?]"+sProp + "=([^//&]*)", "i");  
+    var a = re.exec(document.location.search);  
+    if (a == null)  
+        return "";  
+    return a[1];  
+} 
+var orderNo = GetQueryString("orderNo").toString();
+var id = GetQueryString("id").toString();
+$(document).ready(function(){ 
+
+    var area2 = new LArea();
+    area2.init({
+        'trigger': '#addressName',
+        'valueTo': '#receAddressCode',
+        'keys': {
+            id: 'value',
+            name: 'text'
+        },
+        'type': 2,
+        'data': [provs_data, citys_data, dists_data]
+    });
+	//$("#txt_area").Location({ ValueControlID: "txt_Code", LastSelected: false });
+	if(id!=""&&id!=null){
+		$.ajax({
+			url : '../receAddress/getReceAddressById.do',
+			type: 'post',
+			data : 'id='+id,
+			datatype : 'json',
+			success : function(data) {
+				var item = data.object;
+				$("#receAddressId").val(item.receAddressId);
+				$("#rename").val(item.receAddressRecipients);
+				$("#phone").val(item.receAddressPhone);
+				$("#address").val(item.receAddressDesc);
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+			}
+		});
+	}
+});
+//检验姓名：姓名是2-15字的汉字
+function isCardName(s) 
+{
+    var patrn = /^\s*[\u4e00-\u9fa5]{1,}[\u4e00-\u9fa5.·]{0,15}[\u4e00-\u9fa5]{1,}\s*$/; 
+    if(!patrn.exec(s))
+    {
+        return false;
+    }
+    return true;
+} 
+//校验手机号码：必须以数字开头
+function isMobile(s) 
+{
+    var patrn=/^\s*(15\d{9}|13[0-9]\d{8}|18\d{9}|147\d{8}|177\d{8})\s*$/;
+    if(!patrn.exec(s))
+    {
+        return false;
+    }
+    return true;
+} 
+
+function save(){
+	
+	$("#receAddressId").val(id);
+	//alert(	$("#receAddressId").val)
+	var rename = $("#rename").val();
+	var phone = $("#phone").val();
+	 if (rename=="")
+	    {
+	        alert("姓名不能为空！");
+	        return false;
+	    }
+	
+	 if (phone=="")
+	    {
+	        alert("手机号码不能为空！");
+	        return false;
+	    }
+	 if (!isMobile(phone))
+	    {
+	        alert("手机号码错误!");
+	        return false;
+	    }
+	var obj2 = $("#save_form").serializeArray();
+	$.ajax({
+		url : '../receAddress/save.do',
+		type: 'post',
+		data : obj2,
+		datatype : 'json',
+		success : function(data) {
+			if(orderNo!=null && orderNo!="" ){
+				window.location.href="cart_buy.html?orderNo="+orderNo;
+			} else{
+				if(data.result){
+					window.location="addres.html";
+				}
+			}
+		
+			
+			
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	}); 
+}
+</script>
+</head>
+<body>
+<div style="display: none;"><img src="commodity/1.jpg"></div>
+<form id="save_form">
+    <div class="news">
+        	<ul class="news-list">
+        			<li>
+        			<h2><a>收货地址管理</a></h2>
+        				<div>
+        				<input type="hidden"  name="receAddressId"    id="receAddressId" value="">
+						<input type="text" id="rename" name="receAddressName" placeholder="收件人姓名"  />
+						</div>
+        			</li>
+        			<li>
+        			<input type="text" name="receAddressPhone" id="phone" placeholder="收件人电话"  />
+        			</li>
+        			<li>
+        			<div class="content-block">
+			            <input id="addressName" name="addressName" type="text" readonly="" placeholder="城市选择" />
+			            <input id="receAddressCode" name="receAddressCode" type="hidden" />
+			        </div>
+        			</li>
+        			<li>
+        			<input type="text" name="receAddressDesc" id="address" placeholder="详细地址"  />
+        			</li>
+        			<li>
+        			<div>
+<input name="btnSearch" class="ui-btn-submit"  type="button" value="确认"  onclick="save();"/>
+</div>
+        			</li>
+        	</ul>
+    </div>
+</form>
+</body>
+</html>

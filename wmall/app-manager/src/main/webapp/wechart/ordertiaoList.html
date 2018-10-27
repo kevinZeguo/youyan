@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title>个人中心</title>
+<link href="css/css.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/mobile.css" />
+<link href="index/css/style.css" rel="stylesheet" type="text/css">
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"> </script>
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+<script type="text/javascript" src="../js/jquery.jsoncookie.js"></script>
+<script type="text/javascript" src="../js/json2.js"></script>
+<script type="text/javascript" src="../js/jsConfig.js"></script>
+<script type="text/javascript" src="../js/common/util.js"></script>
+<style type="text/css">
+#cover{display:none;position:absolute;left:0;top:0;z-index:18888;background-color:#000000;opacity:0.7;}
+#guide{display:none;position:absolute;right:18px;top:5px;z-index:19999;}
+#guide img{width:260px;height:180px;}
+</style>
+
+
+</head>
+<body>
+<div id="cover"></div>
+<div id="guide"><img src="images/guide1.png"></div>
+
+<div class="center">
+	<p class="p_l">我的订单</p>
+	<div class="order_top">
+		<ul>
+			<li>
+				<a href="orderList.html?status=1" class="s_1">
+				<span><i class="iconfont">&#x33;</i></span>
+			
+				未发货
+				</a>
+			</li>
+			<li>
+				<a href="orderList.html?status=4" class="s_2">
+				<span><i class="iconfont">&#x33;</i></span>
+				
+				未付款
+				</a>
+			</li>
+			<li>
+				<a href="orderList.html?status=2" class="s_3">
+				<span><i class="iconfont">&#x33;</i></span>
+			
+				已发货
+				</a>
+			</li>
+			<li>
+				<a href="orderList.html?status=3" class="s_4">
+				<span><i class="iconfont">&#x33;</i></span>
+				
+				已完成
+				</a>
+			</li>
+		</ul>
+	</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!-- 配置生成器 -->
+<generatorConfiguration>
+
+	<classPathEntry location="D:\workspace\youyan\repo\com\microsoft\sqlserver\sqljdbc4\4.0\sqljdbc4-4.0.jar" />
+	<context id="sqlserver" targetRuntime="MyBatis3" >
+	
+		<property name="autoDelimitKeywords" value="false" />
+		<property name="javaFileEncoding" value="UTF-8" />
+		<property name="javaFormatter" value="org.mybatis.gSTORE_KUDANenerator.api.dom.DefaultJavaFormatter" />
+		<property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter" />
+		<property name="beginningDelimiter" value="`" />
+		<property name="endingDelimiter" value="`" />
+
+		<!-- 注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="false" /><!-- 是否取消注释 -->
+			<property name="suppressDate" value="false" /> <!-- 是否生成注释代时间戳 -->
+		</commentGenerator>
+
+		<jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+			connectionURL="jdbc:sqlserver://10.0.14.13:1433;DatabaseName=yy"
+			userId="sa" password="Zyxxmn">
+		</jdbcConnection>
+
+		<!-- java类型处理器 用于处理DB中的类型到Java中的类型，默认使用JavaTypeResolverDefaultImpl； 注意一点，默认会先尝试使用Integer，Long，Short等来对应DECIMAL和 
+			NUMERIC数据类型； -->
+		<javaTypeResolver
+			type="org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl">
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+
+		<!-- java模型创建器，是必须要的元素 负责：1，key类（见context的defaultModelType）；2，java类；3，查询类 
+			targetPackage：生成的类要放的包，真实的包受enableSubPackages属性控制； targetProject：目标项目，指定一个存在的目录下，生成的内容会放到指定目录中，如果目录不存在，MBG不会自动建目录 -->
+		<javaModelGenerator targetPackage="com.claude.wmall.jxc.domain.store" targetProject="jxc-api">
+			<property name="constructorBased" value="false" />
+			<property name="enableSubPackages" value="true" />
+			<property name="immutable" value="false" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<sqlMapGenerator targetPackage="sql.jxc.store" targetProject="jxc-service">
+			<property name="enableSubPackages" value="false" />
+		</sqlMapGenerator>
+
+		<javaClientGenerator targetPackage="com.claude.wmall.jxc.dao.store" type="MAPPER" targetProject="jxc-service">
+			<property name="enableSubPackages" value="false" />
+		</javaClientGenerator>
+
+		<table tableName="STORE_CAIGOURKD" domainObjectName="StoreCaiGouRkd" enableCountByExample="false"  enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false">
+		</table>
+
+
+        <table tableName="STORE_CHUKUD" domainObjectName="StoreChuKuD" enableCountByExample="false"  enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false">
+        </table>
+
+
+        <table tableName="STORE_CHURUKLS" domainObjectName="StoreChuRuKls" enableCountByExample="false"  enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false">
+        </table>
+
+
+        <table tableName="STORE_DIAOBOCKD" domainObjectName="StoreDiaoBoCkd" enableCountByExample="false"  enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false">
+        </table>
+
+
+        <table tableName="STORE_DIAOBORKD" domainObjectName="StoreDiaoBoRkd" enableCountByExample="false"  enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false">
+        </table>
+
+
+        <table tableName="STORE_HONGZIXSCKD" domainObjectName="StoreHongZiXsckd" enableCountByExample="false"  enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false">
+        </table>
+
+
+        <table tableName="STORE_KUCUN" domainObjectName="StoreKuCun" enableCountByExample="false"  enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false">
+        </table>
+
+
+        <table tableName="STORE_KUDAN" domainObjectName="StoreKudan" enableCountByExample="false"  enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false">
+        </table>
+
+
+        <table tableName="STORE_KUNCUNPC" domainObjectName="StoreKunCunPc" enableCountByExample="false"  enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false">
+        </table>
+
+
+        <table tableName="STORE_QITARKD" domainObjectName="StoreQiTaRkd" enableCountByExample="false"  enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false">
+        </table>
+
+
+        <table tableName="STORE_SHENGCHANRKD" domainObjectName="StoreShengChanRkd" enableCountByExample="false"  enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false">
+        </table>
+
+
+        <table tableName="STORE_YIKUD" domainObjectName="StoreYiKuD" enableCountByExample="false"  enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false">
+        </table>
+
+
+        <table tableName="STORE_ZHUANGCHECKD" domainObjectName="StoreZhuangCheCkd" enableCountByExample="false"  enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false">
+        </table>
+
+
+    </context>
+
+</generatorConfiguration>

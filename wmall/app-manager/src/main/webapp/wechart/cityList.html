@@ -1,0 +1,297 @@
+<style>
+    .citybox {
+        line-height: 2em;
+    }
+
+    .citybox .citybox-content ul{
+        list-style: none;
+        margin: 0;
+        padding: 0 15px;
+    }
+    .citybox .citybox-content li p{
+        margin: 0;
+        padding-right: 15px;
+    }
+    .citybox li span{
+        display: block;
+    }
+    .citybox .citybox-content li span.label{
+        display: block;
+        color: #50C6D7;
+        text-align: left;
+        font-size: 14px;
+        padding:0 5px;
+        border-bottom: 2px solid #50C6D7;
+    }
+    .citybox .citybox-content li span.label strong{
+        font-weight:normal;
+    }
+    .citybox .citybox-content li span.group{
+        display: block;
+    }
+    .citybox .citybox-content li span a{
+        display: block;
+        color: #333;
+        padding-left: 14px;
+        font-size: 16px;
+        font-weight: normal;
+        background-color: #fff;
+        border-bottom: 1px solid #ebebeb;
+        text-decoration: none;
+        line-height: 40px;
+    }
+    .citybox .citybox-content li span a.activated{
+        background-color:#eee;
+    }
+    .citybox-shortcuts{
+        position: fixed;
+        top:54px;
+        right:0;
+        bottom:10px;
+        width: 30px;
+        font-size: 11px;
+
+        display: -webkit-box;
+        display: box;
+        -webkit-box-direction: normal;
+        -webkit-box-orient:vertical;
+        -webkit-flex-direction:inherit;
+        -moz-flex-direction: vertical;
+        -ms-flex-direction: inherit;
+        flex-direction: inherit;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        -moz-justify-content: center;
+        justify-content: center;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    .citybox-shortcuts a{
+        text-align: center;
+        color:#50C6D7;
+
+        -webkit-box-flex: 1;
+        box-flex: 1;
+
+        display:-webkit-box;
+        display:-webkit-flex;
+        display:flex;
+        -webkit-box-pack:center;
+        -ms-justify-content:center;
+        -webkit-justify-content:center;
+        justify-content:center;
+        -webkit-box-align:center;
+        -ms-align-items:center;
+        -webkit-align-items:center;
+        align-items:center;
+    }
+    
+</style>
+<script type="text/javascript">
+var city = $.session.get('city') ;
+$(document).ready(function(){
+	$("#dwcity").html(city);
+});
+</script>
+        <div  >
+            <div class="citybox">
+                <div class="citybox-content">
+                    <div class="list-box" id="allCityName">
+                        <ul>
+                        	<li id="city-dw" class="city-dw">
+                                <p class="cf">
+                                    <span class="label"><strong>当前定位城市</strong></span>
+                                    <span class="group"><a id="dwcity" href="#" name="dwcity">呼和浩特市</a></p>
+                            </li>
+                            <li id="city-rm" class="city-rm">
+                                <p class="cf">
+                                    <span class="label"><strong>热门城市</strong></span>
+                                    <span class="group">
+                                    <a href="#" name="aCity">北京市</a>
+                                    <a href="#" name="aCity">呼和浩特市</a>
+                                    <a href="#" name="aCity">成都市</a>
+                                    <a href="#" name="aCity">兰州市</a>
+                                    <a href="#" name="aCity">西安市</a>
+                                    <a href="#" name="aCity">临夏回族自治州</a>
+                                    <a href="#" name="aCity">海口市</a>
+                                    <a href="#" name="aCity">洛阳市</a>
+                                    <a href="#" name="aCity">漯河市</a>
+                                    <a href="#" name="aCity">开封市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-A" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>A</strong></span>
+                                    <span class="group"><a href="#" name="aCity">鞍山市</a><a href="#" name="aCity">安顺市</a><a href="#" name="aCity">阿坝市</a><a href="#" name="aCity">阿拉善市</a><a href="#" name="aCity">阿里市</a><a href="#" name="aCity">安康市</a><a href="#" name="aCity">阿克苏市</a><a href="#" name="aCity">安庆市</a><a href="#" name="aCity">阿勒泰市</a><a href="#" name="aCity">安阳市</a><a href="#" name="aCity">澳门市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-B" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>B</strong></span>
+                                    <span class="group"><a href="#" name="aCity">北京市</a><a href="#" name="aCity">包头市</a><a href="#" name="aCity">保定市</a><a href="#" name="aCity">巴中市</a><a href="#" name="aCity">蚌埠市</a><a href="#" name="aCity">白银市</a><a href="#" name="aCity">白城市</a><a href="#" name="aCity">白山市</a><a href="#" name="aCity">北海市</a><a href="#" name="aCity">巴彦淖尔市</a><a href="#" name="aCity">宝鸡市</a><a href="#" name="aCity">百色市</a><a href="#" name="aCity">本溪市</a><a href="#" name="aCity">保山市</a><a href="#" name="aCity">毕节市</a><a href="#" name="aCity">博尔塔拉市</a><a href="#" name="aCity">滨州市</a><a href="#" name="aCity">亳州市</a><a href="#" name="aCity">巴州市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-C" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>C</strong></span>
+                                    <span class="group"><a href="#" name="aCity">成都市</a><a href="#" name="aCity">重庆市</a><a href="#" name="aCity">常州市</a><a href="#" name="aCity">长沙市</a><a href="#" name="aCity">长春市</a><a href="#" name="aCity">赤峰市</a><a href="#" name="aCity">楚雄市</a><a href="#" name="aCity">长治市</a><a href="#" name="aCity">巢湖市</a><a href="#" name="aCity">崇左市</a><a href="#" name="aCity">潮州市</a><a href="#" name="aCity">昌吉市</a><a href="#" name="aCity">沧州市</a><a href="#" name="aCity">郴州市</a><a href="#" name="aCity">常德市</a><a href="#" name="aCity">滁州市</a><a href="#" name="aCity">朝阳市</a><a href="#" name="aCity">昌都市</a><a href="#" name="aCity">池州市</a><a href="#" name="aCity">承德市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-D" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>D</strong></span>
+                                    <span class="group"><a href="#" name="aCity">东莞市</a><a href="#" name="aCity">大连市</a><a href="#" name="aCity">东营市</a><a href="#" name="aCity">大庆市</a><a href="#" name="aCity">大同市</a><a href="#" name="aCity">大理市</a><a href="#" name="aCity">德阳市</a><a href="#" name="aCity">迪庆市</a><a href="#" name="aCity">达州市</a><a href="#" name="aCity">德州市</a><a href="#" name="aCity">丹东市</a><a href="#" name="aCity">大兴安岭市</a><a href="#" name="aCity">德宏市</a><a href="#" name="aCity">定西市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-E" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>E</strong></span>
+                                    <span class="group"><a href="#" name="aCity">恩施市</a><a href="#" name="aCity">鄂州市</a><a href="#" name="aCity">鄂尔多斯市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-F" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>F</strong></span>
+                                    <span class="group"><a href="#" name="aCity">福州市</a><a href="#" name="aCity">佛山市</a><a href="#" name="aCity">抚顺市</a><a href="#" name="aCity">阜阳市</a><a href="#" name="aCity">抚州市</a><a href="#" name="aCity">防城港市</a><a href="#" name="aCity">阜新市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-G" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>G</strong></span>
+                                    <span class="group"><a href="#" name="aCity">广州市</a><a href="#" name="aCity">贵阳市</a><a href="#" name="aCity">桂林市</a><a href="#" name="aCity">赣州市</a><a href="#" name="aCity">广元市</a><a href="#" name="aCity">果洛市</a><a href="#" name="aCity">固原市</a><a href="#" name="aCity">甘南市</a><a href="#" name="aCity">甘孜市</a><a href="#" name="aCity">广安市</a><a href="#" name="aCity">贵港市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-H" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>H</strong></span>
+                                    <span class="group"><a href="#" name="aCity">杭州市</a><a href="#" name="aCity">哈尔滨市</a><a href="#" name="aCity">合肥市</a><a href="#" name="aCity">邯郸市</a><a href="#" name="aCity">惠州市</a><a href="#" name="aCity">海口市</a><a href="#" name="aCity">呼和浩特市</a><a href="#" name="aCity">衡阳市</a><a href="#" name="aCity">湖州市</a><a href="#" name="aCity">淮北市</a><a href="#" name="aCity">鹤岗市</a><a href="#" name="aCity">海北市</a><a href="#" name="aCity">海东市</a><a href="#" name="aCity">黄南市</a><a href="#" name="aCity">菏泽市</a><a href="#" name="aCity">海南州市</a><a href="#" name="aCity">黑河市</a><a href="#" name="aCity">和田市</a><a href="#" name="aCity">哈密市</a><a href="#" name="aCity">淮安市</a><a href="#" name="aCity">淮南市</a><a href="#" name="aCity">黄山市</a><a href="#" name="aCity">海西市</a><a href="#" name="aCity">贺州市</a><a href="#" name="aCity">怀化市</a><a href="#" name="aCity">河池市</a><a href="#" name="aCity">呼伦贝尔市</a><a href="#" name="aCity">衡水市</a><a href="#" name="aCity">河源市</a><a href="#" name="aCity">红河市</a><a href="#" name="aCity">汉中市</a><a href="#" name="aCity">黄冈市</a><a href="#" name="aCity">黄石市</a><a href="#" name="aCity">鹤壁市</a><a href="#" name="aCity">葫芦岛市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-J" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>J</strong></span>
+                                    <span class="group"><a href="#" name="aCity">济南市</a><a href="#" name="aCity">济宁市</a><a href="#" name="aCity">嘉兴市</a><a href="#" name="aCity">金华市</a><a href="#" name="aCity">焦作市</a><a href="#" name="aCity">荆州市</a><a href="#" name="aCity">吉林市</a><a href="#" name="aCity">锦州市</a><a href="#" name="aCity">江门市</a><a href="#" name="aCity">景德镇市</a><a href="#" name="aCity">吉安市</a><a href="#" name="aCity">佳木斯市</a><a href="#" name="aCity">酒泉市</a><a href="#" name="aCity">金昌市</a><a href="#" name="aCity">鸡西市</a><a href="#" name="aCity">济源市</a><a href="#" name="aCity">晋城市</a><a href="#" name="aCity">揭阳市</a><a href="#" name="aCity">晋中市</a><a href="#" name="aCity">荆门市</a><a href="#" name="aCity">九江市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-K">
+                                <p class="cf">
+                                    <span class="label"><strong>K</strong></span>
+                                    <span class="group"><a href="#" name="aCity">昆明市</a><a href="#" name="aCity">昆山市</a><a href="#" name="aCity">喀什市</a><a href="#" name="aCity">克拉玛依市</a><a href="#" name="aCity">开封市</a><a href="#" name="aCity">克州市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-L" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>L</strong></span>
+                                    <span class="group"><a href="#" name="aCity">兰州市</a><a href="#" name="aCity">临沂市</a><a href="#" name="aCity">连云港市</a><a href="#" name="aCity">聊城市</a><a href="#" name="aCity">临汾市</a><a href="#" name="aCity">柳州市</a><a href="#" name="aCity">洛阳市</a><a href="#" name="aCity">廊坊市</a><a href="#" name="aCity">龙岩市</a><a href="#" name="aCity">六盘水市</a><a href="#" name="aCity">凉山市</a><a href="#" name="aCity">六安市</a><a href="#" name="aCity">丽江市</a><a href="#" name="aCity">临沧市</a><a href="#" name="aCity">陇南市</a><a href="#" name="aCity">拉萨市</a><a href="#" name="aCity">辽源市</a><a href="#" name="aCity">辽阳市</a><a href="#" name="aCity">莱芜市</a><a href="#" name="aCity">漯河市</a><a href="#" name="aCity">吕梁市</a><a href="#" name="aCity">丽水市</a><a href="#" name="aCity">临夏回族自治州</a><a href="#" name="aCity">林芝市</a><a href="#" name="aCity">娄底市</a><a href="#" name="aCity">来宾市</a><a href="#" name="aCity">泸州市</a><a href="#" name="aCity">乐山市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-M" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>M</strong></span>
+                                    <span class="group"><a href="#" name="aCity">马鞍山市</a><a href="#" name="aCity">绵阳市</a><a href="#" name="aCity">茂名市</a><a href="#" name="aCity">牡丹江市</a><a href="#" name="aCity">梅州市</a><a href="#" name="aCity">眉山市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-N" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>N</strong></span>
+                                    <span class="group"><a href="#" name="aCity">南京市</a><a href="#" name="aCity">宁波市</a><a href="#" name="aCity">南通市</a><a href="#" name="aCity">南宁市</a><a href="#" name="aCity">南昌市</a><a href="#" name="aCity">南充市</a><a href="#" name="aCity">宁德市</a><a href="#" name="aCity">内江市</a><a href="#" name="aCity">怒江市</a><a href="#" name="aCity">南平市</a><a href="#" name="aCity">南阳市</a><a href="#" name="aCity">那曲市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-P" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>P</strong></span>
+                                    <span class="group"><a href="#" name="aCity">萍乡市</a><a href="#" name="aCity">平顶山市</a><a href="#" name="aCity">莆田市</a><a href="#" name="aCity">濮阳市</a><a href="#" name="aCity">攀枝花市</a><a href="#" name="aCity">平凉市</a><a href="#" name="aCity">普洱市</a><a href="#" name="aCity">盘锦市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-Q" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>Q</strong></span>
+                                    <span class="group"><a href="#" name="aCity">青岛市</a><a href="#" name="aCity">泉州市</a><a href="#" name="aCity">秦皇岛市</a><a href="#" name="aCity">齐齐哈尔市</a><a href="#" name="aCity">庆阳市</a><a href="#" name="aCity">衢州市</a><a href="#" name="aCity">黔西南市</a><a href="#" name="aCity">钦州市</a><a href="#" name="aCity">黔南市</a><a href="#" name="aCity">曲靖市</a><a href="#" name="aCity">黔东南市</a><a href="#" name="aCity">七台河市</a><a href="#" name="aCity">清远市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-R" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>R</strong></span>
+                                    <span class="group"><a href="#" name="aCity">日照市</a><a href="#" name="aCity">日喀则市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-S" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>S</strong></span>
+                                    <span class="group"><a href="#" name="aCity">上海市</a><a href="#" name="aCity">深圳市</a><a href="#" name="aCity">沈阳市</a><a href="#" name="aCity">苏州市</a><a href="#" name="aCity">石家庄市</a><a href="#" name="aCity">绍兴市</a><a href="#" name="aCity">顺德市</a><a href="#" name="aCity">三亚市</a><a href="#" name="aCity">韶关市</a><a href="#" name="aCity">绥化市</a><a href="#" name="aCity">松原市</a><a href="#" name="aCity">上饶市</a><a href="#" name="aCity">十堰市</a><a href="#" name="aCity">三门峡市</a><a href="#" name="aCity">山南市</a><a href="#" name="aCity">邵阳市</a><a href="#" name="aCity">遂宁市</a><a href="#" name="aCity">商丘市</a><a href="#" name="aCity">朔州市</a><a href="#" name="aCity">随州市</a><a href="#" name="aCity">汕尾市</a><a href="#" name="aCity">四平市</a><a href="#" name="aCity">三峡市</a><a href="#" name="aCity">宿迁市</a><a href="#" name="aCity">三明市</a><a href="#" name="aCity">石嘴山市</a><a href="#" name="aCity">双鸭山市</a><a href="#" name="aCity">汕头市</a><a href="#" name="aCity">宿州市</a><a href="#" name="aCity">商洛市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-T" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>T</strong></span>
+                                    <span class="group"><a href="#" name="aCity">天津市</a><a href="#" name="aCity">太原市</a><a href="#" name="aCity">泰安市</a><a href="#" name="aCity">台州市</a><a href="#" name="aCity">唐山市</a><a href="#" name="aCity">泰州市</a><a href="#" name="aCity">塔城市</a><a href="#" name="aCity">铜陵市</a><a href="#" name="aCity">铜川市</a><a href="#" name="aCity">台北市</a><a href="#" name="aCity">铜仁市</a><a href="#" name="aCity">吐鲁番市</a><a href="#" name="aCity">天水市</a><a href="#" name="aCity">通辽市</a><a href="#" name="aCity">铁岭市</a><a href="#" name="aCity">通化市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-W" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>W</strong></span>
+                                    <span class="group"><a href="#" name="aCity">武汉市</a><a href="#" name="aCity">无锡市</a><a href="#" name="aCity">温州市</a><a href="#" name="aCity">芜湖市</a><a href="#" name="aCity">威海市</a><a href="#" name="aCity">潍坊市</a><a href="#" name="aCity">乌鲁木齐市</a><a href="#" name="aCity">梧州市</a><a href="#" name="aCity">吴忠市</a><a href="#" name="aCity">武威市</a><a href="#" name="aCity">渭南市</a><a href="#" name="aCity">乌兰察布市</a><a href="#" name="aCity">文山市</a><a href="#" name="aCity">乌海市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-X" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>X</strong></span>
+                                    <span class="group"><a href="#" name="aCity">西安市</a><a href="#" name="aCity">厦门市</a><a href="#" name="aCity">徐州市</a><a href="#" name="aCity">襄阳市</a><a href="#" name="aCity">西宁市</a><a href="#" name="aCity">孝感市</a><a href="#" name="aCity">西双版纳市</a><a href="#" name="aCity">新余市</a><a href="#" name="aCity">湘潭市</a><a href="#" name="aCity">锡林郭勒市</a><a href="#" name="aCity">兴安市</a><a href="#" name="aCity">邢台市</a><a href="#" name="aCity">新乡市</a><a href="#" name="aCity">湘西市</a><a href="#" name="aCity">忻州市</a><a href="#" name="aCity">咸阳市</a><a href="#" name="aCity">宣城市</a><a href="#" name="aCity">香港市</a><a href="#" name="aCity">信阳市</a><a href="#" name="aCity">咸宁市</a><a href="#" name="aCity">许昌市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-Y" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>Y</strong></span>
+                                    <span class="group"><a href="#" name="aCity">扬州市</a><a href="#" name="aCity">烟台市</a><a href="#" name="aCity">盐城市</a><a href="#" name="aCity">运城市</a><a href="#" name="aCity">义乌市</a><a href="#" name="aCity">岳阳市</a><a href="#" name="aCity">宜昌市</a><a href="#" name="aCity">玉林市</a><a href="#" name="aCity">银川市</a><a href="#" name="aCity">鹰潭市</a><a href="#" name="aCity">雅安市</a><a href="#" name="aCity">伊犁市</a><a href="#" name="aCity">玉树市</a><a href="#" name="aCity">宜春市</a><a href="#" name="aCity">营口市</a><a href="#" name="aCity">永州市</a><a href="#" name="aCity">宜宾市</a><a href="#" name="aCity">益阳市</a><a href="#" name="aCity">玉溪市</a><a href="#" name="aCity">阳泉市</a><a href="#" name="aCity">延安市</a><a href="#" name="aCity">榆林市</a><a href="#" name="aCity">云浮市</a><a href="#" name="aCity">延边市</a><a href="#" name="aCity">阳江市</a><a href="#" name="aCity">伊春市</a></span>
+                                </p>
+                            </li>
+                            <li id="city-Z" class="">
+                                <p class="cf">
+                                    <span class="label"><strong>Z</strong></span>
+                                    <span class="group"><a href="#" name="aCity" >郑州市</a><a href="#" name="aCity">镇江市</a><a href="#" name="aCity">中山市</a><a href="#" name="aCity">淄博市</a><a href="#" name="aCity">珠海市</a><a href="#" name="aCity">遵义市</a><a href="#" name="aCity">株洲市</a><a href="#" name="aCity">自贡市</a><a href="#" name="aCity">舟山市</a><a href="#" name="aCity">湛江市</a><a href="#" name="aCity">肇庆市</a><a href="#" name="aCity">漳州市</a><a href="#" name="aCity">张掖市</a><a href="#" name="aCity">昭通市</a><a href="#" name="aCity">张家界市</a><a href="#" name="aCity">周口市</a><a href="#" name="aCity">驻马店市</a><a href="#" name="aCity">张家口市</a><a href="#" name="aCity">资阳市</a><a href="#" name="aCity">中卫市</a><a href="#" name="aCity">枣庄市</a></span>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="citybox-shortcuts" id="indicator">
+            <a citybox-link href="#city-A">A</a>
+            <a citybox-link href="#city-B">B</a>
+            <a citybox-link href="#city-C">C</a>
+            <a citybox-link href="#city-D">D</a>
+            <a citybox-link href="#city-E">E</a>
+            <a citybox-link href="#city-F">F</a>
+            <a citybox-link href="#city-G">G</a>
+            <a citybox-link href="#city-H">H</a>
+            <a citybox-link href="#city-I">I</a>
+            <a citybox-link href="#city-J">J</a>
+            <a citybox-link href="#city-K">K</a>
+            <a citybox-link href="#city-L">L</a>
+            <a citybox-link href="#city-M">M</a>
+            <a citybox-link href="#city-N">N</a>
+            <a citybox-link href="#city-O">O</a>
+            <a citybox-link href="#city-P">P</a>
+            <a citybox-link href="#city-Q">Q</a>
+            <a citybox-link href="#city-R">R</a>
+            <a citybox-link href="#city-S">S</a>
+            <a citybox-link href="#city-T">T</a>
+            <a citybox-link href="#city-U">U</a>
+            <a citybox-link href="#city-V">V</a>
+            <a citybox-link href="#city-W">W</a>
+            <a citybox-link href="#city-X">X</a>
+            <a citybox-link href="#city-Y">Y</a>
+            <a citybox-link href="#city-Z">Z</a>
+        </div>
+<script type="text/javascript">
+	$("a[name='aCity']").click(function(){
+		var message = '确定要切换到【'+$(this).text()+'】吗?' ;
+		if(window.confirm(message)){
+			doSwitch($(this).text());
+		}else{
+			return false ;
+		}
+	});
+</script>

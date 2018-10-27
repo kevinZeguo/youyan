@@ -1,0 +1,19 @@
+@charset "utf-8";
+body{background:#f3f3f3;}
+/*主体*/
+.center{width:1200px;height:500px;margin:0 auto;}
+.center .regist{margin-top:50px;border-bottom:2px solid #5da903;font-size:16px;font-family:"方正细圆";}
+.center .regist span{display:block;width:100%;padding:10px 0 10px 10px ;font-weight:bold;}
+.center .center_top{width:955px;height:auto;margin:40px auto 0;}
+.center .center_top table tr td{height:55px;font-size:16px;font-family:"方正细圆";color:#444;}
+.center .center_top table tr .td{width:150px;height:40px;text-align:right;color:#444;}
+.center .center_top table tr td input[type="text"],.center .center_top table tr td input[type="password"]{width:260px;height:35px;border:1px solid #90c424;padding-left:5px;}
+.center .center_top table tr td input[type="button"]{width:125px;height:35px;border:1px solid #a9ddef;background-color:#e7f9ff;vertical-align: middle;float:none;font-size:14px;color:#666;}
+.center .center_top table tr .go a{display:block;margin-left:145px;color:#505050;text-decoration:underline;}
+.center .center_top table tr #yz input[type="text"]{width:123px;margin-right:10px;}
+.center .center_top table tr td label{color:#e4393c;padding-left:5px;vertical-align: middle;}
+.center .center_top table tr .tj a{display:block;width:263px;height:35px;line-height:35px;background-color:#93c940;font-family:"方正细圆";text-align:center;color:#fff;border-radius:5px;}
+.center .center_top table tr td .lab{color: #333;font-size: 12px;}
+.center .center_top table tr td .lab a{display:inline-block;color:#38f;}
+.center .center_top table tr td .lab input[type="checkbox"]{float:none;vertical-align: middle;width: 14px;height: 14px;margin-right:6px;}
+

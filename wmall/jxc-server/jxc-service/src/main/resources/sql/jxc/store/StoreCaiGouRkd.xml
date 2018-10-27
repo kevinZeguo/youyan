@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.claude.wmall.jxc.dao.store.StoreCaiGouRkdDao">
+    <resultMap id="BaseResultMap" type="com.claude.wmall.jxc.domain.store.StoreCaiGouRkd">
+        <id column="BANHAO" property="banhao" jdbcType="BIGINT"/>
+        <result column="DANJUBH" property="danjubh" jdbcType="VARCHAR"/>
+        <result column="KUCHUNLX" property="kuchunlx" jdbcType="VARCHAR"/>
+        <result column="GONGYINGS" property="gongyings" jdbcType="VARCHAR"/>
+        <result column="BUMEN" property="bumen" jdbcType="VARCHAR"/>
+        <result column="RUKUCK" property="rukuck" jdbcType="VARCHAR"/>
+        <result column="BAOGUANY" property="baoguany" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    sc.BANHAO, sc.DANJUBH, sc.KUCHUNLX, sc.GONGYINGS, sc.BUMEN, sc.RUKUCK, sc.BAOGUANY
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from STORE_CAIGOURKD
+        where BANHAO = #{banhao,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from STORE_CAIGOURKD
+    where BANHAO = #{banhao,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.claude.wmall.jxc.domain.store.StoreCaiGouRkd">
+        insert into STORE_CAIGOURKD (BANHAO, DANJUBH, KUCHUNLX, GONGYINGS, BUMEN, RUKUCK, BAOGUANY)
+        values (#{banhao}, #{danjubh,jdbcType=VARCHAR}, #{kuchunlx,jdbcType=VARCHAR},
+      #{gongyings,jdbcType=VARCHAR}, #{bumen,jdbcType=VARCHAR}, #{rukuck,jdbcType=VARCHAR}, 
+      #{baoguany,jdbcType=VARCHAR})
+  </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.claude.wmall.jxc.domain.store.StoreCaiGouRkd">
+        update STORE_CAIGOURKD
+        <set>
+            <if test="danjubh != null">
+                DANJUBH = #{danjubh,jdbcType=VARCHAR},
+            </if>
+            <if test="kuchunlx != null">
+                KUCHUNLX = #{kuchunlx,jdbcType=VARCHAR},
+            </if>
+            <if test="gongyings != null">
+                GONGYINGS = #{gongyings,jdbcType=VARCHAR},
+            </if>
+            <if test="bumen != null">
+                BUMEN = #{bumen,jdbcType=VARCHAR},
+            </if>
+            <if test="rukuck != null">
+                RUKUCK = #{rukuck,jdbcType=VARCHAR},
+            </if>
+            <if test="baoguany != null">
+                BAOGUANY = #{baoguany,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where BANHAO = #{banhao,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.claude.wmall.jxc.domain.store.StoreCaiGouRkd">
+    update STORE_CAIGOURKD
+    set DANJUBH = #{danjubh,jdbcType=VARCHAR},
+      KUCHUNLX = #{kuchunlx,jdbcType=VARCHAR},
+      GONGYINGS = #{gongyings,jdbcType=VARCHAR},
+      BUMEN = #{bumen,jdbcType=VARCHAR},
+      RUKUCK = #{rukuck,jdbcType=VARCHAR},
+      BAOGUANY = #{baoguany,jdbcType=VARCHAR}
+    where BANHAO = #{banhao,jdbcType=BIGINT}
+  </update>
+
+    <sql id="CaiGouRkd_Column_List">
+        sc.BANHAO banhao, sc.DANJUBH danjubh, sc.KUCHUNLX kuchunlx, sc.GONGYINGS gongyings, sc.BUMEN bumen,
+        sc.RUKUCK rukuck, sc.BAOGUANY baoguany
+    </sql>
+
+    <select id="selectListByPage" parameterType="com.claude.wmall.jxc.domain.store.StoreCaiGouRkdQuery"
+            resultType="com.claude.wmall.jxc.domain.store.StoreCaiGouRkd">
+        select DISTINCT
+        <include refid="CaiGouRkd_Column_List"/>
+        ,
+        sk.DANJURQ danjurq,sk.BEIZHU beizhu,sk.SHENHER shenher,sk.SHENHESJ shenhesj,sk.SHENHEBJ shenhebj,
+        sk.FANSHENR fanshenr,sk.FANSHENSJ fanshensj,sk.RUKULX rukulx,sk.ZHUANHUAZT zhuanhuazt,sk.KUDANLX kudanlx
+        from STORE_CAIGOURKD sc , STORE_KUDAN sk
+        left join STORE_CHURUKLS ls on ls.DANJUBH = sk.DANJUBH
+        where sc.DANJUBH = sk.DANJUBH
+        <if test="danjubh !=null and danjubh != ''">
+            and sc.DANJUBH = #{danjubh}
+        </if>
+        <if test="rukurqStart !=null and rukurqStart != ''">
+            <![CDATA[  and sk.DANJURQ >= #{rukurqStart} ]]>
+        </if>
+        <if test="rukurqEnd!=null and rukurqEnd != ''">
+            <![CDATA[  and sk.DANJURQ <= #{rukurqEnd} ]]>
+        </if>
+        <if test="chanpinbh!=null and chanpinbh != ''">
+            and ls.CHANPINBH = #{chanpinbh}
+        </if>
+        <if test="chanpinmc!=null and chanpinmc!=''">
+            and ls.CHANPINMC = #{chanpinmc}
+        </if>
+
+        <if test="rukuck!=null and rukuck != ''">
+            and sc.RUKUCK = #{rukuck}
+        </if>
+        <if test="baoguany!=null and baoguany != ''">
+            and sc.BAOGUANY = #{baoguany}
+        </if>
+        <if test="gongyings!=null and gongyings != ''">
+            and sc.GONGYINGS = #{gongyings}
+        </if>
+        <if test="bumen!=null and bumen != ''">
+            and sc.BUMEN = #{bumen}
+        </if>
+        <if test="shenhebj == 10">
+            and sk.SHENHEBJ = 0
+        </if>
+        <if test="shenhebj != null and shenhebj != 10">
+            and sk.SHENHEBJ = #{shenhebj}
+        </if>
+        order by sc.DANJUBH
+    </select>
+    <select id="selectByDanjubh" parameterType="java.lang.String"
+            resultType="com.claude.wmall.jxc.domain.store.StoreCaiGouRkd">
+        select DISTINCT
+        <include refid="CaiGouRkd_Column_List"/>
+        ,
+        sk.DANJURQ danjurq,sk.BEIZHU beizhu,sk.SHENHER shenher,sk.SHENHESJ shenhesj,sk.SHENHEBJ shenhebj,
+        sk.FANSHENR fanshenr,sk.FANSHENSJ fanshensj,sk.RUKULX rukulx,sk.ZHUANHUAZT zhuanhuazt,sk.KUDANLX kudanlx
+        from STORE_CAIGOURKD sc
+        left join STORE_KUDAN sk on sc.DANJUBH = sk.DANJUBH
+        where sc.DANJUBH = #{danjubh}
+    </select>
+
+    <delete id="deleteByDanjubh" parameterType="java.lang.String">
+        delete from STORE_CAIGOURKD where  DANJUBH = #{danjubh,jdbcType=VARCHAR}
+    </delete>
+
+    <update id="updateByDanjubh" parameterType="com.claude.wmall.jxc.domain.store.StoreCaiGouRkd">
+        update STORE_CAIGOURKD
+        set
+          KUCHUNLX = #{kuchunlx,jdbcType=VARCHAR},
+          GONGYINGS = #{gongyings,jdbcType=VARCHAR},
+          BUMEN = #{bumen,jdbcType=VARCHAR},
+          RUKUCK = #{rukuck,jdbcType=VARCHAR},
+          BAOGUANY = #{baoguany,jdbcType=VARCHAR}
+        where  DANJUBH = #{danjubh,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

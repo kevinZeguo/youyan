@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta name="apple-touch-fullscreen" content="yes">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">	
+		<meta name="keywords" content="微信,微信公众平台" />
+		<meta name="description" content="微信公众平台自助引擎" />	
+<title>结算</title>
+<link rel="stylesheet" type="text/css" href="newcss/shopping.css" />
+<link rel="stylesheet" type="text/css" href="newcss/global.css" />
+<link rel="stylesheet" type="text/css" href="newcss/css1.css" />
+<link rel="stylesheet" href="font/iconfont.css">
+<script type="text/javascript" src="js/alert2.js"></script>
+<link rel="stylesheet" type="text/css" href="newcss/style.css" />
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"> </script>
+<script type="text/javascript" src="../js/jsConfig.js"></script>
+<script  type="text/javascript" src='../js/common/util.js'></script>
+<script type="text/javascript" src="js/jquerysession.js"></script>
+<script type="text/javascript" src="../scripts/wechart/cart_buy.js"></script>
+<style>
+	.z_list{
+	width: 6.4rem;
+	display: flex;
+	background: #0281C6;
+	left:0;
+	bottom:0;
+	position: fixed;
+}
+.z_list li{
+	flex:1;
+	text-align: center;
+}
+.z_list li a{
+	display: block;
+	font-size: 0.22rem;
+}
+.z_list li i{
+	display: inline-block;
+    width: 0.8rem;
+    height: 0.65rem;
+    padding-top: 0.15rem;
+    font-size: 0.5rem;
+}
+#z_foot .li i{
+    color: #fff;
+    height: 0.36rem;
+    padding-top: 0rem;
+    font-size: 0.4rem;
+    margin-bottom: 0.2rem;
+}
+.z_list li span{
+	color: #fff;
+	display:block;
+	font-size: 0.22rem;
+	font-weight: 600;
+}   
+.fotr{
+	width:100%;
+	height:50px;
+	position: fixed;
+	bottom:0;
+	background:#0281C6;
+	left:0;
+}
+.fotr ul{
+	width:100%;
+	display:flex;
+}
+.fotr ul li{
+	flex:1;
+	text-align:center;
+}
+.fotr ul li a{
+	display:block;
+	color:#fff;
+	margin-top:5px;
+	font-size: 12px;
+}
+.fotr ul li a span{
+	display: block;
+    height: 26px;
+    overflow:hidden;
+}
+.fotr ul li i{
+	padding-bottom:2px;
+	font-size:18px;
+	display:block;
+	
+}     
+</style>
+</head>
+<body  ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false" 
+ onbeforecopy="return false" oncopy=document.selection.empty() onselect=document.selection.empty()>
+<!--顶部组件--><!--
+	<div class="tbar">
+			<h1 style="margin-top:8px;"><img src="images/zlogo_03.png"  style="margin-left: 0.5rem;width: 0.7rem;height:0.6rem;float:left;"/></h1>
+			  <a href="javascript:;" class="handle">
+				<i class="iconfont" style="font-size:30px;">&#xe604;</i>
+			</a>
+			<div class="diag_box">
+    		<div class="diag_fix"></div>
+    		<div class="diag_content">
+    			<a href="javascript:;">
+    				<i class="iconfont">&#xe61c;</i>首&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;页
+    			</a>
+    			<a href="javascript:;">
+    				<i class="iconfont" >&#xe625;</i>酵素知识
+    			</a>
+    			<a href="javascript:;">
+    				<i class="iconfont" style="font-size:30px;" id="z_guanyu">&#xe61a;</i>关于优研
+    			</a>
+    			<a href="javascript:;">
+    				<i class="iconfont" style="font-size:24px;    margin-bottom: 5px;">&#xe61f;</i>优研百科
+    			</a>
+    		</div>
+    	</div>
+		</div>	
+	--><form id="form_buy">
+	<div class="main_1"  style="color: #3c3c3c;">
+	<div class="main_l">
+		<div class="h_l fl"></div>
+		<div class="ma_p fl" id="areacode">
+			<!--<p><label>[默认]</label>大师的3傲了盛大手机的</p>
+			<span>张志强<i>18247491152</i></span>
+		-->
+		<span><a onclick="addReceAddress();" style="font-size: 15px;">添加新的收货地址</a></span>
+		</div>
+		<div class="icon fl">
+			<i style="font-size:20px;color:#333;">></i>
+		</div>
+	</div>
+	<div id="divProducts">
+<!-- 	<div class="main_c">
+		<div class="img fl">
+			<a href="#"><img src="images/pro_01.jpg"></a>
+		</div>
+		<div class="pro fl">
+			<h3>优研&nbsp;每天一小口&nbsp;边吃边瘦&nbsp;</h3>
+			<p>口味：香蕉味</p>
+			<h2>数量X2</h2>
+			<h4 class="zshow">￥0.0</h4>
+		</div>
+		 -->
+	</div>
+
+	</div>
+<!--	<div class="main_b"  id="free" >
+		<h3 class="fl">赠送产品：</h3>
+		<div class="pro_b fl">
+			<a href="#">
+				<img src="images/pro_01.jpg">
+			</a>
+		</div>
+		<i class="fl">护肝源一盒装：<span>x&nbsp;1</span></i>		
+	</div>-->
+	<div class="main_t" style="min-height: 53px;">
+		<h3 class="fl" style="padding-top: 18px;">配送方式</h3>
+		<h3 class="fl fr" style="padding-top: 18px;">商家配送</h3>
+	</div>
+	<div class="main_t">
+		<ul>
+			<!--<li id="open">优粉卡<span class="fr">展开<img src="images/xia_1.png" style="width:20px;height:20px;float: right;"></span>
+				
+			</li>
+			<li id="hide" class="op" >
+				 <ul >
+					<li><strong>优惠卡卡号：</strong><span>0</span></li>
+					<li><strong>优惠卡金额：</strong><span>0</span></li>
+					<li><strong>优惠卡有效期：</strong><span>0</span></li>
+				</ul> 
+				<table>
+					<thead>
+						<tr>
+							<th width="12%"></th>
+							<th width="20%">卡号</th>
+							<th width="18%">金额</th>
+							<th width="18%">余额</th>
+							<th width="22%">有效期</th>
+						</tr>
+					</thead>
+					<tbody  id="cardTr">
+						<tr>
+							<td><input type="checkbox" name="cbCard" onclick="checkCard(this)"></td>
+							<td>123456789</td>
+							<td>1000</td>
+							<td>1000</td>
+							<td>2016年5月5日至2016年5月5日</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" name="cbCard" onclick="checkCard(this)"></td>
+							<td>123456789</td>
+							<td>1000</td>
+							<td>1000</td>
+							<td>2016年5月5日至2016年5月5日</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" name="cbCard" onclick="checkCard(this)"></td>
+							<td>123456789</td>
+							<td>1000</td>
+							<td>1000</td>
+							<td>2016年5月5日至2016年5月5日</td>
+						</tr>
+					</tbody>
+				</table>
+			</li>
+			--><li id="opened" id="divCoupon">优惠券<span class="fr">展开<img src="images/xia_1.png" style="width:20px;height:20px;float: right;"></span>
+				
+			</li>
+			<li id="hide" class="ope" id="divCouponDetail">
+				<table width="100%">
+					<thead>
+						<tr>
+							<th width="20%"></th>
+							<th width="40%">我的券</th>
+							<th width="40%">优惠券金额</th>
+						</tr>
+					</thead>
+					<tbody id="couponTr">
+						<!--<tr>
+							<td><input type="checkbox"  name="cbCoupon" onclick="checkCoupon(this)"></td>
+							<td>123456789</td>
+							<td>1000</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox"  name="cbCoupon" onclick="checkCoupon(this)"></td>
+							<td>123456789</td>
+							<td>1000</td>
+						</tr>
+					--></tbody>
+				</table>
+				<input type="hidden"" name="coupon" id="coupon">
+			</li>
+		</ul>
+	</div>
+	<div class="main_t">
+		<h3>商品金额<span class="fr zl" id="proTotal2">￥0.0</span></h3>
+		<h3 style="margin-bottom: 0.2rem;">运费<span  class="fr zl">+￥<span id="yf">0</span></span></h3>
+	</div>
+	<!--
+	<div class="main_s">
+		<p>订单备注（限45字，请勿填写发票，配送方法的信息）</p>
+	</div>
+	--><div class="main_f">
+		<h2>总价：<span >￥</span><span id="zj">0.00</span>（含运费）</h2>
+		<a id="tjbut" href="#">立即支付</a>
+		    <!--实际支付的金额-->
+			<input type="hidden" id="payTotal" name="payTotal">
+			<!--用卡支付的金额-->
+			<input type="hidden" id="cardMoney" name="cardMoney">
+			<!--不用卡支付的金额-->
+			<input type="hidden" id="nocardMoney" name="nocardMoney">
+			
+			<!--实际需要支付的金额  不选购物卡就是零售价，选了购物卡就是原价-->
+			<input type="hidden" id="payReal" name="payReal">
+			<!--零售价-->
+			<input type="hidden" id="payStandardPrice" name="payStandardPrice">
+			<!--原价-->
+			<input type="hidden" id="payProductPrice" name="payProductPrice">
+			<!--实际需要微信支付的金额-->
+			<input type="hidden" id="payRealWX" name="payRealWX">
+			<!--实际需要购物卡支付的金额-->
+			<input type="hidden" id="payRealCard" name="payRealCard">
+			<!--实际需要优惠券支付的金额-->
+			<input type="hidden" id="payRealCoupon" name="payRealCoupon">
+			<!--购物卡卡号-->
+			<input type="hidden" id="cardIds" name="cardIds">
+			<!--优惠券卡号-->
+			<input type="hidden" id="couponIds" name="couponIds">
+	
+	</div>
+		<!--底部工具条-->
+		<!--<div class="toolbarspace"></div>
+		<div class="toolbar">
+			<a href="login.html;"><i class="iconfont" id="z_shouye">&#xe61c;</i>首页</a>
+            <a href="classify.html"><i class="iconfont">&#xe60c;</i>分类</a>
+            <a href="carts.html;"><i class="iconfont" id="z_gwc">&#xe620;</i>购物车</a>
+            <a href="snsapi_userinfo.html"><i class="iconfont" id="z_grzx">&#xe621;</i>个人中心</a>
+			  
+			<a href="JavaScript:index();"><i class="iconfont" id="z_shouye">&#xe61c;</i>首页</a>
+            <a href="classify.html"><i class="iconfont">&#xe60c;</i>分类</a>
+            <a href="JavaScript:car();"><i class="iconfont" id="z_gwc">&#xe620;</i>购物车</a>
+            <a href="personalCenter.html"><i class="iconfont" id="z_grzx">&#xe621;</i>个人中心</a> 
+    	</div>
+	-->
+	<!--<ul class="z_list z_indlist" id="z_foot">
+		<li class="li"><a href="index.html"><i class="iconfont iconfont1">&#xe600;</i><span>首页</span></a></li>
+		<li class="li"><a href="myinfo.html"><i class="iconfont iconfont1" style="font-size:0.42rem;">&#xe615;</i><span>我的信息</span></a></li>
+		<li class="li" id="sa"> <a href="orderList.html"><i class="iconfont iconfont1" style="font-size:0.38rem;margin:0.05rem 0 0.15rem 0;">&#xe614;</i><span>我的订单</span></a></li>
+		<li class="li"><a href="carts.html"><i class="iconfont iconfont1">&#xe607;</i><span>购物车</span></a></li>
+	    <li class="li"><a href="javascript:share();"><i class="iconfont iconfont1" style="font-size:0.42rem;margin:-0.03rem 0 0.19rem 0;">&#xe603;</i><span>分享</span></a></li>
+	</ul>
+	-->
+		<div class="fotr">
+				<ul>
+					<li>
+						<a href="login.html">
+							<span>
+								<i class="iconfont iconfont1">&#xe600;</i>
+							</span>	
+							首页
+						</a>
+					</li>
+					<li>
+						<a href="myinfo.html">
+							<span>
+								<i class="iconfont iconfont1" style="font-size:20px;">&#xe615;</i>
+							</span>	
+							我的信息
+						</a>
+					</li>
+					<li id="sa">
+					 	<a href="orderList.html">
+						 	<span>
+						 		<i class="iconfont iconfont1" style="">&#xe614;</i>
+						 	</span>
+					 		我的订单
+					 	</a>
+					</li>
+					<li>
+						<a href="carts.html">
+							<span>
+								<i class="iconfont iconfont1" style="font-size:21 mpx;">&#xe607;</i>
+							</span>
+							购物车
+						</a>
+					</li>
+				    <li>
+				    	<a href="javascript:share();">
+					    	<span>
+					    		<i class="iconfont iconfont1" style="font-size:21px;" >&#xe603;</i>
+					    	</span>	
+				    		分享
+				    	</a>
+				    </li>
+				</ul>
+			</div>
+	</div>
+	</form>
+    	<script type="text/javascript">
+    	//展开弹出层
+    		$(".handle").on('touchstart',function(){
+    			$(".diag_box").show();
+    		})    		
+    	//关闭弹出层
+    		$(".diag_fix").on('touchstart',function(){
+    			$(this).parent('.diag_box').hide();
+    		})
+    		$(".main_1").on('touchstart',function(){
+    			//alert(1);
+    			$(".diag_box").hide();
+    		}) 
+    	</script>	
+<script type="text/javascript" src="js/my.js"></script>
+</body>
+</html>

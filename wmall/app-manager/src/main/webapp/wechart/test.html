@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title></title>
+<link rel="stylesheet" href="newcss/css.css" type="text/css" />
+<link rel="stylesheet" href="newcss/starter.css" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+
+<script type="text/javascript">
+
+
+$(document).ready(function() {
+	
+	var id = $(location).attr('href').split('?')[1].split('&')[0].split('=')[1];
+
+	//alert(id);
+	if(id==1){
+		$("#pp").text("销售统计");
+	}else{
+		$("#pp").text("我的销售额");
+	}
+
+
+	
+	
+	
+	$.ajax({
+		url : '../person/todayMySale.do',
+		data : '',
+		datatype : 'json',
+		//async :false,
+		success : function(data) {
+			var obj = data.status;
+			if(obj!=null && obj!=""){
+				$("#todayMySale").html(obj);
+			}else{
+				 $("#todaymySale").hide();
+			}
+			
+		}
+	});
+
+
+	$.ajax({
+		url : '../person/toMouthMySale.do',
+		data : '',
+		datatype : 'json',
+		//async :false,
+		success : function(data) {
+			var obj = data.status;
+			if(obj!=null && obj!=""){
+				$("#toMouthMySale").html(obj);
+			}else{
+				 $("#tomouthMySale").hide();
+			}
+			
+		}
+	});
+
+	$.ajax({
+		url : '../person/yearSale.do',
+		data : '',
+		datatype : 'json',
+		//async :false,
+		success : function(data) {
+			var obj = data.status;
+			
+			if(obj!=null && obj!=""){
+				$("#yearSale").html(obj);
+			}else{
+				 $("#yearSale").hide();
+			}
+		}
+	});
+
+					
+			
+					
+					
+});
+</script>
+</head>
+<body>
+	<div class="center">
+	
+	     	<p id="pp" style="border:none;"></p>
+			
+			<!--今日销售额或者会员累计消费额  -->
+		     <div class="center_c dd"  id="todaymySale" >
+			     <div class="c_l">
+				<span id="todayMySale"></span>
+			     </div>
+			</div>
+			
+			<!-- 本月销售额：   -->
+		    <div class="center_c dd"   id="tomouthMySale">
+			  <div class="c_l">
+				<span id="toMouthMySale"></span>
+			</div>
+            	</div>
+                
+                
+                <!--全年累计销售额 : -->
+            <div class="center_c dd">
+			   <div class="c_l">
+				<span id="yearSale"></span>
+			</div>
+			</div>
+             	
+             	
+  
+	
+			<div class="img_b">
+			<img src="images/log_01.png">
+		</div>
+		</div>
+
+	
+	
+	<div class="footer">
+		
+	</div>
+</body>
+</html>

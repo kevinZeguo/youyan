@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="-1"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport"
+	content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title></title>
+
+<link rel="stylesheet" type="text/css" href="js/spinners.css" />
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<style>
+	.load_c{
+		width:100%;
+		height:100%;
+		background:#000;
+		opacity:0.3;
+		position:fixed;
+		top:0;
+		left:0;
+		z-index:1000;
+		overflow: hidden;
+	}
+	.load_t{
+		width:100%;
+		height:100px;
+		
+		position: absolute;
+		top:40%;
+		left:17%;
+		vertical-align: middle;
+	}
+	.load_t .dimg{
+		margin-right:15px;
+		width:30px;
+		float:left;
+		vertical-align: middle;
+	}
+	.load_t .dimg img{
+		margin-top:9px;
+		width:40px;
+		height:40px;
+	}
+	.load_t p{
+		float:left;
+		margin-right:10px;
+	}
+</style>
+<script>
+	$(function(){
+		$('a').click(function(){
+			alert(1);
+			show();
+			
+		})
+		/*$('body').click(function(){
+			alert(1);
+			hide();
+			
+		})*/
+	});
+	function hide(){ 
+		$('.load_c').hide();
+		$('.load_t').hide();
+	}
+	function show(){
+		$('body').append('<div class="load_c"></div><div class="load_t"><div class="dimg"><img src="images/load.gif"></div><p>数据正在加载请稍等......</p></div>')
+	}
+</script>
+</head>
+<body>
+	<!--<div class="load_c">
+		
+	</div>
+	<div class="load_t">
+		<div class="spinner-loader"> Loading… </div>
+		<p>数据正在加载请稍等......</p>
+	</div>  -->
+	<a href="#">aa</a>
+	
+</body>
+</html>

@@ -1,0 +1,53 @@
+*{-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;}
+*:before,*:after{-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;}
+html{-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
+body{font-family:"宋体";font-size:12px;line-height:1.5;color:#333;background:#fff;width:100%;margin:0px auto;}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,p,blockquote,th,td{padding:0;margin:0;}
+body{margin-bottom:80px;}
+em,i,em,b,strong{font-style:normal;font-weight:normal}
+a{color:#337ab7; text-decoration:none; background-color:transparent;}
+a:active,a:hover{outline: 0;}
+img{border: 0;vertical-align: middle;}
+hr{height: 0; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box;margin-top:16px;margin-bottom:16px;border:0;border-top:1px solid #eee;}
+button,input,optgroup,select,textarea{margin: 0; font: inherit; color: inherit;}
+button{overflow: visible;}
+button,select{text-transform: none;}
+button::-moz-focus-inner,input::-moz-focus-inner{padding: 0; border: 0;}
+input{line-height: normal;}
+input[type="checkbox"],input[type="radio"]{-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;}
+input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{height: auto;}
+input[type="search"]{-webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; -webkit-appearance: textfield;}
+input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance: none;}
+textarea{overflow: auto;}
+table{border-spacing: 0; border-collapse: collapse;}
+input,button,select,textarea{font-family: inherit; font-size: inherit; line-height: inherit;}
+h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6{font-family:inherit;font-weight:500;line-height:1.1;color:inherit;margin-top: 10px;margin-bottom: 10px;}
+h1,.h1{font-size: 36px;}h2,.h2{font-size: 30px;}h3,.h3{font-size: 24px;}h4,.h4{font-size: 18px;}h5,.h5{font-size: 14px;}h6,.h6{font-size: 12px;}
+ul,ol,li{list-style-type:none;}
+/******************alert弹出框**********************/
+.t{width:100%;height:100%;position:fixed;top:0;background:#000;opacity:0.3;z-index:100;}
+.t_c{width:140px;min-height:80px;background:#fff;
+		border-radius:7px;box-shadow: 1px 1px 1px #000;
+		position:absolute;;top:50%;left:50%;margin-left:-70px;margin-top:-45px;z-index:1001;
+	}
+.t_c p{min-height:60px;text-align:center;padding-top:10px;line-height:15px;margin-bottom:5px;}
+.t_c a{display:block;padding:5px 0;text-align:center;background:#1aa29f;color:#fff;width:90%;margin:0 auto;border-radius:4px;margin-bottom:8px;}
+
+/******************字体图标**********************/
+@font-face {
+  font-family: 'iconfont';
+  src: url('//at.alicdn.com/t/font_1464941866_3706422.eot'); /* IE9*/
+  src: url('//at.alicdn.com/t/font_1464941866_3706422.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('//at.alicdn.com/t/font_1464941866_3706422.woff') format('woff'), /* chrome、firefox */
+  url('//at.alicdn.com/t/font_1464941866_3706422.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('//at.alicdn.com/t/font_1464941866_3706422.svg#iconfont') format('svg'); /* iOS 4.1- */
+
+.iconfont{
+    font-family:"iconfont" !important;
+    font-size:16px;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+                    

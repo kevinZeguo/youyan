@@ -1,0 +1,422 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="keywords" content="微信,微信公众平台" />
+<meta name="description" content="微信公众平台自助引擎" />
+<title>商城首页</title>
+<link href="js/93_dowebok/css/owl.carousel.css" rel="stylesheet">
+<link href="js/93_dowebok/css/owl.theme.css" rel="stylesheet">
+
+
+<link href="index/css/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script src="js/93_dowebok/js/owl.carousel.js"></script>
+<script type="text/javascript" src="js/jquery.accordion.js"></script>
+<script type="text/javascript" src="js/unslider.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.js"></script>
+<script type="text/javascript" src="js/jquery.jsoncookie.js"></script>
+<script type="text/javascript" src="js/json2.js"></script>
+<style>
+	#owl-demo{
+		position:relative;
+	}
+	.owl-pagination{
+		position:absolute;
+		top:80%;
+		left:40%;
+	}
+</style>
+<script type="text/javascript">
+var COOKIE_NAME = "Bind_Prod_List";
+var cookie_val = $.JSONCookie(COOKIE_NAME);//读取json格式cookie
+function GetQueryString(sProp)  
+{  
+    var re = new RegExp("[&,?]"+sProp + "=([^//&]*)", "i");  
+    var a = re.exec(document.location.search);  
+    if (a == null)  
+        return "";  
+    return a[1];  
+} 
+
+//获取url中的参数
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+    if (r != null) return unescape(r[2]); return null; //返回参数值
+}
+
+var username="";
+var customerId = "";
+$(document).ready(function(){	
+	username = GetQueryString("username");
+	if(username==null||username=='')
+	{
+		username=getUrlParam("username");
+	}
+	customerId = getUrlParam("customerId");
+	//判断用户是否已注册
+	/*
+	$.ajax({
+		url : "../orderHead/save.do",
+		data : {
+			orderSource : "3",
+			productIds : $("#hidProductid").val(),
+			productNums : $("#txtProductQuantity").val(),
+			productPrices : price
+		},
+		type : "POST",
+		dataType : "json",
+		async : false,
+		cache : false,
+		success : function(data) {
+			if (data.status !="") {// 如果校验失败
+				//
+				alert("订购成功");
+				var path = "../pay/aliPay.do?OrderNo="+data.status;  
+				$('#payForm').attr("action", path).submit();;  
+
+			} else {
+				alert("订购失败");
+			}
+		}
+	});
+	*/
+	
+	
+	$('.kuang_c label').click(function(){
+		$('.kuang').hide();
+		$('.kuang_c').hide();
+		
+	});
+
+	$('#ip').click(function(){
+		$('.kuang').hide();
+		$('.kuang_c').hide();
+	});
+	if(customerId != null&&customerId != ""){
+		$("#asd").hide();
+		$("#dsa").hide();
+	}
+	$.ajax({
+		type:"post",
+		url : 'getProducttypeList.do',
+		//async :false,
+		data : '',
+		datatype : 'json',
+		success : function(data) {
+			var obj = data.list;
+			$("#divCategory").html("");
+			$.each(obj, function (i, item) {
+				var html = "";
+				$.ajax({
+					type:"post",
+					url : 'get1ProductByType.do',
+					//async :false,
+					data : {productType:item.productTypeId},
+					datatype : 'json',
+					success : function(data2) {
+						var obj2 = data2.object;
+						html +='<div class="w pro_title">'+item.productTypeName+'</div>';
+						html +='     <div class="pro_box1">';
+						html +='        <div class="pic"><img src="../'+item.productTypeImg+'" alt=""></div>';
+						html +='         <div class="pbox1">';
+						html +='         <div class="pbox2">';
+						html +=' <div class="product_cart2">';
+						html +='         <div class="img"><a href="#"><img src="../productimg/'+obj2.productSimg+'" alt=""></a></div>';
+						html +='      </div>';
+						html +='      </div>';
+						// 产品
+						html +=' <div class="pbox2" style="height:100%;">                ';
+						html +='     <div class="product_cart2" style="height:100%;">    ';
+						html +='         <h4>'+obj2.productName+'</h4>                               ';
+						html +='         <h2>'+obj2.productDesc+'</h2>          ';
+						html +='         <p class="price">￥'+(obj2.standardPrice).toFixed(2)+'</p>                   ';
+						html +='         <p class="oldprice">原价:￥'+(obj2.productPrice).toFixed(2)+' 会员价:￥'+(obj2.standardPrice).toFixed(2)+'</p> ';
+						html +='         <div class="btnbox">                            ';
+						html +='             <ul>                                        ';
+						//因为所有产品都会展示出来，所以这里可以直接使用下面的加入购物车方法
+						html +='                 <li><a onclick="add('+obj2.productId+')" href="javascript:void(0);">立即购买</a></li>       ';
+						html +='                 <li><a onclick="add('+obj2.productId+')" href="javascript:void(0);">加入购物车</a></li>     ';
+						html +='             </ul>                                       ';
+						html +='         </div>                                          ';
+						html +='     </div>                                              ';
+						html +=' </div>                                                 ';
+						
+						html +='</div> ';
+						$("#divCategory").append(html);
+					},
+					error : function(XMLHttpRequest, textStatus, errorThrown) {
+					}
+				});
+				
+			})
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+	$.ajax({
+		type:"post",
+		url : 'listProduct.do',
+		//async :false,
+		data : '',
+		datatype : 'json',
+		success : function(data) {
+			var obj = data.list;
+			var html = "";
+			$.each(obj, function (i, item) {
+			    //html = "<li style='width:25%'><div class='line3'><a href='"+content.html?product_id=item.product_id+"'><i><img src='"+item.product_img+"'></i><span>"+item.product_name+"</span><em>"+item.product_price+"</em></a></div></li>";
+				//html += "<li style='width:25%'><div class='line3'><i><img src='../product/"+item.product_limg+"' onclick='go("+item.product_id+")'></i><span>"+item.product_name+"</span><em>"+item.product_price+"</em></div></li>";
+				//html +="<li style='width:46% ;padding-right:3%;'><a onclick='add("+item.product_id+")'><i><input type='hidden' id='code"+item.product_id+"' value='"+item.product_id+"'/><img id='img"+item.product_id+"' src='../productimg/"+item.product_limg+"' width='220'></i><span id='name"+item.product_id+"'>"+item.product_name+"</span><span>￥"+item.product_price+"&nbsp;销量：318件</span><span><img src='index/images/jiaru.jpg' width='140' height='24'></span></a></li>";
+				html +='<div class="pbox">';
+					html +='     <div class="product_cart">';
+					html +='         <div class="img"><a href="#"><img id="img'+item.product_id+'" src="../productimg/'+item.product_limg+'" alt=""></a></div>';
+					html +='         <h2 id="name'+item.product_id+'">'+item.product_name+'</h2>';
+					html +='         <p class="price">￥'+(item.standard_price).toFixed(2)+'</p>';
+					html +='         <p class="oldprice">原价:￥'+(item.product_price).toFixed(2)+'    会员价:￥'+(item.standard_price).toFixed(2)+'</p>';
+					html +='         <div class="btnbox">';
+					html +='             <ul>';
+					html +='                 <li><a onclick="add('+item.product_id+')" href="javascript:void(0);">立即购买</a></li>';
+					html +='                 <li><a onclick="add('+item.product_id+')" href="javascript:void(0);">加入购物车</a></li>';
+					html +='             </ul>';
+					html +='         </div>';
+					html +='     </div>';
+					html +=' </div>';
+					html +='<input type="hidden" id="code'+item.product_id+'" value="'+item.product_id+'"/>';
+					html +='<input type="hidden" id="price'+item.product_id+'" value="'+item.standard_price+'"/>';
+					html +='<input type="hidden" id="restNumber'+item.product_id+'" value="'+item.rest_number+'"/>';
+			})
+			$("#divProduct").append(html);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+	$('#owl-demo').owlCarousel({
+		items: 1,
+		autoPlay: true
+	});
+	
+	
+	
+	
+})
+
+function car(){
+	window.location="carts.html?username="+username+"&customerId="+customerId;
+}
+
+function re(){
+	window.location="registered.html?username="+username+"&customerId="+customerId;
+}
+function index(){
+	window.location="index.html?username="+username+"&customerId="+customerId;
+}
+
+
+function go(i){
+	location.href = "content.html?product_id="+i.toString();
+}
+
+function add(n){
+	var code1 = $("#restNumber"+n).val();
+	if(Number(code1) <= 0){
+		alert("没有库存，不允许购买。");
+		return;
+	}
+	var code = $("#code"+n).val();	
+	var name = $("#name"+n).html();
+	var sellprice = $("#price"+n).val();
+	var price = $("#price"+n).val();
+	
+	//价格异常
+	if(price==undefined)
+	{
+		alert("产品已下架，不允许购买。");
+		return;
+	}
+	var img = $("#img"+n).attr("src");
+    var num=1;
+	if (typeof (cookie_val.Product) == "undefined") {
+		cookie_val = { "Product": [{ "code": "" + code + "", "name": "" + name + "", "sellprice": "" + sellprice + "", "price": "" + price + "", "img": "" + img + "", "num": "" + 1 + "","restNumber":""+code1+""}] };
+        $.JSONCookie(COOKIE_NAME, cookie_val, { path: '/', expires: 1 });
+    }
+     if (!IsExistsInCookie(code)) {
+         var json = { "code": "" + code + "", "name": "" + name + "", "sellprice": "" + sellprice + "", "price": "" + price + "", "img": "" + img + "", "num": "" + 1 + "" ,"restNumber":""+code1+""};
+         cookie_val.Product.push(json); //添加
+         $.JSONCookie(COOKIE_NAME, cookie_val, { path: '/', expires: 1 });
+         alert("加入购物车成功");
+     }else{
+     	//修改
+     	alert("商品已加入购物车");
+     } 
+ 
+}
+function IsExistsInCookie(code) {
+    var flag = false;
+    for (var i = 0; i < cookie_val.Product.length; i++) {
+        var p = cookie_val.Product[i];
+        if (p.code == code ) {//存在
+            flag = true;
+            break;
+        }
+    }
+    return flag;
+}
+--></script>
+</head>
+
+<body ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false" onselectstart="return false" 
+ondragstart="return false" onbeforecopy="return false" oncopy=document.selection.empty() onselect=document.selection.empty()> 
+<body>
+    <div class="kuang" id="asd"></div>
+    <div class="kuang_c" id="dsa">
+    	<div class="img_t">
+    		<img src="index/images/zhu_01.jpg">
+    	</div>
+    	<div class="ip" id="ip">
+    		<a href="JavaScript:re();">立即注册</a>
+    	</div>
+    		<label><img src="index/images/cuo_01.jpg"></label>
+    	</div>
+    <div class="nav-bar">
+        <ul>
+            <li class="active"><a href="JavaScript:index();" class="nav01"><span></span>首页</a></li>
+            <li><a href="#" class="nav02"><span></span>分类</a></li>
+            <li><a href="JavaScript:car();" class="nav03"><span></span>购物车</a></li>
+            <li><a href="#" class="nav04"><span></span>我的</a></li>
+        </ul>
+    </div>
+
+    <div class="site_top">
+        <a href="#"><img src="index/images/logo.jpg" class="logo"></a>
+    </div>
+        <div class="site_nav">
+        <ul>
+            <li class="active"><a href="#">健康知识</a></li>
+            <li><a href="#">热销排行</a></li>
+            <li><a href="#">关于优研</a></li>
+        </ul>
+    </div>
+	<div class="mianc w product_pic">
+    	<div id="owl-demo" class="owl-carousel pic">
+			<a class="item"><img src="index/images/product.jpg" alt=""></a>
+			<a class="item"><img src="index/images/product.jpg" alt=""></a>
+			<a class="item"><img src="index/images/product.jpg" alt=""></a>
+		</div>
+	</div>
+	    <div class="w product_pic" style="margin-bottom:0px;">
+        <div class="pic"><img src="index/images/product1.jpg" alt=""></div>
+    </div>
+    <!--  分类开始    -->
+    <div id="divCategory"><!--
+    <div class="w pro_title">TOP1 励志女神vs畅销王子</div>
+    <div class="pro_box1">
+
+        <div class="pic"><img src="images/product2.jpg" alt=""></div>
+        <div class="pbox1">
+         <div class="pbox2">
+            <div class="product_cart2">
+                <div class="img"><a href="#"><img src="images/p01.jpg" alt=""></a></div>
+            </div>
+        </div>
+        <div class="pbox2" style="height:100%;">
+            <div class="product_cart2" style="height:100%;">
+                <h4>急速解酒</h4>
+                <h2>优研综合果蔬酵素原液  12瓶/箱</h2>
+                <p class="price">￥188.00</p>
+                <p class="oldprice">原价:￥235 会员价:￥180</p>
+                <div class="btnbox">
+                    <ul>
+                        <li><a href="#">立即购买</a></li>
+                        <li><a href="#">加入购物车</a></li>
+                    </ul>
+                </div>
+            </div>
+         </div>
+       </div>
+        
+    </div> -->
+    </div>
+   <!--  分类结束    -->
+<!-- 
+    <div class="w product_pic" style="margin-bottom:0px;">
+        <div class="pic"><img src="index/images/product.jpg" alt=""></div>
+        <div class="nav">
+                <a href="#"></a><a href="#" class="active"></a><a href="#"></a>
+        </div>
+    </div> --><!--
+    
+    <div class="p">
+        <div class="p_h">
+            <div class="p_h_tit"><img src="index/images/s1.png" alt=""><br>健康减肥塑身</div>
+            <div class="p_h_list">
+                <ul><a href="#"><img src="index/images/p01.jpg" alt=""></a></ul>
+                <ul><a href="#"><img src="index/images/p02.jpg" alt=""></a></ul>
+            </div>
+        </div>
+        <div class="p_h">
+            <div class="p_h_tit"><img src="index/images/s1.png" alt=""><br>健康快速解酒</div>
+            <div class="p_h_list">
+                <ul><a href="#"><img src="index/images/p03.jpg" alt=""></a></ul>
+                <ul><a href="#"><img src="index/images/p04.jpg" alt=""></a></ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="p_tit">―――― 预售产品 ――――</div>
+
+    <div class="p">
+        <div class="p_h">
+            <div class="p_h_list">
+                <ul><a href="#"><img src="index/images/p01.jpg" alt=""></a></ul>
+                <ul><a href="#"><img src="index/images/p02.jpg" alt=""></a></ul>
+            </div>
+        </div>
+        <div class="p_h">
+            <div class="p_h_list">
+                <ul><a href="#"><img src="index/images/p03.jpg" alt=""></a></ul>
+                <ul><a href="#"><img src="index/images/p04.jpg" alt=""></a></ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="px_nav">
+        <ul>
+            <li class="active"><a href="#">默认排序</a></li>
+            <li><a href="#">销量优先</a></li>
+            <li><a href="#">更多筛选 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
+        </ul>
+    </div>
+
+    <div class="px_sub_nav">
+        <ul>
+            <li><a href="#">品  牌</a></li>
+            <li class="active"><a href="#">分  类</a></li>
+            <li><a href="#">价  格</a></li>
+        </ul>
+    </div>
+    -->
+    <div class="pro_box" id="divProduct">
+      <!--  <div class="pbox">
+            <div class="product_cart">
+                <div class="img"><a href="#"><img src="index/images/p01.jpg" alt=""></a></div>
+                <h2>优研综合果蔬酵素原液  12瓶/箱</h2>
+                <p class="price">￥188.00</p>
+                <p class="oldprice">原价:￥235    会员价:￥180</p>
+                <div class="btnbox">
+                    <ul>
+                        <li><a href="#">立即购买</a></li>
+                        <li><a href="#">加入购物车</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        -->
+</div>
+
+</body>
+</html>

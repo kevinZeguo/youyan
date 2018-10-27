@@ -1,0 +1,753 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="keywords" content="微信,微信公众平台" />
+<meta name="description" content="微信公众平台自助引擎" />
+<title>结算</title>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/buttons.css">
+<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"> </script>
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.accordion.js"></script>
+<script type="text/javascript" src="js/unslider.min.js"></script>
+<script type="text/javascript" src="../js/jsConfig.js"></script>
+</head>
+<script type="text/javascript">
+
+function GetQueryString(sProp)  
+{  
+    var re = new RegExp("[&,?]"+sProp + "=([^//&]*)", "i");  
+    var a = re.exec(document.location.search);  
+    if (a == null)  
+        return "";  
+    return a[1];  
+} 
+
+Date.prototype.Format = function(fmt)   
+{ //author: meizz    
+  var o = {   
+    "M+" : this.getMonth()+1,                 //月份    
+    "d+" : this.getDate(),                    //日    
+    "h+" : this.getHours(),                   //小时    
+    "m+" : this.getMinutes(),                 //分    
+    "s+" : this.getSeconds(),                 //秒    
+    "q+" : Math.floor((this.getMonth()+3)/3), //季度    
+    "S"  : this.getMilliseconds()             //毫秒    
+  };   
+  if(/(y+)/.test(fmt))   
+    fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));   
+  for(var k in o)   
+    if(new RegExp("("+ k +")").test(fmt))   
+  fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
+  return fmt;   
+}
+var wxh = "1";
+var prepay_idstr = "";
+var paysignstr = "";
+
+var ip = "10.15.2.20";
+var mydate = new Date();
+//var ordernum = mydate.getDay()+""+mydate.getDate()+mydate.getFullYear()+mydate.getMonth()+mydate.getHours()+mydate.getMinutes()+mydate.getSeconds();
+var ordernum = "15"+mydate.Format("hhmmss")+mydate.Format("yyyyMMdd"); 
+var orderNo = GetQueryString("orderNo").toString();
+alert("orderNo:"+orderNo);
+var couponTotal = "";
+
+var couponSwitch="";
+//微信支付金额
+var totalnum=""
+$(document).ready(function(){ 
+	
+	ShowAddr();
+	getOrderHead(orderNo);
+	$("#tjbut").click(function(){ 
+		var addrcode = $("#addressCode").val();
+		if(addrcode=="" || addrcode == null || addrcode == 'undefined'){
+			alert("你还没有添加收货地址");
+			return;
+		}
+		$("#spa").hide();
+		js();
+	});
+	
+	jQuery(function($){     
+		var url = 'http://chaxun.1616.net/s.php?type=ip&output=json&callback=?&_='+Math.random();       
+		$.getJSON(url, function(data){         
+			//alert(data.Ip);
+			ip = data.Ip;
+		}); 
+	});
+	
+	$.ajax({
+		url : 'myCardList.do',
+		data : {ss:1,tt:1},
+		datatype : 'json',
+		async :false,
+		success : function(data) {
+			var obj = data.list;
+			var html="";
+			$.each(obj, function (i, item) {
+				html += "<tr><td><input type='checkbox' id='cardId' value='"+item.cardId+"' onclick='checkbox();'></td>";
+				html += "<td>"+item.cardId+"</td>";
+				html += "<td>"+item.cardNum+"</td>";
+				html += "<td>"+item.cardSer+"</td>";
+				html += "<td>"+item.cardValue+"</td>";
+				html += "<td>"+item.cardAmount+"</td>";
+				html += "<td>"+item.cardEnddate+"</td>";
+				html += "<td>"+item.cardStatus+"</td></tr>";
+			})
+			$("#cardTr").append(html);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+	$.ajax({
+		url : '../orderHead/myCouponList.do',
+		data : {ss:1},
+		datatype : 'json',
+		async :false,
+		success : function(data) {
+			var obj = data.list;
+			var html="";
+			$.each(obj, function (i, item) {
+				html += "<tr>";
+				html += "<td><input type='checkbox' id='id' value='"+item.id+"'></td>";
+				html += "<td>"+item.couponName+"</td>";
+				html += "<td>"+item.couponValue+"</td>";
+				html += "</tr>";
+			})
+			$("#coupon").append(html);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert(errorThrown);
+		}
+	});
+	$.ajax({
+		url : '../orderHead/myFreeList.do',
+		data : 'orderNo='+orderNo,
+		datatype : 'json',
+		async :false,
+		success : function(data) {
+			//alert("12");
+			//alert(data);
+			var obj = data.list;
+			var html="";
+			$.each(obj, function (i, item) {
+				//alert("0");
+				//html += "<td><input type='checkbox' id='cardId' value='"+item.cardId+"' onclick='checkbox();'></td>";
+				html += "<tr>";
+				html += "<td>"+item.productId+"</td>";
+				html += "<td>"+item.productName+"</td>";
+				html += "</tr>";
+			})
+			$("#free").append(html);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert(errorThrown);
+		}
+	});
+});
+function getOrderHead(orderNo,str){
+	var selObj = $("#zj");
+	var coupon = $("#coupon");
+	$.ajax({
+		type:"post",
+		url : '../orderHead/getOrderHead.do',
+		data : 'orderNo='+orderNo+'&str='+str,
+		datatype : 'json',
+		success : function(data) {
+			console.log(data);
+			var item = data.object;
+			$("#coupon").val(item.id);
+			couponTotal = data.status;
+			var html = item.orderTotal;
+			selObj.html(html);  
+			//coupon.empty();
+			//coupon.append("<a>商品金额：<p>"+item.orderTotal+"</p>优惠券金额：<p id='couponTotal'>"+couponTotal+"</p></a>");
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+}
+function ShowAddr(){
+	var selObj = $("#areacode");
+	$.ajax({
+		type:"post",
+		url : '../receAddress/loadAdd.do',
+		data : '',
+		datatype : 'json',
+		success : function(data) {
+			var item = data.object;
+			if(item != null){
+				var html = "<a href='listAddress.html?orderNo="+orderNo+"'>"
+						  +"<p>收货人："+item.receAddressName+"</p>"
+						  +"<p>手&nbsp;&nbsp;&nbsp;机："+item.receAddressPhone+"</p>"
+						  +"<p>地&nbsp;&nbsp;&nbsp;址："+item.receAddressDesc+"</p>"
+						  +"<p><input type='hidden' id='addressCode' name='addressCode' value="+item.receAddressCode+"></p>"
+						  +"</a>";
+				selObj.append(html);
+			}
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+}
+function addReceAddress(){
+	location.href = "receiveadd.html?orderNo="+orderNo;
+}
+
+
+var yue="";
+var cardId = "";
+var sum="";
+function js(){
+	//支付方式0微信 1 购物卡
+	var zf = $("input[name='zf']:checked").val();
+	if(zf=="0"){
+		//  $("#zj") 总价；
+		totalnum = $("#zj").html();
+		coupons(totalnum);
+	}
+	if(zf == "1"){
+		var str="";
+	    $("input[id='cardId']:checkbox").each(function(){ 
+	        if($(this).attr("checked")){
+	        	if(str == ""){
+	        		str += $(this).val()
+	        	}else{
+	        		str += ","+ $(this).val();
+	        	}
+	        }
+	    })
+	    $.ajax({
+			url : 'myCard.do',
+			data : {cardId:str},
+			datatype : 'json',
+			async :false,
+			success : function(data) {
+				var obj = data.object;
+				if(obj != null){
+					sum = $("#nocardMoney").val();
+					 cardId = obj.cardId;
+					 alert(cardId+"========qweerertrry");
+					 totalnum = parseFloat(sum) - parseFloat(obj.cardAmount);
+					//结算价格大于卡里余额
+					if(parseFloat(sum) > parseFloat(obj.cardAmount)){
+						alert("卡里金额不够支付订单,剩余金额是否由微信支付结算");
+							//return;
+							//sum 需要用卡支付的钱 减去卡余额=实际需要支付的金额
+							alert("ok");
+							 
+							 alert("totalnum======="+totalnum.toFixed(2));
+							 yue = obj.cardAmount;
+							 //卡余额
+							 $("#nocardMoney").val(obj.cardAmount);
+							 $("#cardMoney").val(totalnum);
+							 //卡支付
+							 //cardPay1(yue,cardId,totalnum);
+							 zhifu(totalnum.toFixed(2),yue,cardId);//cardPay1 整合进了支付逻辑
+							 //不用卡支付的钱（需要微信支付的钱）
+							 //var nocardTotal = $("#cardMoney").val();
+							 //微信支付
+						
+					}else{
+						cardId = obj.cardId;
+						yue=sum;
+						var no = $("#cardMoney").val()
+						if( Number(no) > 0){
+							zhifu(no,yue,obj.cardId);
+							//cardPay1(yue,obj.cardId,totalnum);
+						}else{
+							//cardPay(yue,obj.cardId);
+							paySuccess(0,yue,obj.cardId);//cardPay1 整合进了支付逻辑
+						}
+					}
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+			}
+		});
+	}
+}
+function checkbox(){
+	var str="";
+	var num =0;
+    $("input[id='id']:checkbox").each(function(){ 
+        if($(this).attr("checked")){
+        	if(str == ""){
+        		str += $(this).val()
+        	}else{
+        		str += ","+ $(this).val();
+        	}
+        	num ++
+        }
+    })
+    alert(num)
+    return str;
+}
+
+
+function checkPay(){
+	var asd = $("input[name='couponSwitch']:checked").val();
+	//alert(asd);
+	if(asd == "1"){
+		alert("选择优惠券后不能进行卡支付");
+		$("input[name='zf']:eq(0)").attr("checked",'checked'); 
+		return;
+	}
+	//支付方式0微信 1 购物卡
+	var zf = $("input[name='zf']:checked").val();
+	if(zf == "1"){
+		$("#divCoupon").hide();
+	}else
+	{
+		$("#divCoupon").show();
+	}
+	$.ajax({
+		type:"post",
+		url : 'checkPay.do',
+		data : {orderNo:orderNo},
+		datatype : 'json',
+		success : function(data) {
+			var obj = data.list;
+			$.each(obj, function (i, item) {
+				//alert(item.productTable.brand);
+				if(item.productTable.brand == '0'){
+					alert("可以卡支付");
+				}else{
+					alert("不可以卡支付");
+				}
+			})
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+	$.ajax({
+		type:"post",
+		url : 'checkMoney.do',
+		data : {orderNo:orderNo},
+		datatype : 'json',
+		success : function(data) {
+			var obj = data.status;
+			$("#nocardMoney").val(obj);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+	$.ajax({
+		type:"post",
+		url : 'checkCardMoney.do',
+		data : {orderNo:orderNo},
+		datatype : 'json',
+		success : function(data) {
+			var obj = data.status;
+			$("#cardMoney").val(obj);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+}
+//卡支付
+function  cardPay(totol,cardId){
+	$.ajax({
+		type:"post",
+		url : 'cardPay.do',
+		data : {totol:totol,cardId:cardId,orderNo:orderNo},
+		datatype : 'json',
+		success : function(data) {
+			if(data.result){
+				alert("卡消费成功");
+				paySuccess(0);
+			}else{
+				alert("卡消费失败");
+			}
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+}
+//卡支付但是不调用成功后的会掉函数
+function  cardPay1(totol,cardId,totalnum){
+	$.ajax({
+		type:"post",
+		url : 'cardPay.do',
+		data : {totol:totol,cardId:cardId},
+		datatype : 'json',
+		async :false,
+		success : function(data) {
+			if(data.result){
+				alert("卡消费成功1");
+				zhifu(totalnum.toFixed(2));
+				//paySuccess(0);
+			}else{
+				alert("卡消费失败");
+			}
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+}
+
+
+
+function paySuccess(totalnum,totol,cardId){
+	var nocardMoney = $("#nocardMoney").val();
+	var cardMoney = $("#cardMoney").val();
+	var couponSwitch = $("input[name='couponSwitch']:checked").val();
+	var str = checkbox();
+ //	alert("{orderNo:"+orderNo+",patTotal:"+totalnum+",cardMoney:"+cardMoney+"nocardMoney:"+nocardMoney
+ //		+",cardId:"+cardId+",couponSwitch:"+couponSwitch+",str:"+str+"},");
+		$.ajax({
+			type:"post",
+			url : '../orderHead/paySuccess.do',
+			data : {orderNo:orderNo,patTotal:totalnum,cardMoney:cardMoney,nocardMoney:nocardMoney,couponSwitch:couponSwitch,str:str,totol:totol,cardId:cardId},
+			datatype : 'json',
+			async :false,
+			success : function(data) {
+				if(data.result){
+					alert("成功");
+					window.location="login.html";
+				}else{
+					alert("失败，请截图联系客服");
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+			///	alert(XMLHttpRequest);
+				//alert(textStatus);
+				//alert(errorThrown);
+				//alert("error");
+			}
+		});
+	
+}
+
+
+function coupons(totalnum){
+	 couponSwitch = $('input[name="couponSwitch"]:checked').val();
+	if(couponSwitch=="1"){
+		//var couponTotal = $("#couponTotal");
+		//alert("使用优惠券");
+		//alert("可用优惠券金额："+couponTotal);
+		totalnum = parseFloat(totalnum) - parseFloat(couponTotal);
+		if(totalnum>0){
+			$("#zj").html(totalnum);
+		}else{
+			$("#zj").html(0);
+		}
+	}
+	zhifu(totalnum,0,"");
+}
+
+function zhifu(totalnum,totol,cardId){
+	//alert(totalnum+"=================123");
+	//需要微信支付金额
+	$("#payTotal").val(totalnum);
+	var url = window.location.href;
+	var args = url.split("?");
+	//alert(totalnum);
+	$.ajax({
+		type:"post",
+		url : 'getSignature.do',
+		//async :false,
+		data : 'url='+args[0],
+		datatype : 'json',
+		success : function(result) {
+			var obj = result.status;
+			//alert($("#total").val());
+			$.ajax({
+				type:"post",
+				url : 'pay.do',
+				//async :false,
+				data : 'ip='+ip+'&ordernum='+orderNo+'&totalnum='+totalnum,
+				datatype : 'json',
+				success : function(result) {
+					var obj = result.status;
+					prepay_idstr = obj.prepay_id;
+					//paysign = obj.sign;
+					//alert("prepay_idstr======="+prepay_idstr);
+					$.ajax({
+						type:"post",
+						url : 'paysign.do',
+						async :false,
+						data : 'prepay_id='+prepay_idstr,
+						datatype : 'json',
+						success : function(result) {
+							var obj = result.status;
+							//prepay_id = obj.prepay_id;
+							paysignstr = obj.signature;
+							//alert("paysignstr======"+paysignstr);
+							if(Number(totalnum) > 0){
+								wx.chooseWXPay({
+								    timestamp: '1414587457', // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+								    nonceStr: 'Wm3WZYTPz0wzccnW', // 支付签名随机串，不长于 32 位
+								    package: 'prepay_id='+prepay_idstr, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+								    signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+								    paySign: paysignstr, // 支付签名
+								    success: function (res) {
+								        // 支付成功后的回调函数
+								        	alert("支付完成");
+								       // alert("payTotal======"+totalnum);
+										    	paySuccess(totalnum,totol,cardId);
+										    	//window.location="orderList.html?status=2";
+										}
+								        
+								});
+							}else{
+								paySuccess($("#zj").html(),totol,cardId);
+							}
+						},
+						error : function(XMLHttpRequest, textStatus, errorThrown) {
+							//alert(XMLHttpRequest);
+							//alert(textStatus);
+							//alert(errorThrown);
+							//alert("error");
+						}
+					});
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					//alert(XMLHttpRequest);
+					//alert(textStatus);
+					//alert(errorThrown);
+					//alert("error");
+				}
+			});
+			
+			
+			
+			wx.config({
+			    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			    appId: v_appid, // 必填，公众号的唯一标识
+			    timestamp: '1414587457', // 必填，生成签名的时间戳
+			    nonceStr: 'Wm3WZYTPz0wzccnW', // 必填，生成签名的随机串
+			    signature: obj.signature,// 必填，签名，见附录1
+			    jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','chooseWXPay','scanQRCode'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest);
+			//alert(textStatus);
+			//alert(errorThrown);
+			//alert("error");
+		}
+	});
+	 
+}
+
+function youhuijuan(){
+	var zf = $("input[name='zf']:checked").val();
+	if(zf == "1"){
+		alert("选择卡支付后不可以使用优惠券");
+		$("input[name='couponSwitch']:eq(1)").attr("checked",'checked'); 
+		return;
+	}
+	var cardMoney = $("#cardMoney").val();
+	var nocardMoney = $("#nocardMoney").val();
+	var str="";
+    $("input[id='id']:checkbox").each(function(){ 
+        if($(this).attr("checked")){
+        	if(str == ""){
+        		str += $(this).val()
+        	}else{
+        		str += ","+ $(this).val();
+        	}
+        }
+    })
+	getOrderHead(orderNo,str);
+	$.ajax({
+		type:"post",
+		url : 'checkCoupon.do',
+		data : 'orderNo='+orderNo,
+		datatype : 'json',
+		success : function(data) {
+			var obj = data.status;
+			alert(obj);
+			alert(cardMoney);
+			if(zf == '1'){
+				var aa = parseFloat(cardMoney)- parseFloat(obj);
+				alert(aa);
+				if(aa< 0 ){
+					$("#cardMoney").val('0');
+				}else{
+					$("#cardMoney").val(aa);
+				}
+				
+			}
+			
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+	/* $.ajax({
+		type:"post",
+		url : 'checkCoupon1.do',
+		data : 'orderNo='+orderNo,
+		datatype : 'json',
+		success : function(data) {
+			var obj = data.status;
+			alert(obj);
+			if(zf == '1'){
+				var aa = parseFloat(nocardMoney)-parseFloat(obj);
+				alert(aa+"====");
+				$("#nocardMoney").val(aa);
+			}
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	}); */
+}
+
+
+function clear(){
+	$("#nocardMoney").val("");
+	$("#cardMoney").val("");
+}
+</script>
+<body ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false" onselectstart="return false" 
+ondragstart="return false" onbeforecopy="return false" oncopy=document.selection.empty() onselect=document.selection.empty()> 
+<form id="form_buy">
+<div id="page">
+	<div class="banners">
+		<a href="javascript:history.go(-1);"><img src="images/bg_info3.jpg"></a>
+	</div>
+	<div id="content">
+		
+		<div class="box_exp info_light">
+			<div class="info_integral">
+				<span class="title"><i class="icon-bookmark-empty"></i>收货人信息</span>
+			</div>
+			<div style="display: block; overflow: hidden; opacity: 1;">
+				<div id="areacode" class="info_child">
+					<!-- <a href="#">
+					<p>收货人：王某某</p>
+					<p>手&nbsp;&nbsp;&nbsp;机：13888888888</p>
+					<p>地&nbsp;&nbsp;&nbsp;址：天津市</p>
+					</a> -->
+					<span><a onclick="addReceAddress();">添加新的收货地址</a></span>
+				</div>
+			</div>
+		</div>
+		<div class="box_exp info_light">
+			<div class="info_integral">
+				<span class="title"><i class="icon-bookmark-empty"></i>支付及配送方式</span>
+			</div>
+			<div style="display: block; overflow: hidden; opacity: 1;">
+				<div class="info_child">
+					<a href="#">
+					<p>支付方式：<span><input type="radio" name="zf" value="0" checked="checked" onclick="clear();"/>微信支付</span>
+					<span><input type="radio" name="zf" value="1" onclick="checkPay();"/>购物卡支付</span>
+					</p>
+					<!-- <p>配送方式：申通快递</p>
+					<p>送货时间：天津市</p>
+					<p>电话确认：否</p> -->
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="box_exp info_light">
+			<div class="info_integral">
+				<span class="title"><i class="icon-bookmark-empty"></i>购物卡</span>
+			</div>
+			<div style="display: block; overflow: hidden; opacity: 1;">
+				<div class="info_child" >
+				<input type="text" name="cardIdd" id="cardIdd">
+					<table border="1" id="cardTr">
+						<tr><td>id</td><td>id</td><td>卡号</td><td>序列号</td><td>金额</td><td>余额</td><td>有效期</td><td>状态</td></tr>
+	
+	</table>
+				</div>
+				<div class="info_child_txt">
+					<a href="case.html" class="left">我的购物卡</a>
+				</div>
+			</div>
+		</div>
+		<div class="box_exp info_light" id="divCoupon">
+			<div class="info_integral">
+				<span class="title"><i class="icon-bookmark-empty"></i>优惠券</span>
+			</div>
+			<div style="display: block; overflow: hidden; opacity: 1;">
+				<div id="coupon" class="info_child">
+					<!-- <a href="#">
+					商品金额：<p id="je">198.00</p>
+					<p>可用优惠券金额：0.00</p>
+					应付总额：<p id="ze">198.00</p>
+					</a> -->
+				</div>
+				<div class="info_child_txt">
+					<a>是否使用优惠券
+					<input type="text" name="coupon" id="coupon"><input type="text" name="coupon1" id="coupon1">
+						<input type="radio" name="couponSwitch" value="1" onclick="youhuijuan();">是
+						<input type="radio" name="couponSwitch" value="0" checked>否
+					</a>
+					<a href="coupon.html" class="left">我的优惠券</a>
+				</div>
+			</div>
+		</div>
+		<div class="box_exp info_light">
+			<div class="info_integral">
+				<span class="title"><i class="icon-bookmark-empty"></i>赠送产品</span>
+			</div>
+			<div style="display: block; overflow: hidden; opacity: 1;">
+				<div id="free" class="info_child">
+				</div>
+			</div>
+		</div>
+		<div class="box_exp info_light">
+			<div class="info_integral">
+			<!--实际支付的金额-->
+			<input type="text" id="payTotal" name="payTotal">
+			<!--需要用卡支付的金额-->
+			<input type="text" id="cardMoney" name="cardMoney">
+			<!--不用卡支付的金额-->
+			<input type="text" id="nocardMoney" name="nocardMoney">
+				<span class="titles"><i class="icon-bookmark-empty"></i>总计 -￥<span id="zj"> </span>元</span>
+			</div>
+		</div>
+		
+		<div id="spa" style="margin:8px 0;"><a id="tjbut" class="button button-block button-rounded button-caution button-large"><i class="icon-shopping-cart"></i>&nbsp;&nbsp;立即结算</a></div>
+		
+		
+		<div style="padding:15px;"></div>
+	</div>
+	<!-- <div id="nav-footer">
+		<ul>
+			<li style="width:25%" class="on"><a href="index.html"><i class="icon-home"></i></a></li>
+			<li style="width:25%"><a href="class.html"><i class="icon-reorder"></i></a></li>
+			<li style="width:25%"><a href="cart.html"><i class="icon-shopping-cart"></i></a></li>
+			<li style="width:25%"><a href="index.html"><i class="icon-info-sign"></i></a></li>
+		</ul>
+	</div> -->
+</div>
+</form>
+
+
+
+
+
+<script>
+$(document).ready(function() {
+	$('.banner').unslider({
+		arrows: true,
+		fluid: true,
+		dots: true
+	});
+
+	$("#content").accordion({
+		alwaysOpen: false,
+		autoheight: false,
+		header: '.info_integral',
+		clearStyle: true
+	});
+});
+</script>
+
+</body>
+</html>

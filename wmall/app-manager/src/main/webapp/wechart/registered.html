@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1.0" />
+<meta name="format-detection" content="telephone=no" />
+<title>注册</title>
+<!-- <link href="newcss/global.css" rel="stylesheet"> -->
+<link rel="stylesheet" href="css/regist.css">
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<!-- <script type="text/javascript" src="../js/alert2.js"></script> -->
+<script type="text/javascript" src="../js/jsConfig.js"></script>
+<style type="text/css">
+.load_c{background:#fff;opacity:1;}
+.load_t{top:0%;left:0;z-index:1000;}
+.load_t img{width:100%;height:50%;margin-top:100px;}
+</style>
+<!-- <link rel="stylesheet" type="text/css" href="newcss/registered.css" /> -->
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<script type="text/javascript" src="../js/jsConfig.js"></script>
+<script type="text/javascript">
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+    if (r != null) return unescape(r[2]); return null; //返回参数值
+}
+$(document).ready(function(){
+	//$("#parentId").val(username);
+	$.ajax({
+		url:"superId.do",//要请求的servlet
+		data:{},//给服务器的参数
+		type:"POST",
+		dataType:"json",
+		success:function(data) {
+			var obj = data.status;
+			if(obj != null){
+				$("#parentId").val(obj);
+			}
+		}
+	});
+})
+//校验手机号码：必须以数字开头
+function isMobile(s) 
+{
+    var patrn=/^\s*(15\d{9}|13[0-9]\d{8}|18[0-9]\d{8})\s*$/;
+    if(!patrn.exec(s))
+    {
+        return false;
+    }
+    return true;
+} 
+var InterValObj; //timer变量，控制时间
+var count = 120; //间隔函数，1秒执行
+var curCount;//当前剩余秒数
+
+function send(){
+	var mobilephone = $("#mobilephone").val();
+	$.ajax({
+		url:"checkPhone.do",//要请求的servlet
+		data:{mobilephone:mobilephone
+		},//给服务器的参数
+		type:"POST",
+		dataType:"json",
+		async:false,
+		cache:false,
+		success:function(data) {
+			var obj = data.result;
+			if(!obj){
+				alert("手机号码已有人用！请重新填手机号码");
+				//$("#mobilephone").val("");
+				return;
+			}
+		}
+	});
+	if (!isMobile(mobilephone))
+    {
+        alert("手机号码错误!");
+        return false;
+    }
+	 curCount=count;
+	$("#btnSendCode").attr("disabled", "true");  
+    $("#btnSendCode").html("" + curCount + "s后再次获取");  
+     InterValObj = window.setInterval(SetRemainTime, 1000); // 启动计时器，1秒执行一次  
+    $.ajax({
+		type:"post",
+		url : '../sendmessage/send.do',
+		async :false,
+		data : 'mobilephone='+mobilephone,
+		datatype : 'json',
+		success : function(data) {
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+}
+
+//timer处理函数  
+function SetRemainTime() {  
+    if (curCount == 0) {                  
+        window.clearInterval(InterValObj);// 停止计时器  
+        $("#btnSendCode").removeAttr("disabled");// 启用按钮  
+        $("#btnSendCode").html("重新获取");  
+        $("#code").val(""); // 清除验证码。如果不清除，过时间后，输入收到的验证码依然有效  
+    }else {  
+        curCount--;  
+        $("#btnSendCode").html("" + curCount + "s后再次获取");  
+    }  
+} 
+
+function coder(){
+	var code = $("#code").val();
+	var mobilephone = $("#mobilephone").val();
+	var parentId = $("#parentId").val();
+	var customerName = $("#customerName").val();
+	 $.ajax({
+			type:"post",
+			url : '../sendmessage/code.do',
+			async :false,
+			data : {code:code,mobilephone:mobilephone,ss:1,parentId:parentId},
+			datatype : 'json',
+			success : function(data) {
+				var obj = data.result;
+				if(obj){
+					alert("验证成功");
+					//alert("code:"+code+",mobilephone:"+mobilephone+"+,ss:1,parentId:"+parentId+"+,customerName:"+customerName);
+					$.ajax({
+						type:"post",
+						url : '../sendmessage/register.do',
+						//async :false,
+						data : {code:code,mobilephone:mobilephone,ss:1,parentId:parentId,customerName:customerName},
+						datatype : 'json',
+						success : function(data) {
+							var obj = data.object;
+							if(obj != null){
+								alert("注册成功");
+								//window.location="login.html?customerId="+obj.custmerId;
+								window.location.href = v_redirect_uri_follow;
+							}else{
+								alert(data.message);
+							}
+						},
+						error : function(XMLHttpRequest, textStatus, errorThrown) {
+						}
+					});
+				}else{
+					alert("注册失败222");
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+			}
+		});
+}
+</script>
+</head>
+<body>
+<div class="warp">
+<div class="header" id="bb">
+	<img src="images/foot_bg_14.png">
+	<p>壹清欢迎您注册</p>
+</div>
+<div class="center" id="aa">
+	 <div class="center_c">
+		<!--<span>为了您的隐私安全请认真填写</span>-->
+	</div> 
+	<table>
+		<tbody>
+		<tr>
+			<td>
+				<input type="text" id="customerName" name="customerName" placeholder="请输入姓名" >
+			</td>
+		</tr>
+		<tr>
+			<td class="ta">
+				<input type="text" id="mobilephone" name="mobilephone" placeholder="请输入手机号" style="width:50%"><input type="hidden" id="parentId" name="parentId">
+			<!-- 	<input type="button" value="获取验证码" "style="width:36%" > -->
+				<a href="#"  id="btnSendCode" onclick="send();">获取验证码</a>
+				
+			</td>
+		</tr>
+		<tr>
+			<td>
+				
+				<input type="text" id="code" name="code"  placeholder="验证码:" >
+				
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a href="#"  onclick="coder();" >确定</a>
+				<!--<input type="button" value="确定"style="width:99%">  -->
+			</td>
+		</tr>
+		</tbody>
+	</table>
+	
+</div>
+</div>
+
+</body>
+<script>
+//自动适应屏幕
+(function() {
+	window.onresize=function(){
+		resetFont();
+	}
+	function resetFont(){
+		var HTML=document.getElementsByTagName('html')[0];
+		var ww=document.documentElement.clientWidth;
+		var scale=ww/640;//640为pds图的宽度
+		HTML.style.fontSize=100*scale+'px';
+	}
+	resetFont();
+}())
+</script>
+</html>

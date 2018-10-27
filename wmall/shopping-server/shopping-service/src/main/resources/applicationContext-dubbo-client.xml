@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+
+    <dubbo:reference id="erpSSOInterface" interface="com.jd.bdp.api.urm.ErpSSOInterface"  group="test" timeout="30000" check="false"/>
+    <dubbo:reference id="userInterface" interface="com.jd.bdp.api.urm.UserInterface" group="test"  timeout="30000" check="false"/>
+    <dubbo:reference id="resourceInterface" interface="com.jd.bdp.api.urm.ResourceInterface"  group="test" timeout="30000" check="false"/>
+    <dubbo:reference id="sendMailInterface" interface="com.jd.bdp.api.urm.SendMailInterface"  group="test" timeout="30000" check="false"/>
+    <dubbo:reference id="messageInterface" interface="com.jd.bdp.mobile.api.MessageInterface"  group="test" timeout="30000" check="false"/>
+
+</beans>

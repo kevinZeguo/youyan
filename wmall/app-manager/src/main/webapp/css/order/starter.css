@@ -1,0 +1,67 @@
+.fl{float:left}.fr{float:right}
+
+/*优粉主体*/
+.center{width:100%;}
+.center .man_t p,.center .man_b p{text-align:center;height:50px;line-height:50px;border-bottom:1px solid #bdbbbb;color:#666;}
+.center .center_c{overflow:hidden; width:100%;height:50px;border-bottom:1px solid #bdbbbb;background:#fff;font-family:"方正细圆";font-size:14px;overflow: hidden;}
+.center .center_c .c_l{width:43%;padding:16px 0 0 10px;font-size:14px;color:#666;}
+.center .center_c .c_l span{color:#7c3629;font-size:14px;}
+.center .center_c .c_r{width:53%;padding:8px 0 0 0;text-align:right;}
+.center .center_c .c_r>a,.center .btn a{display:inline-block;color:#fff;margin-right:10px;background:#009483;border-radius:5px;font-size:12px;padding:9px;}
+/*主体部分*/
+.center .center_main ul li{width:100%;}
+.center .center_main ul li .kuang{width:100px;height:50px;line-height:50px;background:#d1cece;border-radius:5px;margin:60px auto 0;text-align:center;}
+.center .center_main ul li .kuang span{color:#fff;font-family:"方正细圆";font-size:15px;}
+.center .center_main ul li p{padding:10px 0;text-align:center;font-family:"方正细圆";font-size:12px;}
+.center .img_b{text-align:center;margin-top:100px;}
+.center .img_b img{wdith:100px;height:40px;}
+/*优惠券*/
+.center .center_m{overflow: hidden;margin:15px auto 0;text-align:center;}
+.center .center_m ul{width:70%;overflow: hidden;background:#fff;margin-top:10px;border:1px solid #ccc;margin:10px auto 0;}
+.center .center_m .active{border:1px solid #1aa29f;}
+.center .center_m ul li{padding:10px 0;color:#666;}
+.center .center_m ul li .sp_1{margin-top:10px;}
+.center .center_m ul li img{width:55px;height:54px;margin-top:5px;}
+.center .center_m ul .img_l,.center .center_m ul .img_r{width:25%;text-align:center;position:relative;font-size:17px;}
+.center .center_m ul .img_l span{position:absolute;top:31%;left:48%;color:#90c424;font-weight:bold;}
+.center .center_m ul .img_r span{position:absolute;top:39%;left:33%;color:#fff;}
+.center .center_m ul .img_r span b{font-size:19px;}
+.center .center_m .u_l .img_l>b,.center .center_m .u_l .img_l>span{color:#9a9a9a;}
+.center .center_m ul .img_l b{position:absolute;top:54%;left:37%;color:#90c424;font-size:12px;}
+.center .center_m ul li{float:left;height:60px;padding-top:11px;font-family:"方正细圆";}
+.center .center_m ul .li_1{font-size:14px;padding-top:10px;width:50%;}
+.center .center_m ul .li_1>span{display:block;margin:10px 0 10px 0 ;}
+.center .center_main{margin-top:10px;}
+.center .center_main table{width:100%;}
+.center .center_main table tr td{width:14%;height:40px;text-align:center;border:1px solid #eee;color:#666;}
+/*优惠卷密码*/
+.center .kong{background:#fff;}
+.center .kong>p{padding:10px 0 10px 10px;font-family:"方正细圆";font-size:15px;}
+.center .pas,.center .btn,.center .kong .test{width:95%;margin:0 auto;}
+.center .pas input{width:100%;height:45px;padding-left:5px;font-size:15px;}
+.center .kong .test{font-family:"方正细圆";font-size:14px;margin-top:10px;color:#c7c7c7;}
+.center .btn{margin-top:10px;}
+.center .btn a{width:100%;height:45px;line-height:45px;font-size:18px;margin:0;}
+/*我的销售额*/
+.center .dd{margin-bottom:10px;border-top:1px solid #bdbbbb;}
+/*业务员邀请函*/
+#show{display:block;}
+#hide{display:none;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

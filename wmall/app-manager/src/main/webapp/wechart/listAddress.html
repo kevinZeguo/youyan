@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0, maximum-scale=1.0">
+<title></title>
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"> </script>
+
+<script type="text/javascript">
+function GetQueryString(sProp)  
+{  
+    var re = new RegExp("[&,?]"+sProp + "=([^//&]*)", "i");  
+    var a = re.exec(document.location.search);  
+    if (a == null)  
+        return "";  
+    return a[1];  
+}
+var orderNo = GetQueryString("orderNo").toString();
+$(document).ready(function(){ 
+	ShowAddr();
+});
+function toenable(id){
+	$.ajax({
+		type:"post",
+		url : '../receAddress/updenable.do',
+		data : 'receAddressId='+id,
+		datatype : 'json',
+		success : function(data) {
+			if(data.result){
+				window.location.href="cart_buy.html?orderNo="+orderNo;
+			}else{
+				window.location.href="listAddress.html?orderNo="+orderNo;
+			}
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+}
+function toEdit(id){
+	window.location.href="receiveadd.html?id="+id+"&orderNo="+orderNo;
+}
+function ShowAddr(){
+	var selObj = $("#areacode");
+	$.ajax({
+		type:"post",
+		url : '../receAddress/load.do',
+		data : '',
+		datatype : 'json',
+		success : function(data) {
+			var list = data.list;
+			$.each(list, function (j, item) {
+				var html = "<div class='info_card'>"
+							+"<a onclick='toenable("+item.receAddressId+");'>"
+							+"<input type='hidden' id='addressid' value='"+item.receAddressId+"'>"
+							+"<span class='titles'>"+item.receAddressName+"</span>"
+							+"<h1>"+item.receAddressDesc+"</h1>"
+							+"</a>"
+							+"<i><img onclick='toEdit("+item.receAddressId+");' src='images/document-edit.png'></i>"
+							+"</div>";
+				selObj.append(html);  
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+}
+</script>
+</head>
+<body>
+<div id="page">
+	<div id="content">
+		<div id="areacode" class="info_head info_light">
+			
+		</div>
+	</div>
+</div>
+</body>
+</html>

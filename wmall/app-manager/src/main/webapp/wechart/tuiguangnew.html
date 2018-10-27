@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title>我的U关系</title>
+<link rel="stylesheet" href="newcss/css.css" type="text/css" />
+<link rel="stylesheet" href="newcss/starter.css" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		
+		/*	$.ajax({
+			url : 'getUser.do',
+			data : '',
+			datatype : 'json',
+			async :false,
+			success : function(data) {
+			
+			    $.ajax({
+					url : 'customerList.do',
+					//type: 'post',
+					data : 'wechatId='+obj.wechatId,
+					datatype : 'json',
+					success : function(result) {
+						
+						
+					}
+				
+				});  
+			}  
+			});  
+	            
+	            
+		
+		
+		$.ajax({
+			url : '../person/myVip.do',
+			data : '',
+			datatype : 'json',
+			async :false,
+			success : function(data) {
+				var obj = data.status;
+				$("#myVip").html(obj);
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+			}
+		});
+		
+		$.ajax({
+			url : '../person/allLow.do',
+			data : '',
+			datatype : 'json',
+			async :false,
+			success : function(data) {
+				var obj = data.status;
+				$("#allLow").html(obj);
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+			}
+		});
+		
+		
+		$.ajax({
+			url : '../person/lowVip.do',
+			data : '',
+			datatype : 'json',
+			async :false,
+			success : function(data) {
+				var obj = data.status;
+				$("#lowVip").html(obj);
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+			}
+		});
+		
+		$.ajax({
+			url : '../person/viptovip.do',
+			data : '',
+			datatype : 'json',
+			async :false,
+			success : function(data) {
+				var obj = data.status;
+				$("#viptovip").html(obj);
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+			}
+		});
+	});
+	
+	*/
+
+	$.ajax({
+		url : '../person/agentnum.do',
+		data : '',
+		datatype : 'json',
+		//async :false,
+		success : function(data) {
+			var obj = data.status;
+			
+			if(obj!=null && obj!=""){
+				$("#agentNum").html(obj);
+			}else{
+				 $("#agentnum").hide();
+			}
+		}
+	});
+
+	$.ajax({
+		url : '../person/salenum.do',
+		data : '',
+		datatype : 'json',
+		success : function(data) {
+			var obj = data.status;
+			if(obj!=null && obj!=""){
+				$("#saleNum").html(obj);
+			}else{
+				 $("#salenum").hide();
+			}
+		
+		}
+	});
+	
+
+	
+	$.ajax({
+		url : '../person/vipnumcount.do',
+		data : '',
+		datatype : 'json',
+		//async :false,
+		success : function(data) {
+			var obj = data.status;
+			if(obj!=null && obj!=""){
+				$("#vipNum").html(obj);
+			}else{
+				 $("#vipnum").hide();
+			}
+		
+		}
+	});
+	
+
+
+	
+	$.ajax({
+		url : '../person/mangentnum.do',
+		data : '',
+		datatype : 'json',
+		//async :false,
+		success : function(data) {
+			var obj = data.status;
+			if(obj!=null && obj!=""){
+				$("#mangentNum").html(obj);
+			}else{
+				 $("#mangentnum").hide();
+			}
+			
+		}
+
+	});
+	
+	
+	
+});
+</script>
+</head>
+<body>
+	<div class="center">
+		<p style="border:none;">我的U关系</p>
+		<!--  <div class="center_c dd">
+			<div class="c_l">
+				我直接推广的会员：<span id="myVip">0</span>
+			</div>
+		</div>
+			<div class="center_c dd">
+			<div class="c_l">
+				我的下级人数：<span id="allLow">0</span>
+			</div>
+		</div>
+			<div class="center_c dd">
+			<div class="c_l">
+				下级推广的会员：<span id="lowVip">0</span>
+			</div>
+		</div>
+			<div class="center_c dd">
+			<div class="c_l">
+				会员：<span id="viptovip">0</span>
+			</div>
+		</div>
+		
+		<div class="img_b">
+			<img src="images/log_01.png">
+		</div>-->
+		
+		 
+		
+		 
+		 	    <!--我的销售经理数量  -->
+	        <div class="center_c dd" id="mangentnum">
+		         <div class="c_l"   >
+			           <span id="mangentNum"></span>
+		         </div>
+	       	</div>
+	       	
+		 
+		
+		    <!--我的经销商数量  -->
+	        <div class="center_c dd" id="agentnum">
+		         <div class="c_l"   >
+			           <span id="agentNum"></span>
+		         </div>
+	       	</div>
+	       	
+	       	<!-- 我的业务员数量： -->
+			<div class="center_c dd"  id  ="salenum">
+	             <div class="c_l">
+				<span id="saleNum"></span>
+			      </div>
+			</div>
+			
+		   <!-- 我的会员数量： -->
+			<div class="center_c dd" id="vipnum">
+			      <div class="c_l">
+				        <span id="vipNum"></span>
+			    </div>
+			</div>
+			
+		
+	</div>
+	<div class="footer">
+		
+	</div>
+</body>
+</html>

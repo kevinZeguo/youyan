@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.claude.wmall.jxc.dao.store.StoreChuKuDDao">
+    <resultMap id="BaseResultMap" type="com.claude.wmall.jxc.domain.store.StoreChuKuD">
+        <id column="BANHAO" property="banhao" jdbcType="BIGINT"/>
+        <result column="DANJUBH" property="danjubh" jdbcType="VARCHAR"/>
+        <result column="CHANGKU" property="changku" jdbcType="VARCHAR"/>
+        <result column="LINGLIAOY" property="lingliaoy" jdbcType="VARCHAR"/>
+        <result column="BUMEN" property="bumen" jdbcType="VARCHAR"/>
+        <result column="GONGCHANG" property="gongchang" jdbcType="VARCHAR"/>
+        <result column="SHENGCHANX" property="shengchanx" jdbcType="VARCHAR"/>
+        <result column="BANZHU" property="banzhu" jdbcType="VARCHAR"/>
+        <result column="BANCI" property="banci" jdbcType="VARCHAR"/>
+        <result column="CHANPINMC" property="chanpinmc" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        BANHAO, DANJUBH, CHANGKU, LINGLIAOY, BUMEN, GONGCHANG, SHENGCHANX, BANZHU, BANCI,CHANPINMC
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from STORE_CHUKUD
+        where BANHAO = #{banhao,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from STORE_CHUKUD
+        where BANHAO = #{banhao,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.claude.wmall.jxc.domain.store.StoreChuKuD">
+        insert into STORE_CHUKUD (BANHAO, DANJUBH, CHANGKU,
+        LINGLIAOY, BUMEN, GONGCHANG,
+        SHENGCHANX, BANZHU, BANCI,CHANPINMC
+        )
+        values (#{banhao,jdbcType=BIGINT}, #{danjubh,jdbcType=VARCHAR}, #{changku,jdbcType=VARCHAR},
+        #{lingliaoy,jdbcType=VARCHAR}, #{bumen,jdbcType=VARCHAR}, #{gongchang,jdbcType=VARCHAR},
+        #{shengchanx,jdbcType=VARCHAR}, #{banzhu,jdbcType=VARCHAR}, #{banci,jdbcType=VARCHAR}, #{chanpinmc,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.claude.wmall.jxc.domain.store.StoreChuKuD">
+        update STORE_CHUKUD
+        <set>
+            <if test="danjubh != null">
+                DANJUBH = #{danjubh,jdbcType=VARCHAR},
+            </if>
+            <if test="changku != null">
+                CHANGKU = #{changku,jdbcType=VARCHAR},
+            </if>
+            <if test="lingliaoy != null">
+                LINGLIAOY = #{lingliaoy,jdbcType=VARCHAR},
+            </if>
+            <if test="bumen != null">
+                BUMEN = #{bumen,jdbcType=VARCHAR},
+            </if>
+            <if test="gongchang != null">
+                GONGCHANG = #{gongchang,jdbcType=VARCHAR},
+            </if>
+            <if test="shengchanx != null">
+                SHENGCHANX = #{shengchanx,jdbcType=VARCHAR},
+            </if>
+            <if test="banzhu != null">
+                BANZHU = #{banzhu,jdbcType=VARCHAR},
+            </if>
+            <if test="banci != null">
+                BANCI = #{banci,jdbcType=VARCHAR},
+            </if>
+            <if test="chanpinmc != null">
+                CHANPINMC = #{chanpinmc,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where BANHAO = #{banhao,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.claude.wmall.jxc.domain.store.StoreChuKuD">
+        update STORE_CHUKUD
+        set DANJUBH = #{danjubh,jdbcType=VARCHAR},
+        CHANGKU = #{changku,jdbcType=VARCHAR},
+        LINGLIAOY = #{lingliaoy,jdbcType=VARCHAR},
+        BUMEN = #{bumen,jdbcType=VARCHAR},
+        GONGCHANG = #{gongchang,jdbcType=VARCHAR},
+        SHENGCHANX = #{shengchanx,jdbcType=VARCHAR},
+        BANZHU = #{banzhu,jdbcType=VARCHAR},
+        BANCI = #{banci,jdbcType=VARCHAR},
+        CHANPINMC = #{chanpinmc,jdbcType=VARCHAR}
+        where BANHAO = #{banhao,jdbcType=BIGINT}
+    </update>
+    
+     <sql id="Base_Column_List1">
+        BANHAO, sc.DANJUBH, CHANGKU, LINGLIAOY, BUMEN, GONGCHANG, SHENGCHANX, BANZHU, BANCI,CHANPINMC
+    </sql>
+    
+    <select id="selectListByPage" parameterType="com.claude.wmall.jxc.domain.store.StoreChuKuD"
+            resultType="com.claude.wmall.jxc.domain.store.StoreChuKuD">
+        select
+        <include refid="Base_Column_List1"/>
+        ,
+        sk.DANJURQ danjurq,sk.BEIZHU beizhu,sk.SHENHER shenher,sk.SHENHESJ shenhesj,(CASE sk.SHENHEBJ WHEN 0 THEN '未审核' WHEN 1 THEN '通过' WHEN 2 THEN '不通过' END) shenhebj,
+        sk.FANSHENR fanshenr,sk.FANSHENSJ fanshensj,sk.RUKULX rukulx,sk.ZHUANHUAZT zhuanhuazt,sk.KUDANLX kudanlx
+        from STORE_CHUKUD sc
+        left join STORE_KUDAN sk on sc.DANJUBH = sk.DANJUBH 
+        
+       where 1=1 
+
+ 	  <if test="danjubh != null and danjubh != ''">
+        and sc.danjubh like concat(concat('%',#{danjubh}),'%')
+      </if>
+      <if test="shenhebj != null and shenhebj != ''">
+        and sk.shenhebj = #{shenhebj}
+      </if>
+      
+    
+        order by  sk.DANJURQ desc
+    </select>
+</mapper>

@@ -1,0 +1,330 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>产品详情</title>
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">	
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1.0" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="stylesheet" href="css/my.css">
+<link rel="stylesheet" href="css/swiper-3.3.1.min.css">
+<link rel="stylesheet" href="font/iconfont.css">
+<script type="text/javascript" src="../js/jquery-1.4.2.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+<script type="text/javascript" src="../js/jquery.jsoncookie.js"></script>
+<script type="text/javascript" src="../js/json2.js"></script>
+<script type="text/javascript" src="product.js"></script>
+</head>
+<body>
+<div id="hidDiv" style="visibility: hidden;"></div>
+<div id="hidDivPrice" style="visibility: hidden;"></div>
+	<div class="warp">
+		<!-- 头部 -->
+		<!--<div class="head" style="line-height: 0.58rem;height:0.58rem;padding-top:0;">
+			<a href="index.html"><i class="iconfont xq_left">&#xe600;</i></a>
+			<span class="xq_center"></span>
+		</div>
+		<div class="headd"></div>-->
+		<!-- 商品展示开始 -->
+		<!--<div class="xq_spzs">
+			<img id="productSimg" >
+		</div>
+		-->
+		<!-- 轮播图 -->
+		<div class="swiper-container">
+		    <div class="swiper-wrapper con">
+		      <!--   <div class="swiper-slide"><img src="images/z_banner_02.jpg" alt=""></div>
+		        <div class="swiper-slide"><img src="images/z_banner_02.png" alt=""></div>
+		        <div class="swiper-slide"><img src="images/z_banner_03.png" alt=""></div> -->
+	    	</div>
+		    <!-- 分页器 -->
+		    <div class="swiper-pagination"></div>
+		</div>
+		<!-- 名称价格展示 -->
+		<div class="xq_name">
+			<div class="xq_left1">
+				<h3 id="productName"></h3>
+				<h4 id="productPrice">  </h4>
+				<p id="productSpec"></p>
+			</div>
+			<div class="xq_right">
+				<!--<p class="top">
+					<i class="iconfont">&#xe618;</i><br>收藏
+				</p>
+				--><p class="bottom" id="restNumber"></p>
+			</div>
+		</div>
+		<!-- 请选择 -->
+		<!-- <p class="xq_xz">请选择&nbsp;颜值暴冰<a href="javascript:;">></a></p>
+		全部商品
+		<div class="all">
+			<p><a href="index.html"><img src="images/foot_bg_14.png" alt=""></a>内蒙古壹清食品有限公司<span>微信认证</span></p>
+			<div class="all1">
+				<a href="javascript:;" style="margin-right:0.2rem;">全部商品</a>
+				<a href="javascript:;">进入店铺</a>
+			</div>
+		</div> -->
+		<div class="tit num" style="border-top:0.07rem solid #efefef;">
+				<ul>
+					<li class="fl num_t">
+						<span style="font-size: 0.22rem;float: left;margin-top: 0.08rem;">数量：</span>
+						<a href="javascript:;" style="border-right:none;" id="jian">-</a>
+						<input class="xz_inp" type="text" value="1" style="width: 0.4rem;text-align: center;height: 0.32rem;border:1px solid #ccc;padding: 0.04rem 0.12rem;float: left;">
+						<a href="javascript:;" id="add"  style="border-left:none;">+</a>
+					</li>
+					<li class="fl num_b">
+						<!-- <a href="javascript:;" class="buy">立即购买</a> -->
+						<a href="javascript:void(0);"   onclick="add();" class="add">加入购物车</a>
+					</li>
+				</ul>
+			</div>
+		<div class="tit" style="height:0.75rem;line-height:0.75rem;">
+			<span class="fll">微信支付</span>
+			<span class="fr">不支持七天退换货</span>
+		</div>
+		<!-- 口味选择 -->
+		<div class="mask" id="mask"></div>
+		<div class="kouwei" ><span>口味分类<em></em></span>
+			<ul class="splx" id="kw">
+				<!--<li class="sp_show">草莓味</li>
+				 <li>香蕉味</li>
+				<li>香芋味</li>
+				<li>苹果味</li>
+				<li>咖啡味</li>
+				<li>蓝莓味</li> -->
+			</ul>
+			<!--<div class="chose" id="bas">
+				<div class="kw_top">
+					<div class="kw_left">
+						<img src="images/xptj1_03.png" alt="" id="kwsrc">
+					</div>
+					<div class="kw_right">
+						<p>数量</p>
+						<p id="rest">库存10207件</p>
+						<p>请选择&nbsp;口味分类</p>
+						<span  id="img" onclick="hd();"><img src="images/cuo.png" alt="" class="img" ></span>
+					</div>
+					
+				</div>
+				<div class="zlxz">
+					<p>口味选择</p>
+					<ul class="splx" id="kw">
+						<li class="sp_show">草莓味</li>
+						<li>香蕉味</li>
+						<li>香芋味</li>
+						<li>苹果味</li>
+						<li>咖啡味</li>
+						<li>蓝莓味</li>
+					</ul>
+				</div>
+				<div class="tit num" style="margin-bottom:0.4rem;border: none;">
+					<ul>
+						<li class="fl num_t" style="width:100%;height:auto;">
+							<span style="font-size: 0.22rem;float: left;margin-top: -0.1rem;margin-right: 1rem;">数量：</span>
+							<a href="javascript:;" style="border-right:none;" id="jian1">-</a>
+							<input class="xz_inp" type="text" value="1" style="width: 0.4rem;text-align: center;height: 0.31rem;border:1px solid #ccc;padding: 0.04rem 0.12rem;float: left;">
+							<a href="javascript:;" id="add1"  style="border-left:none;">+</a>
+						</li>
+					</ul>
+				</div>
+				<div class="soonbuy">
+					<h2 class="backcor" onclick="car();">购物车</h2>
+					<h2 onclick="add();">加入购物车</h2>
+				</div>
+			</div>
+		--></div>
+		<div class="tit shou" style="border-top:0.07rem solid #efefef;">
+				<ul>
+					<li class="fw">
+						服务：由壹清商城提供售后服务
+					</li>
+					<li class="z_box">
+						<span class="sp_l">全程冷链</span>
+						<span class="sp_l">品质保证</span>
+						<span class="sp_l">验货付款</span>
+					</li>
+				</ul>
+		</div>
+		<div class="all">
+			<p><a href="index.html"><img src="images/foot_bg_14.png" alt=""></a>内蒙古壹清食品有限公司<span>微信认证</span></p>
+		</div>
+		<!-- 切换卡 -->
+		<div id="box1" class="xq_warp">
+			<ul class="cp_list">
+				<li class="c_show">商品介绍</li>
+				<li>规格参数</li>
+				<li>商品评价</li>
+			</ul>
+			<div class="xq_con">
+				<div  class="tab xq_show" id="deta">
+					<!-- <span class="xq_boder"><img id="productLimg" alt=""></span> -->
+					<!-- <span><img src="images/xx_03.png" alt=""></span> -->
+				</div>
+				<div class="tab" id="spec">
+					<!-- <p>品牌<span>壹清</span></p>
+					<p>包装方式<span>普通包装</span></p>
+					<p>食品产地<span>内蒙古呼和浩特</span></p> -->
+				</div>
+				<div  class="tab" id="box2">
+						<!-- 评论切换卡 -->
+					<div class="cp_list cp_lists" style="background: #f0f0f0;">
+						<h2 class="c_show">全部</h2>
+						<h2>好评(0)</h2>
+						<h2>中评(0)</h2>
+						<h2>差评(0)</h2>
+					</div>
+					<div class="xq_con">
+						<div class="div xq_show">
+							<div class="zt">
+								<h3>
+									<!-- <img src="images/pjbt_03.png" alt=""> -->
+									<strong>李*</strong>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+								</h3>
+								<p style="border:none;padding-left: 0.2rem;">不错，值得一品</p>
+								<h3 class="h3">
+									<strong style="font-size:0.2rem">2016-6-17</strong>
+									<em>箱曼越莓+草莓/数量1</em>
+								</h3>
+							</div>
+							<div class="zt">
+								<h3>
+									<!-- <img src="images/pjbt_03.png" alt=""> -->
+									<strong>李*</strong>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+								</h3>
+								<p style="border:none;padding-left: 0.2rem;">不错，值得一品</p>
+								<h3 class="h3">
+									<strong style="font-size:0.2rem">2016-6-17</strong>
+									<em>箱曼越莓+草莓/数量1</em>
+								</h3>
+							</div>
+						</div>
+						<div class="div">
+							<div class="zt">
+								<h3>
+									<!-- <img src="images/pjbt_03.png" alt=""> -->
+									<strong>赵*</strong>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+								</h3>
+								<p style="border:none;padding-left: 0.2rem;">不错，值得一品</p>
+								<h3 class="h3">
+									<strong style="font-size:0.2rem">2016-6-17</strong>
+									<em>箱曼越莓+草莓/数量1</em>
+								</h3>
+							</div>
+							<div class="zt">
+								<h3>
+									<!-- <img src="images/pjbt_03.png" alt=""> -->
+									<strong>李*</strong>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+								</h3>
+								<p style="border:none;padding-left: 0.2rem;">不错，值得一品</p>
+								<h3 class="h3">
+									<strong style="font-size:0.2rem">2016-6-17</strong>
+									<em>箱曼越莓+草莓/数量1</em>
+								</h3>
+							</div>
+						</div>
+						<div class="div">
+							<div class="zt">
+								<h3>
+									<!-- <img src="images/pjbt_03.png" alt=""> -->
+									<strong>李*</strong>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+								</h3>
+								<p style="border:none;padding-left: 0.2rem;">不错，值得一品</p>
+								<h3 class="h3">
+									<strong style="font-size:0.2rem">2016-6-17</strong>
+									<em>箱曼越莓+草莓/数量1</em>
+								</h3>
+							</div>
+							<div class="zt">
+								<h3>
+									<!-- <img src="images/pjbt_03.png" alt=""> -->
+									<strong>李*</strong>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+								</h3>
+								<p style="border:none;padding-left: 0.2rem;">不错，值得一品</p>
+								<h3 class="h3">
+									<strong style="font-size:0.2rem">2016-6-17</strong>
+									<em>箱曼越莓+草莓/数量1</em>
+								</h3>
+							</div>
+						</div>
+						<div class="div">
+							<div class="zt">
+								<h3>
+									<!-- <img src="images/pjbt_03.png" alt=""> -->
+									<strong>李*</strong>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									
+								</h3>
+								<p style="border:none;padding-left: 0.2rem;">不错，值得一品</p>
+								<h3 class="h3">
+									<strong style="font-size:0.2rem">2016-6-17</strong>
+									<em>箱曼越莓+草莓/数量1</em>
+								</h3>
+							</div>
+							<div class="zt">
+								<h3>
+									<!-- <img src="images/pjbt_03.png" alt=""> -->
+									<strong>李*</strong>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+									<i class="iconfont" style="font-size: 0.24rem;">&#xe61a;</i>
+								</h3>
+								<p style="border:none;padding-left: 0.2rem;">不错，值得一品</p>
+								<h3 class="h3">
+									<strong style="font-size:0.2rem">2016-6-17</strong>
+									<em>箱曼越莓+草莓/数量1</em>
+								</h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 商品展示结束 -->
+		<!-- 底部菜单 -->
+		<ul class="z_list" id="z_foot" style="background:#fff;">
+			<li><a href="login.html" class="z_clo" style="border-right:1px solid #3c3c3c;"><i class="iconfont iconfont1">&#xe600;</i><span>首页</span></a></li>
+			
+			<li><a href="carts.html" class="z_clo"><i class="iconfont iconfont1">&#xe607;</i><span>购物车</span></a></li>
+			<li><a href="javascript:void(0);" onclick="add();" class="a" style="background:#5aadda;">加入购物车</a></li>
+			<li><a href="javascript:buy();" class="a" style="background:#0281c6;">立即购买</a></li>
+		</ul>
+	</div>
+<script type="text/javascript" src="js/swiper-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/my.js"></script>
+</body>
+
+</html>

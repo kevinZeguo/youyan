@@ -1,0 +1,18 @@
+html,body{max-width: 640px;overflow-x: hidden;margin: 0 auto;min-height:600px;}
+img{max-width: 100%;height: auto;}
+[hidden]{display: none;}
+[data-bg="1"]{background: #dcdddd;}
+.fl{float: left;}
+.fr{float: right;}
+.cl:after,
+.cl:before{content: "";display: block;display: table;}
+.cl:after{clear: both;}
+a:active{background: #ececec;}
+
+
+
+.lei{width:100%;background:#fff;overflow: hidden;}
+.lei .lei_1{width:50%;border:1px solid #f5f5f5;margin-top:20px;}
+.lei .lei_1 a{display:block;width:99%;height:150px;margin:0 auto;border-bottom:1px dotted #8ec31f;}
+.lei .lei_1 a img{height:100%;}
+.lei .lei_1 p{padding:6px 0;text-align:center;color:#666;font-size:14px;}

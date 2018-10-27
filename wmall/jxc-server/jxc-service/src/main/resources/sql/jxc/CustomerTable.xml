@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--与DAO一致-->
+<mapper namespace="com.claude.wmall.jxc.dao.ForecastOrderDao">
+
+    <sql id="user_column">
+      CUSTOMER_ID, CUSTOMER_NAME , ADDRESS
+    </sql>
+
+    <!--&lt;!&ndash;根据Id查询用户信息&ndash;&gt;-->
+    <!--<select id="selectById" resultType="CustomerTable" parameterType="java.lang.Integer">-->
+        <!--SELECT-->
+        <!--<include refid="user_column"/>-->
+        <!--FROM CUSTOMER_TABLE-->
+        <!--WHERE CUSTOMER_ID=#{customerID}-->
+    <!--</select>-->
+
+</mapper>

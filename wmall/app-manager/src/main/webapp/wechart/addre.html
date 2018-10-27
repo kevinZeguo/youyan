@@ -1,0 +1,119 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0, maximum-scale=1.0">
+<title></title>
+<link rel="stylesheet" href="newcss/globa.css" type="text/css" />
+<link rel="stylesheet" href="newcss/addres.css" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"> </script>
+<script type="text/javascript" src="../js/location/_x_ctr_location-1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+	$.ajax({
+		url : 'getUser.do',
+		data : '',
+		async :false,
+		datatype : 'json',
+		success : function(data) {
+			$.ajax({
+				url : '../receAddress/phonelist.do',
+				data : '',
+				datatype : 'json',
+				success : function(data) {
+					var list = data.list;
+					var ul = $("#addressList");
+					$.each(list, function (i, item) {
+						var html="";
+		  				if(item.receAddressEnable=="1")
+		  				{
+		  					html+='<TR class="thead-tbl-address address-default">   '; 				                                                  
+		  				}
+		  				else
+		  				{
+		  					html+='<TR class="thead-tbl-address ">   ';    
+		  				}
+		  				html+='	<TD>'+item.receAddressRecipients+'</TD> ';
+		  				html+='	<TD>'+item.receAddressName+'</TD>';
+		  				html+='	<TD>'+item.receAddressDesc+'</TD>';
+		  				//html+='	<TD>'+item.vZipCode+'</TD>';
+		  				html+='	<TD>'+item.receAddressPhone+'</TD> ';
+		 				html+='	<TD><a href="receiveadd.html?id='+item.receAddressId+'"> 　修改</a> 	</TD>  ';
+		  				if(item.receAddressEnable=="1")
+		  				{
+		  					html+='	<TD class="thead-tbl-status"><SPAN class="note">默认地址</SPAN></TD>  ';
+		  				}
+		  				else
+		  				{
+//		  					改为class="note implicit hide" 可以隐藏设为默认的按钮
+		  					html+='	<TD class="thead-tbl-status"><A class="note implicit " href="javascript:void(0);" onclick="setDefault(\''+item.receAddressId+'\')">设为默认</A>	</TD>  ';
+		  				}
+		  				html+='</TR> ';
+		  				ul.append(html);
+					});
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+
+				}
+			});
+			
+		}
+	});
+
+	
+
+});
+function setDefault(v_id)
+{
+	$.ajax({
+		type : "POST",
+		url : "../receAddress/setphoneDefault.do",
+		data : {id:v_id},
+		dataType : "json",
+		success : function(data) {
+			alert(data.message);
+		    window.location.reload();
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("设置失败，请联系系统管理员！");
+			return false;
+		}
+	});
+}
+</script>
+<style>
+	body{max-width:640px;margin:0 auto 60px;overflow-x: hidden;background:#efefef;}
+	.main,.she,.del{width:100%;background:#fff;}
+	.main ul{width:100%;padding:0 3px 0 10px;}
+	.main ul li{padding:15px 0;border-bottom:1px dotted #efefef;}
+	.main ul li span{padding-left:15px;}
+	.main ul .sp_1 span{padding-left:29px;}
+	.main ul li p{width:70%;display:inline-block;text-align:right;color:#999;margin-right:0;}
+	.she,.del{height:50px;margin-top:5px;line-height:50px;padding-left:10px;}
+	.del a{display:block;width:100%;height:100%;color:#a5061a;}
+	.she input[type="checkbox"]{margin-top:16px;width:15px; height:15px;margin-right:10px;}
+</style>
+</head>
+<body>
+	<div class="main">
+		<ul>
+			<li class="sp_1">收货人<span>张志强</span></li>
+			<li>联系电话<span>18247491152</span></li>
+			<li>所在地区<p>暂不选择</p><span><i class="iconfont" >&#xe606;</i></span></li>
+			<li>街道<p style="margin-left:27px;">暂不选择</p><span><i class="iconfont" >&#xe606;</i></span></li>
+			<li></li>
+		</ul>
+	</div>
+	<div class="she">
+		<span class="fl">设置默认地址</span>
+		<input type="checkbox" class="fr fl">
+	</div>
+<!--	<div class="del">
+		<a href="#">删除默认地址</a>
+	</div>  -->
+</body>
+</html>

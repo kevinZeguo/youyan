@@ -1,0 +1,286 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>壹清首页</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1.0" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="stylesheet" href="css/my.css">
+<link rel="stylesheet" href="css/swiper-3.3.1.min.css">
+<link rel="stylesheet" href="font/iconfont.css">
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+<script type="text/javascript" src="../js/jquery.jsoncookie.js"></script>
+<script type="text/javascript" src="../js/json2.js"></script>
+<script type="text/javascript" src="js/cityInfo.js"></script>
+<script type="text/javascript" src="js/jquerysession.js"></script>
+<script type="text/javascript">
+//初始化参数
+var COOKIE_NAME = "Bind_Prod_List";
+var cookie_val = $.JSONCookie(COOKIE_NAME);//读取json格式cookie
+var productTypeId = GetQueryString("productTypeId").toString();
+//渲染页面
+$(document).ready(function(){
+	initProduct();
+});
+//获取热卖产品
+function initProduct(){
+	//alert("initHotProduct"+city) ;
+	$.ajax({
+		url : '../productPrice/getProductListType.do',
+		type: 'post',
+		data : {
+			'productTypeId' : productTypeId,
+			'city' : $.session.get('city')
+		},
+		datatype : 'json',
+		async :false,
+		success : function(result) {
+			var pobj = result.list;
+			var html = "<h2></h2><div class='xp_wap'>";
+			$.each(pobj, function (i, item) {
+				 html = html + "</a>"+
+				 "<a href='procudt.html?productid="+item.productTable.productId+"&productimg="+item.productTable.productSimg+""+
+					"&productName="+item.productTable.productName+"&productPrice="+item.productPrice+""+
+		 			"&restNumber="+item.productTable.restNumber+""+
+		 			"&productSimg="+item.productTable.productSimg+""+
+		 			"&productLimg="+item.productTable.productLimg+""+
+		 			"&productSpec="+item.productTable.productSpec+"'>"+
+					"<img src='../productimg/"+item.productTable.productSimg+"' alt=''>"+
+					"<span><strong>"+item.productTable.productName+"</strong><em> 12杯/箱</em></span>"+
+					"<strong class='strong' ><var id='productPrice"+item.productTable.productId+"'>￥"+item.productPrice+"</var><em>"+item.productTable.restNumber+"</em></strong>"+
+					"</a>";
+			});
+			html = html + "</div>";
+			$("#top6").append(html);
+			city = $.session.get('city') ;
+			$("#cityview").html(city);
+		    //getProductList(city);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+}
+
+
+
+function GetQueryString(sProp) {
+	var re = new RegExp("[&,?]" + sProp + "=([^//&]*)", "i");
+	var a = re.exec(document.location.search);
+	if (a == null)
+		return "";
+	return a[1];
+}
+
+function add(){
+	for(var i=0;i<arguments.length;i++){ 
+		var n=arguments[i];
+		var code1 = $("#restNumber"+n).val();
+		var code = $("#code"+n).val();	
+		var name = $("#name"+n).html();
+		var sellprice = $("#price"+n).val();
+		var price = $("#price"+n).val();
+		var img = $("#img"+n).attr("src");
+	    var num=1;
+		if (typeof (cookie_val.Product) == "undefined") {
+			cookie_val = { "Product": [{ "code": "" + code + "", "name": "" + name + "", "sellprice": "" + sellprice + "", "price": "" + price + "", "img": "" + img + "", "num": "" + 1 + "","restNumber":""+code1+""}] };
+			//alert(name);
+			 $.JSONCookie(COOKIE_NAME, cookie_val, { path: '/', expires: 1 });
+	    }
+	     if (!IsExistsInCookie(code)) {
+	         var json = { "code": "" + code + "", "name": "" + name + "", "sellprice": "" + sellprice + "", "price": "" + price + "", "img": "" + img + "", "num": "" + 1 + "" ,"restNumber":""+code1+""};
+	         cookie_val.Product.push(json); //添加
+	         $.JSONCookie(COOKIE_NAME, cookie_val, { path: '/', expires: 1 });
+	         //alert("加入购物车成功");
+	     }else{
+	     	//修改
+	     	//alert("商品已加入购物车");
+	     }
+	}
+	window.location="carts.html";
+}
+function IsExistsInCookie(code) {
+    var flag = false;
+    for (var i = 0; i < cookie_val.Product.length; i++) {
+        var p = cookie_val.Product[i];
+        if (p.code == code ) {//存在
+            flag = true;
+            break;
+        }
+    }
+    return flag;
+}
+
+
+/* function getProductList(city) {
+	$.ajax({
+		url : '../productPrice/priceList.do',
+		data : 'city=' + city,
+		datatype : 'json',
+		async : false,
+		success : function(data) {
+			var obj = data.list;
+			$.each(obj, function(i, item) {		
+				$("#price"+item.productTable.productId+"").val(item.productPrice);
+				$("#sellprice"+item.productTable.productId+"").val(item.productPrice);
+				$("#productPrice"+item.productTable.productId+"").html("￥"+item.productPrice);
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+} */
+
+</script>
+</head>
+<body>
+	<div class="warp">
+		<!-- 头部 
+		<div class="head">
+			<a href="index.html"><img src="images/zlogo_03.png" alt=""></a>
+			<i class="iconfont" style="font-size:0.32rem;">&#xe601;</i>
+			<span></span>
+			<i class="iconfont" style="font-size: 0.36rem;margin-top: -0.03rem;">&#xe608;</i>
+		</div>
+		<div class="headd"></div>
+		-->
+		<!-- 头部 -->
+		<div class="head">
+			<a href="index.html" ><img src="images/zlogo_03.png" alt=""></a>
+			<font style="color: white;font-size: 0.26rem;">[</font><a id="cityview" style="color: white;font-size: 0.26rem;"></a><font style="color: white;font-size: 0.26rem;">]</font>
+			<a href="javascript:void(0)" onclick="showDivSwitchCity()" style="color: white;font-size: 0.26rem;">&nbsp;城市选择</a>
+			<!-- <a href="myjifennew.html"><i class="iconfont" style="margin-top: 0.1rem;margin-left: 0.08rem;font-size: 0.26rem;">我的积分</i> -->
+			<i class="iconfont" style="font-size: 0.36rem;margin-top: -0.03rem;">&#xe608;</i></a>
+		</div>
+		<div class="headd"></div>
+		<!-- 轮播图 -->
+		<div class="swiper-container">
+		    <div class="swiper-wrapper con">
+		        <div class="swiper-slide"><img src="images/z_banner_01.jpg" alt=""></div>
+		        <div class="swiper-slide"><img src="images/z_banner_02.jpg" alt=""></div>
+		        <div class="swiper-slide"><img src="images/z_banner_03.jpg" alt=""></div>
+		        <div class="swiper-slide"><img src="images/z_banner_04.jpg" alt=""></div>
+	    	</div>
+		    <!-- 分页器 -->
+		    <div class="swiper-pagination"></div>
+		</div>
+		<!-- 分类选择 -->
+		<ul class="z_list">
+			<li><a href="type.html?productTypeId=74"><i class="iconfont" style="font-size: 0.56rem;">&#xe606;</i><span>冰淇淋类</span></a></li>
+			<li><a href="type.html?productTypeId=75"><i class="iconfont">&#xe60c;</i><span>罐装类</span></a></li>
+			<li><a href="type.html?productTypeId=76"><i class="iconfont">&#xe612;</i><span>杯 类</span></a></li>
+			<li><a href="type.html?productTypeId=77"><i class="iconfont" style="font-size: 0.54rem;">&#xe613;</i><span>批条类</span></a></li>
+		</ul>
+		<!-- 内容展示开始 -->
+		<div class="z_conn" id="indexshop">
+			<!-- 热卖专区 -->
+			<div class="xp_tuijie remei" id="top6">
+			</div>
+		</div>
+		<!-- 内容展示结束 -->
+
+		<!-- 底部分类选择 -->
+			<ul class="z_list db_zlist">
+				<li><a href="javascript:;"><i class="iconfont iconfont1" style="font-size: 0.48rem;padding-top: 0.2rem;margin-bottom: 0.05rem;">&#xe610;</i><span>贴心包邮</span></a></li>
+				<li><a href="javascript:;"><i class="iconfont iconfont1">&#xe604;</i><span>全程冷链</span></a></li>
+				<li><a href="javascript:;"><i class="iconfont iconfont1">&#xe60e;</i><span>品质保证</span></a></li>
+				<li><a href="javascript:;"><i class="iconfont iconfont1"style="font-size: 0.48rem;">&#xe605;</i><span>验货付款</span></a></li>
+			</ul>
+			<!-- 底部分类选择菜单 -->
+			<ul class="z_list db_zlist1">
+				<li>
+					<a href="index.html" style="padding-top:0.15rem;">
+						<img src="images/foot_bg_14.png" alt="">
+						<span class="sp"></span>
+					</a>
+				</li>
+				<li><a href="javascript:;">全程冷链</a></li>
+				<li><a href="javascript:;">品质保证</a></li>
+				<li><a href="javascript:;">验货付款</a></li>
+			</ul>
+			<!-- 底部菜单 -->
+			<!--<ul class="z_list z_indlist" id="z_foot">
+				<li class="li"><a href="index.html"><i class="iconfont iconfont1">&#xe600;</i><span>首页</span></a></li>
+				<li class="li"><a href="myinfo.html"><i class="iconfont iconfont1" style="font-size:0.42rem;">&#xe615;</i><span>我的信息</span></a></li>
+				<li class="li" id="sa"> <a href="orderList.html"><i class="iconfont iconfont1" style="font-size:0.38rem;margin:0.05rem 0 0.15rem 0;">&#xe614;</i><span>我的订单</span></a></li>
+				<li class="li"><a href="carts.html"><i class="iconfont iconfont1">&#xe607;</i><span>购物车</span></a></li>
+			    <li class="li"><a href="javascript:share();"><i class="iconfont iconfont1" style="font-size:0.42rem;margin:-0.03rem 0 0.19rem 0;">&#xe603;</i><span>分享</span></a></li>
+			</ul>
+	-->
+	<div class="fotr">
+				<ul>
+					<li>
+						<a href="login.html">
+							<span>
+								<i class="iconfont iconfont1">&#xe600;</i>
+							</span>	
+							首页
+						</a>
+					</li>
+					<li>
+						<a href="myinfo.html">
+							<span>
+								<i class="iconfont iconfont1" style="font-size:20px;">&#xe615;</i>
+							</span>	
+							我的信息
+						</a>
+					</li>
+					<li id="sa">
+					 	<a href="orderList.html">
+						 	<span>
+						 		<i class="iconfont iconfont1" style="">&#xe614;</i>
+						 	</span>
+					 		我的订单
+					 	</a>
+					</li>
+					<li>
+						<a href="carts.html">
+							<span>
+								<i class="iconfont iconfont1" style="font-size:21 mpx;">&#xe607;</i>
+							</span>
+							购物车
+						</a>
+					</li>
+				    <li>
+				    	<a href="javascript:share();">
+					    	<span>
+					    		<i class="iconfont iconfont1" style="font-size:21px;" >&#xe603;</i>
+					    	</span>	
+				    		分享
+				    	</a>
+				    </li>
+				</ul>
+			</div>
+	</div>
+	<div id="divSwitchCity" style="display:none;height: 1rem;width: 5rem;position:fixed;top: 150px;z-index: 999;background: #93c96f;text-align: center;line-height: 1rem;left: 50%;margin-left: -2.5rem;">
+		<select name="ddlProvince" id="ddlProvince" onchange="selectMoreCity(this)"></select>
+		<select name="ddlCity" id="ddlCity">
+			<option selected value="">城市</option>
+		</select>
+		<INPUT type="button" value="确定" onclick="doSwitch()">
+	</div>
+	<script type="text/javascript" language ="javascript">
+	    BindCity("呼和浩特市");//初始化城市，并自动选择所在的省
+	    function showDivSwitchCity(){
+	    	document.getElementById('divSwitchCity').style.display="";
+	    }
+	    function doSwitch(){
+	    	var selectedCity=document.getElementById('ddlCity').value;
+	    	if(selectedCity.length==0){
+	    		alert("请选择城市！") ;
+	    	}
+	    	$("#cityview").html(selectedCity);
+	    	//放入当前切换的城市
+	    	$.session.set('city', ""+selectedCity+"") ;
+	    	//清空购物车
+			$.cookie("Bind_Prod_List", null, { path: '/' });
+			initProduct();
+	    	document.getElementById('divSwitchCity').style.display="none";
+	    }
+	</script>
+</body>
+<script type="text/javascript" src="js/swiper-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/my.js"></script>
+</html>

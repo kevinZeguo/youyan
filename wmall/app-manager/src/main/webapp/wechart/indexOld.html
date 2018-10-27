@@ -1,0 +1,189 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="keywords" content="微信,微信公众平台" />
+<meta name="description" content="微信公众平台自助引擎" />
+<title>商城首页</title>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.accordion.js"></script>
+<script type="text/javascript" src="js/unslider.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.js"></script>
+<script type="text/javascript" src="js/jquery.jsoncookie.js"></script>
+<script type="text/javascript" src="js/json2.js"></script>
+<script type="text/javascript">
+var COOKIE_NAME = "Bind_Prod_List";
+var cookie_val = $.JSONCookie(COOKIE_NAME);//读取json格式cookie
+
+
+$(document).ready(function(){
+	$('.banner').unslider({
+		arrows: true,
+		fluid: true,
+		dots: true
+	});
+
+	$("#content").accordion({
+		alwaysOpen: false,
+		autoheight: false,
+		header: '.info_integral',
+		clearStyle: true
+	});
+	
+	$.ajax({
+		type:"post",
+		url : 'listProduct.do',
+		//async :false,
+		data : '',
+		datatype : 'json',
+		success : function(data) {
+			var obj = data.list;
+			var html = "<ul><li style='width:2%'></li>";
+			$.each(obj, function (i, item) {
+			    //html = "<li style='width:25%'><div class='line3'><a href='"+content.html?product_id=item.product_id+"'><i><img src='"+item.product_img+"'></i><span>"+item.product_name+"</span><em>"+item.product_price+"</em></a></div></li>";
+				//html += "<li style='width:25%'><div class='line3'><i><img src='../product/"+item.product_limg+"' onclick='go("+item.product_id+")'></i><span>"+item.product_name+"</span><em>"+item.product_price+"</em></div></li>";
+				html +="<li style='width:46% ;padding-right:3%;'><a onclick='add("+item.product_id+")'><i><input type='hidden' id='code"+item.product_id+"' value='"+item.product_id+"'/><img id='img"+item.product_id+"' src='../productimg/"+item.product_limg+"' width='220'></i><span id='name"+item.product_id+"'>"+item.product_name+"</span><span>￥"+item.product_price+"&nbsp;销量：318件</span><span><img src='images/jiaru.jpg' width='140' height='24'></span></a></li>";
+			})
+			html +="</ul>"
+			//alert(html)
+			$("#dicc").append(html);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+	});
+})
+
+
+function go(i){
+	location.href = "content.html?product_id="+i.toString();
+}
+
+function add(n){
+	var code = $("#code"+n).val();
+	var name = $("#name"+n).html();
+	var sellprice = $("#price"+n).html();
+	var price = $("#price"+n).html();
+	var img = $("#img"+n).attr("src");
+	//alert("code===="+code);
+	//alert("name===="+name);
+	//alert("sellprice===="+sellprice);
+	//alert("price===="+price);
+	//alert("img===="+img);
+	if (typeof (cookie_val.Product) == "undefined") {
+		cookie_val = { "Product": [{ "code": "" + code + "", "name": "" + name + "", "sellprice": "" + sellprice + "", "price": "" + price + "", "img": "" + img + "", "num": "" + 1 + ""}] };
+        $.JSONCookie(COOKIE_NAME, cookie_val, { path: '/', expires: 1 });
+        if (ex == "1")
+            GetUserStockList(code, name, sellprice, price, img, num);
+    } else {
+        if (!IsExistsInCookie(code)) {
+            var json = { "code": "" + code + "", "name": "" + name + "", "sellprice": "" + sellprice + "", "price": "" + price + "", "img": "" + img + "", "num": "" + 1 + "" };
+            cookie_val.Product.push(json); //添加
+            $.JSONCookie(COOKIE_NAME, cookie_val, { path: '/', expires: 1 });
+            alert("加入购物车成功");
+        }else{
+        	//修改
+        	alert("商品已加入购物车");
+        } 
+    }
+}
+function IsExistsInCookie(code) {
+    var flag = false;
+    for (var i = 0; i < cookie_val.Product.length; i++) {
+        var p = cookie_val.Product[i];
+        if (p.code == code ) {//存在
+            flag = true;
+            break;
+        }
+    }
+    return flag;
+}
+</script>
+</head>
+
+<body ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false" onselectstart="return false" 
+ondragstart="return false" onbeforecopy="return false" oncopy=document.selection.empty() onselect=document.selection.empty()> 
+<div id="page">
+<div class="banners">
+		<a href="javascript:history.go(-1);"><img src="images/logo.jpg"></a>
+	</div>
+<div class="banner">
+<ul>
+			<li style="background-image: url('images/4.jpg');"></li>
+			<li style="background-image: url('images/3.jpg');"></li>
+			<li style="background-image: url('images/1.jpg');"></li>
+			<li style="background-image: url('images/2.jpg');"></li>
+		</ul>
+	</div>
+	<div id="content">
+		<!-- <div class="box_exp info_light">
+			<div class="info_integral">
+				<span class="title"><i class="icon-bookmark-empty"></i>减肥产品</span>
+			</div>
+			<div style="display: block; overflow: hidden; opacity: 1;">
+				<div class="info_child">
+					<ul id="ul">
+						<li style="width:25%"><div class="line3"><a href="content.html"><i><img src="../productimg/img20160413164530.jpg"></i><span>减肥酵素</span><em>198.00</em></a></div></li>
+						<li style="width:25%"><div class="line3"><a href="content.html"><i><img src="images/9.jpg"></i><span>花果酵素</span><em>198.00</em></a></div></li>
+						<li style="width:25%"><a href="content.html"><i><img src="images/6.jpg"></i><span>解酒酵素</span><em>198.00</em></a></li>
+						<li style="width:25%"><div class="line3"><a href="content.html"><i><img src="images/7.jpg"></i><span>减肥酵素</span><em>198.00</em></a></div></li>
+						 
+				  </ul>
+				</div>
+			</div>
+		</div>
+ -->
+<!-- <div class="box_exp info_light">
+			<div class="info_integral">
+				<span class="title"><i class="icon-bookmark-empty"></i>—预售产品—</span>
+</div>
+			<div style="display: block; overflow: hidden; opacity: 1;">
+				<div class="info_child">
+					<ul id="ul1">
+						<li style="width:25%"><div class="line3"><a href="content.html"><i><img src="images/7.jpg"></i><span>减肥酵素</span><em>198.00</em></a></div></li>
+						<li style="width:25%"><div class="line3"><a href="content.html"><i><img src="images/9.jpg"></i><span>花果酵素</span><em>198.00</em></a></div></li>
+						<li style="width:25%"><a href="content.html"><i><img src="images/6.jpg"></i><span>解酒酵素</span><em>198.00</em></a></li>
+						<li style="width:25%"><div class="line3"><a href="content.html"><i><img src="images/7.jpg"></i><span>减肥酵素</span><em>198.00</em></a></div></li>
+						
+				  </ul>
+				</div>
+			</div>
+		</div> -->
+		
+<div class="box_exp info_light">
+			<div class="info_integral">
+				<span class="title"><i class="icon-bookmark-empty"></i></span>
+			</div>
+			<div style="display: block; overflow: hidden; opacity: 1;">
+				<div class="info_child" id="dicc">
+				<!-- <ul  style="background-image:url(images/fenlei1.png); height:136px"></ul> -->
+					<!--ul>
+						<li style="width:2%"></li>
+						 <li style="width:46% ;padding-right:6%;">
+						 
+						  <a onclick="add('1')"><i><input type="hidden" id="code1" value="1"/><img id="img1" src="images/14.jpg"></i><span id="name1">优研综合果蔬酵素原液      12瓶/箱</span><span>￥<span id="price1">188.00</span>销量：318件库存：900件</span><span>原价：￥188.00 会员价：188.00 全国包邮</span><span>1440人评价98%好评 <img src="images/jiaru.jpg" width="185" height="23"></span></a>
+						  </li> 
+				  </ul>-->
+				</div>
+			</div>
+		</div>
+
+		<div style="padding:15px;"></div>
+	</div>
+	<div id="nav-footer">
+		<ul>
+			<li style="width:25%" class="on"><a href="index.html"><i class="icon-home"></i></a></li>
+			<li style="width:25%"><a href="class.html"><i class="icon-reorder"></i></a></li>
+			<li style="width:25%"><a href="cart.html"><i class="icon-shopping-cart"></i></a></li>
+			<li style="width:25%"><a href="index.html"><i class="icon-info-sign"></i></a></li>
+		</ul>
+	</div>
+</div>
+
+</body>
+</html>

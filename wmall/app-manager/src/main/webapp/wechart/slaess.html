@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title>我的销售额</title>
+<link rel="stylesheet" href="newcss/css.css" type="text/css" />
+<link rel="stylesheet" href="newcss/starter.css" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$.ajax({
+		url : 'getUser.do',
+		data : '',
+		datatype : 'json',
+		async :false,
+		success : function(data) {
+			var obj = data.object;
+			$("#id").val(obj.wechatId);
+			$("#strong").html(obj.wechatName);
+            $("#city").html(obj.city);
+            $("#img").attr("src", obj.headimgurl);
+            
+            $.ajax({
+				url : 'customerList.do',
+				type: 'post',
+				data : 'wechatId='+obj.wechatId,
+				datatype : 'json',
+				success : function(result) {
+					var obj = result.object;
+					 if(obj.customerType.customerTypeId == 1 || obj.customerType.customerTypeId == 3){
+						 $("#sp3").hide();
+						 $.ajax({
+								url : '../person/task.do',
+								data : '',
+								datatype : 'json',
+								async :false,
+								success : function(data) {
+									var obj = data.status;
+									$("#task").html(Number(obj).toFixed(2)+"%");
+								},
+								error : function(XMLHttpRequest, textStatus, errorThrown) {
+									//alert(XMLHttpRequest.status);
+									//alert(XMLHttpRequest.readyState);
+									//alert(textStatus);
+								}
+							});
+							$.ajax({
+								url : '../person/yearSale.do',
+								data : '',
+								datatype : 'json',
+								async :false,
+								success : function(data) {
+									var obj1 = data.status;
+									//$("#yearSale").html(Number(obj).toFixed(2));
+									$.ajax({
+										url : '../person/yearorderTotal.do',
+										data : '',
+										datatype : 'json',
+										async :false,
+										success : function(data) {
+											var obj = data.status;
+											var bb = parseFloat(obj1) + parseFloat(obj);
+											$("#yearSale").html(bb.toFixed(2));
+										},
+										error : function(XMLHttpRequest, textStatus, errorThrown) {
+											//alert(XMLHttpRequest.status);
+											//alert(XMLHttpRequest.readyState);
+											//alert(textStatus);
+										}
+									});
+								},
+								error : function(XMLHttpRequest, textStatus, errorThrown) {
+									//alert(XMLHttpRequest.status);
+									//alert(XMLHttpRequest.readyState);
+									//alert(textStatus);
+								}
+							});
+							$.ajax({
+								url : '../person/myLowVipSale.do',
+								data : '',
+								datatype : 'json',
+								async :false,
+								success : function(data) {
+									var obj1 = data.status;
+									$("#myLowVipSale").html(Number(obj1).toFixed(2));
+									$.ajax({
+										url : '../person/toMouthMySale.do',
+										data : '',
+										datatype : 'json',
+										async :false,
+										success : function(data) {
+											var obj = data.status;
+											$("#toMouthMySale").html(Number(obj).toFixed(2));
+											var aa = parseFloat(obj) - parseFloat(obj1);
+											$("#myLowSale").html(aa.toFixed(2));
+										},
+										error : function(XMLHttpRequest, textStatus, errorThrown) {
+											//alert(XMLHttpRequest.status);
+											//alert(XMLHttpRequest.readyState);
+											//alert(textStatus);
+										}
+									});
+								},
+								error : function(XMLHttpRequest, textStatus, errorThrown) {
+									//alert(XMLHttpRequest.status);
+									//alert(XMLHttpRequest.readyState);
+									//alert(textStatus);
+								}
+							});
+							 $.ajax({
+								url : '../person/orderTotal.do',
+								data : '',
+								datatype : 'json',
+								async :false,
+								success : function(data) {
+									var obj = data.status;
+									$("#orderTotal").html(Number(obj).toFixed(2));
+								},
+								error : function(XMLHttpRequest, textStatus, errorThrown) {
+									//alert(XMLHttpRequest.status);
+									//alert(XMLHttpRequest.readyState);
+									//alert(textStatus);
+								}
+							}); 
+							return;
+					 }
+					 if(obj.customerType.customerTypeId == 4 || obj.customerType.customerTypeId == 2){
+						 $("#sp1").hide();
+						 $.ajax({
+								url : '../person/MySale.do',
+								data : '',
+								datatype : 'json',
+								async :false,
+								success : function(data) {
+									var obj = data.status;
+									$("#MySale").html(Number(obj).toFixed(2));
+								},
+								error : function(XMLHttpRequest, textStatus, errorThrown) {
+									//alert(XMLHttpRequest.status);
+									//alert(XMLHttpRequest.readyState);
+									//alert(textStatus);
+								}
+							});
+						 return;
+					 }
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+				}
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+		}
+	});
+});
+</script>
+</head>
+<body>
+	<div class="center">
+		<p style="border:none;">我的销售额</p>
+		<div id="sp1">
+		<div class="center_c dd">
+			<div class="c_l">
+				       本年任务完成率：<span id="task"></span>
+			</div>
+		</div>
+		<div class="center_c dd">
+			<div class="c_l">
+				 本年累计销售额：<span id="yearSale"></span>
+			</div>
+		</div>
+		<div class="center_c dd">
+			<div class="c_l">
+				本月我的会员销售额：<span id="myLowVipSale"></span>
+			</div>
+		</div>
+		<div class="center_c dd">
+			<div class="c_l">
+				 本月销售额：<span id="toMouthMySale"></span>
+			</div>
+		</div>
+		<div class="center_c dd">
+			<div class="c_l">
+				  本月我的下级推广的销售额：<span id="myLowSale"></span>
+			</div>
+		</div>
+		<div class="center_c dd">
+			<div class="c_l">
+				 本月我的线下销售额：<span id="orderTotal"></span>
+			</div>
+		</div>
+		</div>
+		<div id="sp3">
+		<div class="center_c dd">
+			<div class="c_l">
+				我的销售额：<span id="MySale"></span>
+			</div>
+		</div>
+		</div>
+		<div class="img_b">
+			<img src="images/log_01.png">
+		</div>
+	</div>
+	<div class="footer">
+		
+	</div>
+</body>
+</html>

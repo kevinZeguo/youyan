@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title></title>
+<link rel="stylesheet" href="newcss/css.css" type="text/css" />
+<link rel="stylesheet" href="newcss/starter.css" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"> </script>
+<script type="text/javascript" src="../js/jsConfig.js"></script>
+<script language="javascript" type="text/javascript" src='../js/common/util.js'></script>
+<style type="text/css">
+#cover{display:none;position:absolute;left:0;top:0;z-index:18888;background-color:#000000;opacity:0.7;}
+#guide{display:none;position:absolute;right:18px;top:5px;z-index:19999;}
+#guide img{width:260px;height:180px;}
+</style>
+<script type="text/javascript">
+var sname = "";
+$(document).ready(function() {
+	
+	$.ajax({
+		url : 'getUser.do',
+		data : '',
+		datatype : 'json',
+		async :false,
+		success : function(data) {
+			var obj = data.object;
+			$("#id").val(obj.wechatId);
+			$("#name").val(obj.wechatName);
+            $("#city").html(obj.city);
+            $("#img").attr("src", obj.headimgurl);
+            sname = obj.wechatName;
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+		}
+	});
+	
+	
+	
+	$.ajax({
+		url : '../cardTable/myCardList.do',
+		data : {tt:1},
+		datatype : 'json',
+		async :false,
+		success : function(data) {
+			var obj = data.list;
+			var html="";
+			$.each(obj, function (i, item) {
+				$("#cardValue").html(item.cardValue);
+				html += "<tr><td><input type='checkbox' id='cardId' value='"+item.cardId+"'></td>";
+				//html += "<td>"+item.cardId+"</td>";
+				html += "<td>"+item.cardNum+"</td>";
+				//html += "<td>"+item.cardSer+"</td>";
+				//html += "<td>"+item.cardValue+"</td>";
+				html += "<td>"+item.cardAmount+"</td>";
+				html += "<td>"+operdateFormat(item.cardEnddate)+"</td>";
+				if(item.cardStatus == '2'){
+					html += "<td>已购买</td></tr>";
+				}
+				if(item.cardStatus == '3'){
+					html += "<td>已激活</td></tr>";
+				}
+				//html += "<td>"+item.cardStatus+"</td>";
+			})
+			$("#cardTr").append(html);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+		}
+	});
+	
+});
+function operdateFormat(cellvalue, options, rowObject) {
+	var date = new Date(cellvalue.time);
+	return date.pattern("yyyy-MM-dd");
+}
+
+function message(){
+	var str="";
+    $("input[id='cardId']:checkbox").each(function(){ 
+        if($(this).attr("checked")){
+        	if(str == ""){
+        		str += $(this).val()
+        	}else{
+        		str += ","+ $(this).val();
+        	}
+            
+        }
+    })
+    if(str == null || str == ""){
+    	alert("必须要选择卡！");
+    	return;
+    }
+    $.ajax({
+		url : 'checkCardJiHuo.do',
+		data : 'str='+str,
+		datatype : 'json',
+		async :false,
+		success : function(data) {
+			var obj = data.result;
+			if(obj){
+				window.location="messageCard.html?str="+str;
+			}else{
+				alert("已选择的卡里有已经激活的卡，不可以再次激活");
+				return;
+			}
+		
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+		}
+	});
+   
+    
+}
+
+function zhuan(){
+var str="";
+var num = 0;
+$("input[id='cardId']:checkbox").each(function(){ 
+    if($(this).attr("checked")){
+    	if(str == ""){
+    		str += $(this).val()
+    	}else{
+    		str += ","+ $(this).val();
+    	}
+    	num++;
+    }
+})
+if (num == 0) {
+        alert("还没有选择，请选择!");
+        return;
+      } else if (num > 1) {
+        alert("只能选择一个!");
+        return;
+      }
+var j="";
+$.ajax({
+	url : 'checkCard.do',
+	data : {str:str},
+	datatype : 'json',
+	async :false,
+	success : function(data) {
+		var obj = data.result;
+		if(!obj){
+			alert("激活都的卡不能转赠");
+			return;
+		}else{
+			var text ="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+v_appid+"&redirect_uri="+v_redirect_uri_card+"?cardId="+str+"&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+			  sname="欢迎领取"+$("#name").val()+"的购物卡";
+			 var imgsrc = $("#img").attr("src");
+			 var url = window.location.href;
+			$.ajax({
+				type:"post",
+				url : 'getSignature.do',
+				data : 'url='+url,
+				datatype : 'json',
+				success : function(result) {
+					var obj = result.status;
+					//alert(obj.signature);
+					wx.config({
+					    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+					    appId: v_appid, // 必填，公众号的唯一标识
+					    timestamp: '1414587457', // 必填，生成签名的时间戳
+					    nonceStr: 'Wm3WZYTPz0wzccnW', // 必填，生成签名的随机串
+					    signature: obj.signature,// 必填，签名，见附录1
+					    jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+					});
+					wx.ready(function(){
+					    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+						//wx.hideOptionMenu();
+					    //alert(host+'/'+img);
+					    //alert(_system);
+					    _system._guide(true);
+					    
+					    //var a = $("#a");
+					    //a.trigger("click");
+					    //alert();
+					    //alert("点击右上角分享!");
+						wx.onMenuShareTimeline({
+						    title: sname, // 分享标题
+						    link: text, // 分享链接
+						    imgUrl: imgsrc, // 分享图标
+						    success: function () { 
+						        // 用户确认分享后执行的回调函数
+						    	//shareLog();
+						    },
+						    cancel: function () { 
+						        // 用户取消分享后执行的回调函数
+						    }
+						});
+						wx.onMenuShareAppMessage({
+						    title: sname, // 分享标题
+						    desc: sname, // 分享描述
+						    link: text, // 分享链接
+						    imgUrl: imgsrc, // 分享图标
+						    type: '', // 分享类型,music、video或link，不填默认为link
+						    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+						    success: function () { 
+						    	//shareLog();
+						    },
+						    cancel: function () { 
+						        // 用户取消分享后执行的回调函数
+						    }
+						});
+					});
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					//alert(XMLHttpRequest);
+					//alert(textStatus);
+					//alert(errorThrown);
+					//alert("error");
+				}
+			});
+		}
+	},
+	error : function(XMLHttpRequest, textStatus, errorThrown) {
+		//alert(XMLHttpRequest.status);
+		//alert(XMLHttpRequest.readyState);
+		//alert(textStatus);
+	}
+});
+
+
+}
+
+function wai(){
+	window.location="waicase.html";
+}
+var _system={
+	$:function(id){return document.getElementById(id);},
+	_client:function(){
+	return {w:document.documentElement.scrollWidth,h:document.documentElement.scrollHeight,bw:document.documentElement.clientWidth,bh:document.documentElement.clientHeight};
+	},
+	_scroll:function(){
+	return {x:document.documentElement.scrollLeft?document.documentElement.scrollLeft:document.body.scrollLeft,y:document.documentElement.scrollTop?document.documentElement.scrollTop:document.body.scrollTop};
+	},
+	_cover:function(show){
+	if(show){
+	this.$("cover").style.display="block";
+	this.$("cover").style.width=(this._client().bw>this._client().w?this._client().bw:this._client().w)+"px";
+	this.$("cover").style.height=(this._client().bh>this._client().h?this._client().bh:this._client().h)+"px";
+	}else{
+	this.$("cover").style.display="none";
+	}
+	},
+	_guide:function(click){
+	this._cover(true);
+	this.$("guide").style.display="block";
+	this.$("guide").style.top=(_system._scroll().y+5)+"px";
+	window.onresize=function(){_system._cover(true);_system.$("guide").style.top=(_system._scroll().y+5)+"px";};
+	if(click){_system.$("cover").onclick=function(){
+	_system._cover();
+	_system.$("guide").style.display="none";
+	_system.$("cover").onclick=null;
+	window.onresize=null;
+	};}
+	},
+	_zero:function(n){
+	return n<0?0:n;
+	}
+	}
+</script>
+</head>
+<body>
+<div id="cover"></div>
+<div id="guide">
+	<img src="images/guide2.png">
+</div>
+<input type="hidden" id="name" name="name">
+	<div class="center">
+		<p>优粉卡购物方便，赶快购买吧!</p>
+		<div class="center_c">
+			<div class="c_l fl">
+				<!-- 总金额：<span id="cardValue">¥0</span> -->
+			</div>
+			<div class="c_r fl fr">
+				<a href="#" onclick="wai();">激活实体卡</a>
+				<a href="#" onclick="message();">短信激活</a>
+				 <a href="#" onclick="zhuan();">转赠购物卡</a>
+			</div>
+		</div>
+		<div class="center_m">
+			<table>
+				<tbody>
+					<tr>
+					<td></td>
+						<td>卡号</td>
+						<td>余额</td>
+						<td>有效期</td>
+						<td>状态</td>
+					</tr>
+					
+				</tbody>
+				<tbody id="cardTr">
+				<!-- <tr >
+					 </tr>  -->
+					 </tbody>
+			</table>
+		</div>
+		<div class="img_b">
+			<img src="images/log_01.png">
+		</div>
+	</div>
+	<div class="footer">
+		
+	</div>
+</body>
+</html>

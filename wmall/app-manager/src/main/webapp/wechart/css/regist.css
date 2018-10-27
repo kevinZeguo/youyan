@@ -1,0 +1,32 @@
+@charset "utf-8";
+/*=========================Reset_start==========================*/
+body,h1,h2,h3,h4,h5,h6,div,p,dl,dt,dd,ol,ul,li,form,table,th,td,a,img,span,strong,var,em,input,textarea,select,option{margin: 0; padding: 0;}
+html,body{font-family:"宋体","微软雅黑",Arail,Tabhoma; font-size: 12px; text-align: left;}
+ul,ol{list-style: none;}
+img{border: 0;}
+input,select,textarea{outline:0;}
+textarea{resize:none;}
+table{border-collapse: collapse; border-spacing: 0;}
+th,strong,var,em{font-weight: normal; font-style: normal;}
+a{text-decoration: none;}
+/*a:link,a:visited,a:hover,a:active{text-decoration:none;} */
+/*==========================Reset_End===========================*/
+.warp{width:6.4rem;margin:0 auto;}
+.header{text-align:center;margin-top:0.6rem;}
+.header img{width:1rem;height:1rem;}
+.header p{padding:0.08rem 0 0.15rem 0;color:#0281C6; word-spacing:0.08rem; letter-spacing: 0.04rem;font-size:0.28rem;font-family: "楷体"; font-weight:800;}
+.center{width:6rem;height:5rem;border:1px solid #eee;margin:0.1rem auto 0;
+}
+.center table{width: 5.6rem;margin:0 auto;}
+.center table td{height:0.36rem;padding-bottom:0.25rem;}
+.center .center_c {height:0.3rem;margin: 0 auto;
+  background: -webkit-linear-gradient(#efefef, #fff); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(#efefef, #fff); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(#efefef, #fff); /* Firefox 3.6 - 15 */
+  background: linear-gradient(#efefef, #fff);
+}
+.center .center_c span{display:block;width:1.17rem;text-align:center;color:#c1a575;line-height:0.25rem;margin:0 auto;}
+.center input[type="text"]{font-size: 0.26rem;display:inline-block;width: 5.6rem;padding: 0rem 0.05rem;height:0.5rem;overflow: hidden;border:1px solid #0281C6;border-radius:0.05rem;}
+.center input[type="button"]{display:inline-block;height:0.36rem;background-color:#333333;color:#fff;border:1px solid #333;}
+.center td a{display: block;background: #0281C6;color: #fff;padding: 0.2rem 0;text-align: center;font-size: 0.24rem;border-radius: 0.05rem;font-weight: 800;}
+.center .ta a{display:inline-block;width: 2.5rem;background:#0281C6;color:#fff;padding: 0.12rem 0;text-align:center;font-size:0.24rem;border-radius:0.05rem;}
